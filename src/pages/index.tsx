@@ -1,4 +1,4 @@
-import { Center, Container, Title } from "@mantine/core";
+import { Center, Container, Group, Title } from "@mantine/core";
 
 import Head from "next/head";
 import { Inter } from "next/font/google";
@@ -19,13 +19,6 @@ export default function Home() {
         <Container>
           <Center>
             <Title>Home</Title>
-          </Center>
-          <Center>
-            hello Next.js
-            <div>
-              {" "}
-              <Link href="/about">About</Link>
-            </div>
           </Center>
         </Container>
       </main>
