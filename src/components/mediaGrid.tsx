@@ -20,6 +20,7 @@ type Movie = {
 
 export default function MediaGrid(props: { items: Movie[] }) {
   const items = props.items;
+  let type = "movie";
 
   return (
     <Container size="xl">
@@ -36,9 +37,10 @@ export default function MediaGrid(props: { items: Movie[] }) {
               />
             </AspectRatio>
             <Link
-              href={`/movies/${item.id}-${encodeURIComponent(
-                item.title ?? item.name ?? ""
-              )}`}
+              // href={`/movies/${item.id}-${encodeURIComponent(
+              //   item.title ?? item.name ?? ""
+              // )}`}
+              href={`/${item.title ? "movies" : "tv"}/${item.id}`}
             >
               {item.title ? item.title : item.name}
             </Link>

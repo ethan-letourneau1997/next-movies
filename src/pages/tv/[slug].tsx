@@ -16,17 +16,16 @@ export default function MediaItem() {
   const mediaType = "tv";
   const router = useRouter();
   const { slug } = router.query;
-
-  if (!slug) {
-    return <div>Loading...</div>;
-  }
-
-  const str = slug as string;
-  const num = parseInt(str.split("-")[0]);
+  let str = slug as string;
+  const num = parseInt(str);
 
   const [mediaDetails, setMediaDetails] = useState<MediaDetails | null>(null);
 
   useEffect(() => {
+    if (!slug) {
+      return;
+    }
+
     async function fetchDetails() {
       try {
         const details = await fetchMediaDetails(mediaType, num);
@@ -36,7 +35,7 @@ export default function MediaItem() {
       }
     }
     fetchDetails();
-  }, [mediaType, num]);
+  }, [mediaType, num, slug]);
 
   if (!mediaDetails) {
     return <div>Loading...</div>;
