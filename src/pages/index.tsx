@@ -1,5 +1,6 @@
+import { Center, Container, Title } from "@mantine/core";
+
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
@@ -16,11 +17,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        hello Next.js
-        <div>
-          {" "}
-          <Link href="/about">About</Link>
-        </div>
+        <Container>
+          <Center>
+            <Title>Home</Title>
+          </Center>
+          <Center>
+            hello Next.js
+            <div>
+              {" "}
+              <Link href="/about">About</Link>
+            </div>
+          </Center>
+        </Container>
       </main>
     </>
   );
