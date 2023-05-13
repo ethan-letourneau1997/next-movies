@@ -11,7 +11,7 @@ type Movie = {
 };
 
 export default function Trending() {
-  const mediaType = "movie";
+  const mediaType = "tv";
 
   const [movies, setMovies] = useState<Movie[]>([]);
 

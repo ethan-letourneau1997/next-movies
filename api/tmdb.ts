@@ -1,13 +1,17 @@
-import { NextApiHandler } from "next";
-
-const handler: NextApiHandler = async (req, res) => {
-  const apiKey = process.env.TMDB_API_KEY;
-  const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`;
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  res.status(200).json(data);
+type Movie = {
+  id: number;
+  title: string;
+  poster_path: string;
 };
 
-export default handler;
+export async function fetchTrending(mediaType: string): Promise<Movie[]> {
+  const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
+  const response = await fetch(
+    `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${TMDB_API_KEY}`
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.results;
+}
