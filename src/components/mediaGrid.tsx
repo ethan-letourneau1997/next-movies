@@ -9,6 +9,8 @@ import {
   Title,
 } from "@mantine/core";
 
+import Link from "next/link";
+
 type Movie = {
   id: number;
   title?: string;
@@ -33,7 +35,13 @@ export default function MediaGrid(props: { items: Movie[] }) {
                 alt={item.title}
               />
             </AspectRatio>
-            <Text>{item.title}</Text>
+            <Link
+              href={`/movies/${item.id}-${encodeURIComponent(
+                item.title ?? item.name ?? ""
+              )}`}
+            >
+              {item.title ? item.title : item.name}
+            </Link>
           </Box>
         ))}
       </SimpleGrid>
