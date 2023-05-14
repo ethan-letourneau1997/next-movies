@@ -1,14 +1,6 @@
 // components/Navbar.tsx
 
-import { Button, Center, Flex, Menu, Text } from "@mantine/core";
-import {
-  IconArrowsLeftRight,
-  IconMessageCircle,
-  IconPhoto,
-  IconSearch,
-  IconSettings,
-  IconTrash,
-} from "@tabler/icons-react";
+import { Flex, Menu, Text } from "@mantine/core";
 
 import Link from "next/link";
 import React from "react";
@@ -48,6 +40,7 @@ const Navbar = () => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
+      <Link href="/discover">Discover</Link>
     </Flex>
   );
 };

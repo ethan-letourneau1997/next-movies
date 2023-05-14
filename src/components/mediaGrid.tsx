@@ -11,13 +11,16 @@ import {
 import Link from "next/link";
 import { MediaItemTypes } from "../../types";
 
-export default function MediaGrid(props: { items: MediaItemTypes[] }) {
+export default function MediaGrid(props: {
+  items: MediaItemTypes[];
+  title: string;
+}) {
   const items = props.items;
 
   return (
-    <Container size="xl">
-      <Title>Trending</Title>
-      <SimpleGrid cols={6}>
+    <Box>
+      <Title>{props.title}</Title>
+      <SimpleGrid cols={6} mt="xl">
         {items.map((item) => (
           <Box key={item.id}>
             <AspectRatio ratio={2 / 3}>
@@ -41,6 +44,6 @@ export default function MediaGrid(props: { items: MediaItemTypes[] }) {
           </Box>
         ))}
       </SimpleGrid>
-    </Container>
+    </Box>
   );
 }
