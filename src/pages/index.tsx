@@ -1,5 +1,7 @@
 import Head from "next/head";
+// import { SpotlightControl } from "@/components/spotlight";
 import { Title } from "@mantine/core";
+// import TmdbSearch from "@/components/Autocomplete";
 import styles from "../styles/Home.module.css";
 import { useState } from "react";
 
@@ -13,7 +15,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        {/* <SpotlightControl /> */}
         <Title>Home</Title>
+        {/* <TmdbSearch /> */}
       </main>
     </>
   );

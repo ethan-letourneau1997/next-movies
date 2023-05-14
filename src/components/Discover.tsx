@@ -19,14 +19,14 @@ import { useEffect, useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendarTime } from "@tabler/icons-react";
 import MediaGrid from "@/components/mediaGrid";
-import { MediaItemTypes } from "../../types";
+import { MediaItemType } from "../../types";
 import { dateToString } from "../../api/format";
 import { fetchDiscover } from "../../api/tmdb";
 import { type } from "os";
 import { useDisclosure } from "@mantine/hooks";
 
 interface DiscoverTypes {
-  items: MediaItemTypes[];
+  items: MediaItemType[];
   sortBy: string;
   selectedGenres: string[];
   startDate: Date | null;
@@ -45,7 +45,7 @@ export default function Discover(props: { type: string }) {
     isMovie ? (genresData = movieGenres) : (genresData = tvGenres);
   }
 
-  const [items, setMovies] = useState<MediaItemTypes[]>([]);
+  const [items, setMovies] = useState<MediaItemType[]>([]);
 
   //* Discover state
   const [state, setState] = useState<DiscoverTypes>({

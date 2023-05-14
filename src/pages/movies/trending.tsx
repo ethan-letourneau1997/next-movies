@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Container } from "@mantine/core";
 import MediaGrid from "@/components/mediaGrid";
+import { MediaItemType } from "../../../types";
 import { fetchTrending } from "../../../api/tmdb";
 
 type Movie = {
@@ -13,7 +14,7 @@ type Movie = {
 export default function Trending() {
   const mediaType = "movie";
 
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<MediaItemType[]>([]);
 
   useEffect(() => {
     fetchTrending(mediaType)
@@ -27,7 +28,7 @@ export default function Trending() {
 
   return (
     <Container size="xl">
-      <MediaGrid items={movies} />
+      <MediaGrid title={"Trending Movies"} items={movies} />
     </Container>
   );
 }

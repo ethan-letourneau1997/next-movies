@@ -2,6 +2,9 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "@/components/layout";
 import { MantineProvider } from "@mantine/core";
+import { SpotlightProvider } from "@mantine/spotlight";
+// import { actions } from "@/components/spotlight";
+import { getActions } from "../../api/spotlight/getActions";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -24,9 +27,11 @@ export default function App(props: AppProps) {
           colorScheme: "dark",
         }}
       >
+        {/* <SpotlightProvider actions={actions}> */}
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        {/* </SpotlightProvider> */}
       </MantineProvider>
     </>
   );

@@ -1,4 +1,4 @@
-import { MediaItemTypes } from "../types";
+import { MediaItemType } from "../types";
 
 // const temp =
 //   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
@@ -14,7 +14,7 @@ export async function fetchDiscover(
   topScore: string,
   runtimeMin: string,
   runtimeMax: string
-): Promise<MediaItemTypes[]> {
+): Promise<MediaItemType[]> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
   const response = await fetch(
@@ -30,7 +30,7 @@ export async function fetchDiscover(
 // * Fetches trending media items from TMDB API
 export async function fetchTrending(
   mediaType: string
-): Promise<MediaItemTypes[]> {
+): Promise<MediaItemType[]> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
     `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${TMDB_API_KEY}&with_original_language=en`
@@ -45,7 +45,7 @@ export async function fetchTrending(
 // * Fetches popular media items from TMDB API
 export async function fetchPopular(
   mediaType: string
-): Promise<MediaItemTypes[]> {
+): Promise<MediaItemType[]> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
     `https://api.themoviedb.org/3/${mediaType}/popular?api_key=${TMDB_API_KEY}&page=1&with_original_language=en`
@@ -61,7 +61,7 @@ export async function fetchPopular(
 export async function fetchMediaDetails(
   mediaType: string,
   mediaId: number
-): Promise<MediaItemTypes> {
+): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
     `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US`

@@ -9,10 +9,10 @@ import {
 } from "@mantine/core";
 
 import Link from "next/link";
-import { MediaItemTypes } from "../../types";
+import { MediaItemType } from "../../types";
 
 export default function MediaGrid(props: {
-  items: MediaItemTypes[];
+  items: MediaItemType[];
   title: string;
 }) {
   const items = props.items;

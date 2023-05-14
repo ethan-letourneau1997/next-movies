@@ -1,4 +1,4 @@
-export interface MediaItemTypes {
+export interface MediaItemType {
   id: number;
   title?: string;
   name?: string;

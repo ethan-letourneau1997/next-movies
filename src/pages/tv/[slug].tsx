@@ -1,7 +1,7 @@
 import { Center, Container, Flex, Image, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import { MediaItemTypes } from "../../../types";
+import { MediaItemType } from "../../../types";
 import { fetchMediaDetails } from "../../../api/tmdb";
 import { useRouter } from "next/router";
 
@@ -12,7 +12,7 @@ export default function MediaItem() {
   let str = slug as string;
   const num = parseInt(str);
 
-  const [mediaDetails, setMediaDetails] = useState<MediaItemTypes | null>(null);
+  const [mediaDetails, setMediaDetails] = useState<MediaItemType | null>(null);
 
   useEffect(() => {
     if (!slug) {

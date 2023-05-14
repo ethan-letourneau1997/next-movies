@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 
 import { Container } from "@mantine/core";
 import MediaGrid from "@/components/mediaGrid";
-import { MediaItemTypes } from "../../../types";
+import { MediaItemType } from "../../../types";
 import { fetchTrending } from "../../../api/tmdb";
 
 export default function Trending() {
   const mediaType = "tv";
 
-  const [movies, setMovies] = useState<MediaItemTypes[]>([]);
+  const [shows, setShows] = useState<MediaItemType[]>([]);
 
   useEffect(() => {
     fetchTrending(mediaType)
       .then((data) => {
-        setMovies(data);
+        setShows(data);
       })
       .catch((error) => {
         console.error(error);
@@ -22,7 +22,7 @@ export default function Trending() {
 
   return (
     <Container size="xl">
-      <MediaGrid items={movies} />
+      <MediaGrid title="Trending Shows" items={shows} />
     </Container>
   );
 }
