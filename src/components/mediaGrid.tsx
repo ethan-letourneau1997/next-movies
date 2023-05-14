@@ -5,22 +5,14 @@ import {
   Image,
   SimpleGrid,
   Skeleton,
-  Text,
   Title,
 } from "@mantine/core";
 
 import Link from "next/link";
+import { MediaItemTypes } from "../../types";
 
-type Movie = {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path?: string;
-};
-
-export default function MediaGrid(props: { items: Movie[] }) {
+export default function MediaGrid(props: { items: MediaItemTypes[] }) {
   const items = props.items;
-  let type = "movie";
 
   return (
     <Container size="xl">
@@ -40,7 +32,9 @@ export default function MediaGrid(props: { items: Movie[] }) {
               // href={`/movies/${item.id}-${encodeURIComponent(
               //   item.title ?? item.name ?? ""
               // )}`}
-              href={`/${item.title ? "movies" : "tv"}/${item.id}`}
+              href={`/${item.title ? "movies" : "tv"}/${item.id}-${
+                item.title ? item.title : item.name
+              }`}
             >
               {item.title ? item.title : item.name}
             </Link>
