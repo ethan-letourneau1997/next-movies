@@ -4,6 +4,7 @@ import { Flex, Menu, Text } from "@mantine/core";
 
 import Link from "next/link";
 import React from "react";
+import TmdbSearch from "./Autocomplete";
 
 const Navbar = () => {
   return (
@@ -41,6 +42,7 @@ const Navbar = () => {
         </Menu.Dropdown>
       </Menu>
       <Link href="/discover">Discover</Link>
+      <TmdbSearch />
     </Flex>
   );
 };
