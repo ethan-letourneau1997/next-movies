@@ -94,6 +94,7 @@ export const TmdbSearch = () => {
             .filter((result) => result.poster_path || result.profile_path)
             .map((result) => (
               <Link
+                key={result.id}
                 href={`/${result.media_type == "movie" ? "movies" : "tv"}/${
                   result.id
                 }-${result.title ? result.title : result.name}`}
@@ -120,7 +121,7 @@ export const TmdbSearch = () => {
                           : `https://image.tmdb.org/t/p/w500${result.poster_path}`
                       }
                       withPlaceholder
-                      //   alt={result.title}
+                      alt={result.title}
                     />
                   </Box>
                   <Box>

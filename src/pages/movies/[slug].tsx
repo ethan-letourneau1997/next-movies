@@ -45,6 +45,7 @@ export default function MediaItem() {
         <Image
           width="200"
           src={`https://image.tmdb.org/t/p/w500${mediaDetails.poster_path}`}
+          alt="alt text"
         ></Image>
         <Text my="auto">{mediaDetails.overview}</Text>
       </Flex>

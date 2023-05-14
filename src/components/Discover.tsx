@@ -22,7 +22,6 @@ import MediaGrid from "@/components/mediaGrid";
 import { MediaItemType } from "../../types";
 import { dateToString } from "../../api/format";
 import { fetchDiscover } from "../../api/tmdb";
-import { type } from "os";
 import { useDisclosure } from "@mantine/hooks";
 
 interface DiscoverTypes {
