@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import TmdbSearch from "./search";
 
-export const Navbar = () => {
+export default function Navigation() {
   return (
     <Flex gap="xl" px="xl" mb="xl" mt="md">
       <Link href="/">Home</Link>
@@ -48,5 +48,4 @@ export const Navbar = () => {
       <TmdbSearch />
     </Flex>
   );
-};
-export default Navbar;
+}

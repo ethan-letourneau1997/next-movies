@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from "react";
 
-import Navbar from "./navbar";
+import Navigation from "./navbar";
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <Navbar />
+      <Navigation />
       {children}
     </>
   );
