@@ -125,6 +125,7 @@ export default function Discover(props: { type: string }) {
     topScore,
     runtimeMin,
     runtimeMax,
+    mediaType,
   ]);
 
   // ! Collapse logic
