@@ -1,7 +1,9 @@
 import { Center, Container, Flex, Image, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 
+import MediaCredits from "@/components/movieDetails.tsx/mediaCredits";
 import { MediaItemType } from "../../../types";
+import MediaSimilar from "@/components/movieDetails.tsx/mediaSimilar";
 import { fetchMediaDetails } from "../api/tmdb";
 import { useRouter } from "next/router";
 
@@ -35,11 +37,12 @@ export default function MediaItem() {
     return <div>Loading...</div>;
   }
 
+  console.log(mediaDetails.similar);
+
   return (
     <Container>
       <Center>
         <Title>{mediaDetails.title}</Title>
-        <Title>{mediaDetails.name}</Title>
       </Center>
       <Flex mt="xl" gap="xl">
         <Image
@@ -49,6 +52,8 @@ export default function MediaItem() {
         ></Image>
         <Text my="auto">{mediaDetails.overview}</Text>
       </Flex>
+      {mediaDetails.credits && <MediaCredits credits={mediaDetails.credits} />}
+      {mediaDetails.similar && <MediaSimilar similar={mediaDetails.similar} />}
     </Container>
   );
 }
