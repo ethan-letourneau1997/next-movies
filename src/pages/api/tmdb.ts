@@ -1,4 +1,4 @@
-import { MediaItemType } from "../types";
+import { MediaItemType, PersonDetails } from "../../../types";
 
 // const temp =
 //   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
@@ -64,11 +64,9 @@ export async function fetchMediaDetails(
 ): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits`
   );
-  console.log(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US`
-  );
+
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
@@ -78,8 +76,25 @@ export async function fetchMediaDetails(
     title: mediaType === "movie" ? data.title : data.name,
     overview: data.overview,
     poster_path: data.poster_path,
+
     release_date: mediaType === "movie" ? data.release_date : undefined,
     first_air_date: mediaType === "tv" ? data.first_air_date : undefined,
     vote_average: data.vote_average,
   };
+}
+
+// * Fetches person items from TMDB API
+export async function fetchPersonDetails(
+  mediaID: number
+): Promise<PersonDetails> {
+  const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/person/${mediaID}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=combined_credits`
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
 }

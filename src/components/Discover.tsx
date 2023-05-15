@@ -21,7 +21,7 @@ import { IconCalendarTime } from "@tabler/icons-react";
 import MediaGrid from "@/components/mediaGrid";
 import { MediaItemType } from "../../types";
 import { dateToString } from "../../api/format";
-import { fetchDiscover } from "../../api/tmdb";
+import { fetchDiscover } from "../pages/api/tmdb";
 import { useDisclosure } from "@mantine/hooks";
 
 interface DiscoverTypes {

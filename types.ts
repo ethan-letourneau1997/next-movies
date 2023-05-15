@@ -1,6 +1,7 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  biography?: string;
   id: number;
   adult?: boolean;
   backdrop_path?: string;
@@ -31,21 +32,6 @@ export interface Credits {
   cast: Cast[];
   crew: Crew[];
   id: number;
-}
-
-export interface Cast {
-  adult: boolean;
-  gender: number;
-  id: number;
-  known_for_department: string;
-  name: string;
-  original_name: string;
-  popularity: number;
-  profile_path?: string;
-  character: string;
-  credit_id: string;
-  order: number;
-  cast_id?: number;
 }
 
 export interface Crew {
@@ -79,4 +65,75 @@ export interface KnownFor {
   video: boolean;
   vote_average: number;
   vote_count: number;
+}
+
+export interface PersonDetails {
+  adult?: boolean;
+  also_known_as?: string[];
+  biography?: string;
+  birthday?: string;
+  deathday?: any;
+  gender?: number;
+  homepage?: any;
+  id: number;
+  imdb_id?: string;
+  known_for_department?: string;
+  name?: string;
+  place_of_birth?: string;
+  popularity?: number;
+  profile_path?: string;
+  combined_credits?: CombinedCredits;
+}
+
+export interface CombinedCredits {
+  cast: Cast[];
+  crew: Crew[];
+}
+
+export interface Cast {
+  adult: boolean;
+  backdrop_path?: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title?: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  release_date?: string;
+  title?: string;
+  video?: boolean;
+  vote_average: number;
+  vote_count: number;
+  character: string;
+  credit_id: string;
+  order?: number;
+  media_type: string;
+  origin_country?: string[];
+  original_name?: string;
+  first_air_date?: string;
+  name?: string;
+  episode_count?: number;
+}
+
+export interface Crew {
+  adult: boolean;
+  backdrop_path?: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  credit_id: string;
+  first_air_date?: string;
+  department: string;
+  job: string;
+  media_type: string;
 }

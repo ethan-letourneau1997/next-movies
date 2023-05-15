@@ -1,6 +1,6 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import Navigation from "@/components/Navbar";
+import Navigation from "@/components/navbar";
 import { createGetInitialProps } from "@mantine/next";
 
 const getInitialProps = createGetInitialProps();

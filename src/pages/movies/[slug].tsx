@@ -2,7 +2,7 @@ import { Center, Container, Flex, Image, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { MediaItemType } from "../../../types";
-import { fetchMediaDetails } from "../../../api/tmdb";
+import { fetchMediaDetails } from "../api/tmdb";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {
