@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import TmdbSearch from "./search";
 
-const Navbar = () => {
+export const Navbar = () => {
   return (
     <Flex gap="xl" px="xl" mb="xl" mt="md">
       <Link href="/">Home</Link>
