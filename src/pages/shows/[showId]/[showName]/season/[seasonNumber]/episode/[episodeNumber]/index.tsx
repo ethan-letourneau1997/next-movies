@@ -47,7 +47,8 @@ export default function Episode() {
 
     async function fetchDetails() {
       try {
-        const details = await fetchMediaDetails("tv", showId);
+        const id = showId as string;
+        const details = await fetchMediaDetails("tv", parseInt(id));
         setMediaDetails(details);
       } catch (error) {
         console.error(error);
