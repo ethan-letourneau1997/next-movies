@@ -1,9 +1,9 @@
 import { Center, Container, Flex, Image, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import MediaCredits from "@/components/movieDetails.tsx/mediaCredits";
+import MediaCredits from "@/components/mediaDetails.tsx/mediaCredits";
 import { MediaItemType } from "../../../../../types";
-import MediaSimilar from "@/components/movieDetails.tsx/mediaSimilar";
+import MediaSimilar from "@/components/mediaDetails.tsx/mediaSimilar";
 import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 

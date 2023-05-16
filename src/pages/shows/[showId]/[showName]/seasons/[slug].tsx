@@ -2,7 +2,7 @@ import { Box, Select, SelectItem } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
-import Season from "@/components/tv/season";
+import Season from "@/components/tvComponents/season";
 import { SeasonType } from "../../../../../../types";
 import { useRouter } from "next/router";
 

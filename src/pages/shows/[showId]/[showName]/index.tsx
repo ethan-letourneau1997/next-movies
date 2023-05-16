@@ -11,8 +11,8 @@ import {
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import MediaCredits from "@/components/movieDetails.tsx/mediaCredits";
-import MediaSimilar from "@/components/movieDetails.tsx/mediaSimilar";
+import MediaCredits from "@/components/mediaDetails.tsx/mediaCredits";
+import MediaSimilar from "@/components/mediaDetails.tsx/mediaSimilar";
 import { TVRoot } from "../../../../../types";
 import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
