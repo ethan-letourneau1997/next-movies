@@ -81,8 +81,6 @@ export default function Episode() {
   let nextSeasonNumber: number | null = null;
   let nextEpisodeNumber: number | null = null;
 
-  console.log("total " + totalSeasons);
-
   //* If we have episode details and season details, get next episode number and season number
   if (episodeDetails && seasonDetails && totalSeasons) {
     const season_number: number | undefined = episodeDetails.season_number;
@@ -126,11 +124,6 @@ export default function Episode() {
       }
     }
   }
-
-  console.log("prev " + prevSeasonNumber);
-  console.log("prev " + prevEpisodeNumber);
-  console.log("next " + nextSeasonNumber);
-  console.log("next " + nextEpisodeNumber);
 
   return (
     <Box>
