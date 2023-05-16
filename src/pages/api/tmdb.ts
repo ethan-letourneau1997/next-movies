@@ -3,6 +3,8 @@ import { MediaItemType, PersonDetails } from "../../../types";
 // const temp =
 //   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
 
+const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
+
 // * Fetches discover media items from TMDB API
 export async function fetchDiscover(
   mediaType: string,
@@ -89,3 +91,17 @@ export async function fetchPersonDetails(
   const data = await response.json();
   return data;
 }
+
+// * Fetches person items from TMDB API
+
+export const fetchMedia = async (mediaType: string, page: number) => {
+  try {
+    const url = `https://api.themoviedb.org/3/${mediaType}/top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=${page}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching media:", error);
+    return [];
+  }
+};
