@@ -1,7 +1,6 @@
-import { Box, Text, Title } from "@mantine/core";
+import { Box, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
-import { EpisodeDetails } from "../../../types";
 import Link from "next/link";
 import { SeasonType } from "../../../types";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ interface SeasonProps {
 
 export default function Season(props: SeasonProps) {
   const [season, setSeason] = useState<SeasonType | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const apiKey = "0fd7a8764e6522629a3b7e78c452c348";
 
   const router = useRouter();
@@ -21,12 +21,27 @@ export default function Season(props: SeasonProps) {
 
   useEffect(() => {
     fetch(
-      `https://api.themoviedb.org/3/tv/${props.showId}/season/${props.seasonNumber}?api_key=${apiKey}`
+      `https://api.themoviedb.org/3/tv/${showId}/season/${props.seasonNumber}?api_key=${apiKey}`
     )
-      .then((response) => response.json())
-      .then((data: SeasonType) => setSeason(data))
-      .catch((error) => console.error(error));
-  }, [props.showId, props.seasonNumber, apiKey]);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error fetching data");
+        }
+        return response.json();
+      })
+      .then((data: SeasonType) => {
+        setSeason(data);
+        setError(null);
+      })
+      .catch((error) => {
+        setError("Error fetching data");
+        console.error(error);
+      });
+  }, [showId, props.seasonNumber, apiKey]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   if (!season) {
     return <div>Loading...</div>;

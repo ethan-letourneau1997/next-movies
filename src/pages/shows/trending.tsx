@@ -5,12 +5,6 @@ import MediaGrid from "@/components/mediaGrid";
 import { MediaItemType } from "../../../types";
 import { fetchTrending } from "../api/tmdb";
 
-type Movie = {
-  id: number;
-  title: string;
-  poster_path: string;
-};
-
 export default function Trending() {
   const mediaType = "tv";
 

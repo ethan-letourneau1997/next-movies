@@ -34,7 +34,7 @@ export default function Episode() {
     const fetchData = async () => {
       try {
         //* Fetch episode details
-        if (showId && currentSeasonNumber && currentEpisodeNumber) {
+        if (showIdNumber && currentSeasonNumber && currentEpisodeNumber) {
           const episodeData = await fetchEpisodeDetails(
             showIdNumber,
             currentSeasonNumber,
@@ -126,6 +126,11 @@ export default function Episode() {
       }
     }
   }
+
+  console.log("prev " + prevSeasonNumber);
+  console.log("prev " + prevEpisodeNumber);
+  console.log("next " + nextSeasonNumber);
+  console.log("next " + nextEpisodeNumber);
 
   return (
     <Box>

@@ -43,7 +43,7 @@ export default function Seasons({}) {
     seasonSelectData = seasons.map((season) => {
       return {
         value: season.season_number?.toString() ?? "0",
-        label: `${season.name} - ${season.episode_count}`,
+        label: `${season.name}`,
       };
     });
   }

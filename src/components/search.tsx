@@ -10,7 +10,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { Cast, Credits, MediaItemType, SearchResults } from "../../types";
+import { MediaItemType, SearchResults } from "../../types";
 import React, { useState } from "react";
 
 import { IconSearch } from "@tabler/icons-react";
@@ -23,49 +23,80 @@ export const TmdbSearch = () => {
 
   const handleSearch = async (value: string) => {
     setSearchTerm(value);
+
+    if (value.trim() === "") {
+      setResults([]);
+      return;
+    }
+
     const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
     const response = await fetch(
       `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${value}`
     );
-    const data = await response.json();
 
-    // Make additional API calls for movies and shows
-    const moviesAndShows = data.results.filter(
-      (result: MediaItemType) =>
+    if (!response.ok) {
+      //* Handle the case where the API request was not successful
+      //* Display an error message or take appropriate action
+      console.error("API request failed");
+      return;
+    }
+
+    try {
+      const data = await response.json();
+      //* Make additional API calls for movies and shows
+      const moviesAndShows = data.results.filter(
+        (result: MediaItemType) =>
+          result.media_type !== undefined &&
+          ["movie", "tv"].includes(result.media_type)
+      );
+
+      const movieAndShowCreditsPromises = moviesAndShows.map(
+        (result: MediaItemType) =>
+          fetch(
+            `https://api.themoviedb.org/3/${result.media_type}/${result.id}/credits?api_key=${TMDB_API_KEY}`
+          )
+            .then((response) => response.json())
+            .then((credits) => ({ ...result, credits }))
+      );
+      const movieAndShowResults = await Promise.all(
+        movieAndShowCreditsPromises
+      );
+
+      //* Merge the movie and show results back into the original search results
+      const updatedResults = data.results.map((result: MediaItemType) =>
         result.media_type !== undefined &&
         ["movie", "tv"].includes(result.media_type)
-    );
+          ? movieAndShowResults.find(({ id }) => id === result.id) || result
+          : result
+      );
 
-    const movieAndShowCreditsPromises = moviesAndShows.map(
-      (result: MediaItemType) =>
-        fetch(
-          `https://api.themoviedb.org/3/${result.media_type}/${result.id}/credits?api_key=${TMDB_API_KEY}`
-        )
-          .then((response) => response.json())
-          .then((credits) => ({ ...result, credits }))
-    );
-    const movieAndShowResults = await Promise.all(movieAndShowCreditsPromises);
-
-    // Merge the movie and show results back into the original search results
-    const updatedResults = data.results.map((result: MediaItemType) =>
-      result.media_type !== undefined &&
-      ["movie", "tv"].includes(result.media_type)
-        ? movieAndShowResults.find(({ id }) => id === result.id) || result
-        : result
-    );
-
-    setResults(updatedResults);
+      setResults(updatedResults);
+    } catch (error) {
+      //* Handle the case where JSON parsing fails
+      //* Display an error message or take appropriate action
+      console.error("Failed to parse API response:", error);
+    }
   };
 
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
+
+  const handleLinkClick = () => {
+    close(); // Close the modal when a link is clicked
+  };
+
+  const handleClose = () => {
+    setSearchTerm(""); // Clear the search input when the modal is closed
+    close(); // Close the modal
+    setResults([]); // Clear the search results
+  };
 
   return (
     <div>
       <Modal
         radius="md"
         opened={opened}
-        onClose={close}
+        onClose={handleClose}
         size="lg"
         withCloseButton={false}
         overlayProps={{
@@ -100,6 +131,7 @@ export const TmdbSearch = () => {
                     ? encodeURIComponent(result.title)
                     : encodeURIComponent(result.name || "")
                 }`}
+                onClick={handleLinkClick} // Call the handleLinkClick function when a link is clicked
                 style={{
                   textDecoration: "none",
                   color: "white",
