@@ -1,14 +1,15 @@
+import { AspectRatio, Box, Flex, Image, Text } from "@mantine/core";
 import React, { ChangeEvent, useState } from "react";
 
-interface SearchResult {
-  id: number;
+import { MediaItemType } from "../../types";
+
+interface SearchResult extends MediaItemType {
   title: string;
   name: string;
 }
 
 const Autocomplete = () => {
   const [query, setQuery] = useState("");
-
   const [results, setResults] = useState<SearchResult[]>([]);
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +35,27 @@ const Autocomplete = () => {
         value={query}
         onChange={handleInputChange}
       />
-      <ul>
-        {results.map((item) => (
-          <li key={item.id}>{item.title || item.name}</li>
-        ))}
-      </ul>
+      <Box>
+        {results.map(
+          (item) =>
+            (item.poster_path || item.profile_path) && (
+              <Flex key={item.id}>
+                <Text>{item.title || item.name}</Text>
+                <AspectRatio ratio={2 / 3} w={100}>
+                  <Image
+                    placeholder="blur"
+                    src={`https://image.tmdb.org/t/p/w500${
+                      item.media_type === "person"
+                        ? item.profile_path
+                        : item.poster_path
+                    }`}
+                    alt={item.title}
+                  />
+                </AspectRatio>
+              </Flex>
+            )
+        )}
+      </Box>
     </div>
   );
 };
