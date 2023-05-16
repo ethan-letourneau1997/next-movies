@@ -4,6 +4,7 @@ import {
   SeasonType,
   TVRoot,
 } from "../../../../../../../../../types";
+import { fetchEpisodeDetails, fetchSeasonDetails } from "@/pages/api/showAPI";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
@@ -11,83 +12,171 @@ import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 
 export default function Episode() {
+  //* Get query params
   const router = useRouter();
-  const { showId, seasonNumber, episodeNumber } = router.query;
+  const { showId, showName, seasonNumber, episodeNumber } = router.query;
 
-  // Split slug by "-" separator
+  //* convert query params to numbers
+  const showIdNumber = parseInt(showId as string);
+  const currentSeasonNumber = parseInt(seasonNumber as string);
+  const currentEpisodeNumber = parseInt(episodeNumber as string);
 
+  //* set state for episode details, season details, and show details
   const [episodeDetails, setEpisodeDetails] = useState<EpisodeDetails | null>(
     null
   );
+  const [seasonDetails, setSeasonDetails] = useState<SeasonType | null>(null);
+  const [prevSeasonCount, setPrevSeasonCount] = useState<number | null>(null);
+  const [showDetails, setShowDetails] = useState<TVRoot | null>(null);
 
-  // Make API request to get episode details
+  //* fetch data
   useEffect(() => {
-    const getEpisodeDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}/episode/${episodeNumber}?api_key=0fd7a8764e6522629a3b7e78c452c348&language=en-US`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        //* Fetch episode details
+        if (showId && currentSeasonNumber && currentEpisodeNumber) {
+          const episodeData = await fetchEpisodeDetails(
+            showIdNumber,
+            currentSeasonNumber,
+            currentEpisodeNumber
+          );
+          setEpisodeDetails(episodeData);
         }
-        const data = await response.json();
-        setEpisodeDetails(data);
+
+        //* Fetch season details
+        if (showIdNumber && currentSeasonNumber) {
+          //* Fetch current season details
+          const seasonData = await fetchSeasonDetails(
+            showIdNumber,
+            currentSeasonNumber
+          );
+          setSeasonDetails(seasonData);
+          //* Fetch previous season details
+          const prevSeasonDate = await fetchSeasonDetails(
+            showIdNumber,
+            currentSeasonNumber - 1
+          );
+          setPrevSeasonCount(prevSeasonDate.episodes.length);
+        }
+
+        //* Fetch show details
+        if (showIdNumber) {
+          const id = showIdNumber;
+          const showData = await fetchMediaDetails("tv", id);
+          setShowDetails(showData);
+        }
       } catch (error) {
-        console.error("Error fetching episode details: ", error);
+        //* handle error
+        console.error(error);
       }
     };
 
-    getEpisodeDetails();
-  }, [showId, episodeNumber]);
+    fetchData();
+  }, [showIdNumber, currentSeasonNumber, currentEpisodeNumber]);
 
-  useEffect(() => {
-    if (!showId) {
-      return;
-    }
+  //* Get total number of seasons
+  let totalSeasons: number | null = showDetails?.number_of_seasons ?? null;
 
-    async function fetchDetails() {
-      try {
-        const id = showId as string;
-        const details = await fetchMediaDetails("tv", parseInt(id));
-        setMediaDetails(details);
-      } catch (error) {
-        console.error(error);
+  //* Get next episode number and season number
+  let nextSeasonNumber: number | null = null;
+  let nextEpisodeNumber: number | null = null;
+
+  console.log("total " + totalSeasons);
+
+  //* If we have episode details and season details, get next episode number and season number
+  if (episodeDetails && seasonDetails && totalSeasons) {
+    const season_number: number | undefined = episodeDetails.season_number;
+    const episodes: EpisodeDetails[] | undefined = seasonDetails.episodes;
+
+    if (season_number !== undefined && episodes !== undefined) {
+      const episode_number: number | undefined = episodeDetails.episode_number;
+      const numEpisodes: number = episodes.length;
+
+      if (episode_number !== undefined && episode_number < numEpisodes) {
+        nextEpisodeNumber = episode_number + 1;
+        nextSeasonNumber = season_number;
+      } else if (
+        episode_number === numEpisodes &&
+        season_number < totalSeasons
+      ) {
+        nextEpisodeNumber = 1;
+        nextSeasonNumber = season_number + 1;
       }
     }
-    fetchDetails();
-  }, [showId]);
+  }
 
-  const [mediaDetails, setMediaDetails] = useState<TVRoot | null>(null);
+  //* Get previous episode number and season number
+  let prevSeasonNumber: number | null = null;
+  let prevEpisodeNumber: number | null = null;
 
-  // get episode count for season
-  let episodeCount = null;
-  if (mediaDetails && mediaDetails.seasons && episodeDetails) {
-    const season = mediaDetails.seasons.find(
-      (s: SeasonType) => s.season_number === episodeDetails.season_number
-    );
-    if (season) {
-      episodeCount = season.episode_count;
+  //* If we have episode details and season details, get previous episode number and season number
+  if (episodeDetails && seasonDetails) {
+    const season_number: number | undefined = episodeDetails.season_number;
+    const episodes: EpisodeDetails[] | undefined = seasonDetails.episodes;
+
+    if (season_number !== undefined && episodes !== undefined) {
+      const episode_number: number | undefined = episodeDetails.episode_number;
+
+      if (episode_number !== undefined && episode_number > 1) {
+        prevEpisodeNumber = episode_number - 1;
+        prevSeasonNumber = season_number;
+      } else if (episode_number === 1 && season_number > 1) {
+        prevEpisodeNumber = prevSeasonCount;
+        prevSeasonNumber = season_number - 1;
+      }
     }
   }
 
-  let nextEpisodeNumber: number = 0;
-  if (episodeCount && episodeDetails && episodeDetails.episode_number) {
-    nextEpisodeNumber = episodeDetails.episode_number + 1;
-    if (nextEpisodeNumber > episodeCount) {
-      nextEpisodeNumber = episodeDetails.episode_number + 1;
-    }
-  }
-
-  console.log(episodeCount);
   return (
     <Box>
+      <Link
+        href={{
+          pathname: `/shows/${showId}/${
+            typeof showName === "string" ? encodeURIComponent(showName) : ""
+          }/seasons`,
+        }}
+      >
+        Back to Seasons
+      </Link>
       <Flex bg="dark.6" justify="space-between" py="xl" px="md">
-        <Text>Prev Episode</Text>
-        <Link
-          href={`/shows/${showId}/season/${seasonNumber}/episode/${nextEpisodeNumber}`}
-        >
-          Next Episode
-        </Link>
+        {prevSeasonNumber && prevEpisodeNumber ? (
+          <Box>
+            <Link
+              href={{
+                pathname: `/shows/${showIdNumber}/${
+                  typeof showName === "string"
+                    ? encodeURIComponent(showName)
+                    : ""
+                }/season/${prevSeasonNumber}/episode/${prevEpisodeNumber}`,
+              }}
+            >
+              Prev Episode
+            </Link>
+            <Text>
+              s{prevSeasonNumber}e{prevEpisodeNumber}
+            </Text>
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
+        {nextSeasonNumber && nextEpisodeNumber ? (
+          <Box>
+            <Link
+              href={{
+                pathname: `/shows/${showIdNumber}/${
+                  typeof showName === "string"
+                    ? encodeURIComponent(showName)
+                    : ""
+                }/season/${nextSeasonNumber}/episode/${nextEpisodeNumber}`,
+              }}
+            >
+              Next Episode
+            </Link>
+            <Text>
+              s{nextSeasonNumber}e{nextEpisodeNumber}
+            </Text>
+          </Box>
+        ) : null}
       </Flex>
       {episodeDetails ? (
         <>

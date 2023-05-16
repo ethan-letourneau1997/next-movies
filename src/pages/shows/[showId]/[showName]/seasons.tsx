@@ -7,13 +7,16 @@ import { SeasonType } from "../../../../../types";
 import { useRouter } from "next/router";
 
 export default function Seasons({}) {
+  //* Get query params
   const router = useRouter();
-  const { slug } = router.query;
-
   const { showId, showName } = router.query;
 
+  //* set state for seasons
   const [seasons, setSeasons] = useState<SeasonType[]>([]);
-  const [currentSeason, setCurrentSeason] = useState(1); // initialize with first season
+
+  //* Set current season to the first season
+  const [currentSeason, setCurrentSeason] = useState(1);
+
   const apiKey = "0fd7a8764e6522629a3b7e78c452c348";
   useEffect(() => {
     fetch(
@@ -21,8 +24,11 @@ export default function Seasons({}) {
     )
       .then((response) => response.json())
       .then((data) => {
-        setSeasons(data.seasons.reverse()); // reverse the order of seasons array
-        setCurrentSeason(data.seasons[0].season_number); // set current season to the first season
+        const filteredSeasons = data.seasons.filter(
+          (season: SeasonType) => season.season_number !== 0
+        ); //* Filter out seasons with season_number equal to 0
+        setSeasons(filteredSeasons.reverse()); //* Reverse the order of seasons array
+        setCurrentSeason(filteredSeasons[0].season_number); //* Set current season to the first season
       })
       .catch((error) => console.error(error));
   }, [showId, apiKey]);
@@ -42,10 +48,19 @@ export default function Seasons({}) {
     });
   }
 
-  seasonSelectData.reverse(); // reverse the order of seasonSelectDate array
+  seasonSelectData.reverse(); //* reverse the order of seasonSelectData array
 
   return (
     <div>
+      <Link
+        href={{
+          pathname: `/shows/${showId}/${
+            typeof showName === "string" ? encodeURIComponent(showName) : ""
+          }`,
+        }}
+      >
+        Back to Show
+      </Link>
       <h2>Seasons:</h2>
 
       <Select
