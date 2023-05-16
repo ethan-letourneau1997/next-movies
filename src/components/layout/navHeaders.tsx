@@ -1,22 +1,9 @@
 import { Flex, Menu, Text } from "@mantine/core";
-import React, { PropsWithChildren } from "react";
 
 import Link from "next/link";
-import TmdbSearch from "./search";
+import TmdbSearch from "../search";
 
-const Layout = ({ children }: PropsWithChildren) => {
-  return (
-    <>
-      <Navigation />
-      {children}
-    </>
-  );
-};
-export default Layout;
-
-// components/Navbar.tsx
-
-function Navigation() {
+export default function NavHeader() {
   return (
     <Flex gap="xl" px="xl" mb="xl" mt="md">
       <Link href="/">Home</Link>

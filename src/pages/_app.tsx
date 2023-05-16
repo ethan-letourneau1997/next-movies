@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import Layout from "@/components/layout";
+import Layout from "@/components/layout/layout";
 import { MantineProvider } from "@mantine/core";
 
 export default function App(props: AppProps) {
