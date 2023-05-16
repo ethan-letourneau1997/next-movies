@@ -93,9 +93,13 @@ export const TmdbSearch = () => {
             .map((result) => (
               <Link
                 key={result.id}
-                href={`/${result.media_type == "movie" ? "movies" : "tv"}/${
+                href={`/${result.media_type == "movie" ? "movies" : "shows"}/${
                   result.id
-                }-${result.title ? result.title : result.name}`}
+                }/${
+                  result.title
+                    ? encodeURIComponent(result.title)
+                    : encodeURIComponent(result.name || "")
+                }`}
                 style={{
                   textDecoration: "none",
                   color: "white",

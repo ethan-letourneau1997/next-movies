@@ -35,7 +35,7 @@ export default function People() {
       <Grid>
         {people.map((person) => (
           <Grid.Col span={2} key={person.id}>
-            <Link href={`/people/${person.id}-${person.name}`}>
+            <Link href={`/people/${person.id}/${person.name}`}>
               <AspectRatio ratio={2 / 3}>
                 <Skeleton visible></Skeleton>
                 <Image

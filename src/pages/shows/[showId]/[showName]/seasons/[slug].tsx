@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Season from "@/components/tv/season";
-import { SeasonType } from "../../../../types";
+import { SeasonType } from "../../../../../../types";
 import { useRouter } from "next/router";
 
 export default function Seasons({}) {

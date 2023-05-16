@@ -12,41 +12,34 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import MediaCredits from "@/components/movieDetails.tsx/mediaCredits";
-import { MediaItemType } from "../../../types";
 import MediaSimilar from "@/components/movieDetails.tsx/mediaSimilar";
-import Seasons from "./seasons/[slug]";
-import { TVRoot } from "../../../types";
-import { fetchMediaDetails } from "../api/tmdb";
+import { TVRoot } from "../../../../../types";
+import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {
-  const mediaType = "tv";
   const router = useRouter();
 
-  const path = router.pathname;
-  console.log(path);
-
-  const { slug } = router.query;
-  let str = slug as string;
-  const num = parseInt(str);
+  const { showId, showName } = router.query;
 
   const [mediaDetails, setMediaDetails] = useState<TVRoot | null>(null);
 
   useEffect(() => {
-    if (!slug) {
+    if (!showId) {
       return;
     }
 
     async function fetchDetails() {
       try {
-        const details = await fetchMediaDetails(mediaType, num);
+        const id = showId as string;
+        const details = await fetchMediaDetails("tv", parseInt(id));
         setMediaDetails(details);
       } catch (error) {
         console.error(error);
       }
     }
     fetchDetails();
-  }, [mediaType, num, slug]);
+  }, [showId]);
 
   if (!mediaDetails) {
     return <div>Loading...</div>;
@@ -65,8 +58,14 @@ export default function MediaItem() {
         ></Image>
         <Text my="auto">{mediaDetails.overview}</Text>
       </Flex>
-      <Link href="/tv/seasons/[...slug]" as={`/tv/seasons/${mediaDetails.id}`}>
-        See all episodes and seasons
+      <Link
+        href={{
+          pathname: `/show/${showId}/${
+            typeof showName === "string" ? encodeURIComponent(showName) : ""
+          }/seasons`,
+        }}
+      >
+        See all episode and seasons
       </Link>
 
       <SimpleGrid cols={2} mt="xl">

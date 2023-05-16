@@ -44,10 +44,10 @@ function Navigation() {
 
         <Menu.Dropdown>
           <Menu.Item>
-            <Link href="/tv/popular">Popular</Link>
+            <Link href="/shows/popular">Popular</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link href="/tv/trending">Trending</Link>
+            <Link href="/shows/trending">Trending</Link>
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

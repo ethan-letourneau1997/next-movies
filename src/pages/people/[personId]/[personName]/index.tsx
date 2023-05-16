@@ -7,19 +7,16 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { fetchMediaDetails, fetchPersonDetails } from "../api/tmdb";
+import { MediaItemType, PersonDetails } from "../../../../../types";
 import { useEffect, useState } from "react";
 
-import { MediaItemType } from "../../../types";
-import { PersonDetails } from "../../../types";
+import { fetchPersonDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {
   const mediaType = "person";
   const router = useRouter();
-  const { slug } = router.query;
-  let str = slug as string;
-  const num = parseInt(str);
+  const { personId, personName } = router.query;
 
   const [mediaDetails, setMediaDetails] = useState<PersonDetails | null>(null);
   const [crewDepartments, setCrewDepartments] = useState<
@@ -40,13 +37,14 @@ export default function MediaItem() {
     | "Writing";
 
   useEffect(() => {
-    if (!slug) {
+    if (!personId) {
       return;
     }
 
     async function fetchDetails() {
       try {
-        const details = await fetchPersonDetails(num);
+        const id = personId as string;
+        const details = await fetchPersonDetails(parseInt(id));
         setMediaDetails(details);
 
         if (details.combined_credits) {
@@ -79,7 +77,7 @@ export default function MediaItem() {
       }
     }
     fetchDetails();
-  }, [mediaType, num, slug]);
+  }, [personId]);
 
   if (!mediaDetails) {
     return <div>Loading...</div>;

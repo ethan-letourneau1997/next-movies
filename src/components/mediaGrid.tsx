@@ -34,7 +34,7 @@ export default function MediaGrid(props: {
                   />
                 </AspectRatio>
                 <Link
-                  href={`/${item.title ? "movies" : "tv"}/${item.id}-${
+                  href={`/${item.title ? "movies" : "shows"}/${item.id}/${
                     item.title ? item.title : item.name
                   }`}
                 >

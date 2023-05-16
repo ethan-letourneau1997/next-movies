@@ -1,19 +1,20 @@
 import { Box, Flex, Text, Title } from "@mantine/core";
-import { EpisodeDetails, TVRoot } from "../../../../../types";
+import {
+  EpisodeDetails,
+  SeasonType,
+  TVRoot,
+} from "../../../../../../../../../types";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { SeasonType } from "../../../../../types";
 import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 
 export default function Episode() {
   const router = useRouter();
-  const { slug } = router.query;
+  const { showId, seasonNumber, episodeNumber } = router.query;
 
   // Split slug by "-" separator
-  const [showId, season_number, episodeNumber] =
-    slug?.toString().split("-").map(Number) || [];
 
   const [episodeDetails, setEpisodeDetails] = useState<EpisodeDetails | null>(
     null
@@ -24,7 +25,7 @@ export default function Episode() {
     const getEpisodeDetails = async () => {
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/tv/${showId}/season/${season_number}/episode/${episodeNumber}?api_key=0fd7a8764e6522629a3b7e78c452c348&language=en-US`
+          `https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}/episode/${episodeNumber}?api_key=0fd7a8764e6522629a3b7e78c452c348&language=en-US`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -40,7 +41,7 @@ export default function Episode() {
   }, [showId, episodeNumber]);
 
   useEffect(() => {
-    if (!slug) {
+    if (!showId) {
       return;
     }
 
@@ -68,8 +69,9 @@ export default function Episode() {
     }
   }
 
+  let nextEpisodeNumber: number = 0;
   if (episodeCount && episodeDetails && episodeDetails.episode_number) {
-    var nextEpisodeNumber = episodeDetails.episode_number + 1;
+    nextEpisodeNumber = episodeDetails.episode_number + 1;
     if (nextEpisodeNumber > episodeCount) {
       nextEpisodeNumber = episodeDetails.episode_number + 1;
     }
@@ -81,7 +83,7 @@ export default function Episode() {
       <Flex bg="dark.6" justify="space-between" py="xl" px="md">
         <Text>Prev Episode</Text>
         <Link
-          href={`/shows/${showId}/season/${season_number}/episode/${nextEpisodeNumber}`}
+          href={`/shows/${showId}/season/${seasonNumber}/episode/${nextEpisodeNumber}`}
         >
           Next Episode
         </Link>

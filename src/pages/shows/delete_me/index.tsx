@@ -2,18 +2,15 @@ import { Center, Container, Flex, Image, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import MediaCredits from "@/components/movieDetails.tsx/mediaCredits";
-import { MediaItemType } from "../../../types";
+import { MediaItemType } from "../../../../types";
 import MediaSimilar from "@/components/movieDetails.tsx/mediaSimilar";
-import { fetchMediaDetails } from "../api/tmdb";
+import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {
-  const mediaType = "movie";
   const router = useRouter();
+  const { movieId, movieName } = router.query;
   const { slug } = router.query;
-
-  let str = slug as string;
-  const num = parseInt(str);
 
   const [mediaDetails, setMediaDetails] = useState<MediaItemType | null>(null);
 
@@ -24,14 +21,14 @@ export default function MediaItem() {
 
     async function fetchDetails() {
       try {
-        const details = await fetchMediaDetails(mediaType, num);
+        const details = await fetchMediaDetails("movie", movieId);
         setMediaDetails(details);
       } catch (error) {
         console.error(error);
       }
     }
     fetchDetails();
-  }, [mediaType, num, slug]);
+  }, [movieId]);
 
   if (!mediaDetails) {
     return <div>Loading...</div>;

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { EpisodeDetails } from "../../../types";
 import Link from "next/link";
 import { SeasonType } from "../../../types";
+import { useRouter } from "next/router";
 
 interface SeasonProps {
   showId: number;
@@ -14,6 +15,9 @@ interface SeasonProps {
 export default function Season(props: SeasonProps) {
   const [season, setSeason] = useState<SeasonType | null>(null);
   const apiKey = "0fd7a8764e6522629a3b7e78c452c348";
+
+  const router = useRouter();
+  const { showId, showName } = router.query;
 
   useEffect(() => {
     fetch(
@@ -41,6 +45,19 @@ export default function Season(props: SeasonProps) {
                 href={`episode/${props.showId}-${episode.season_number}-${episode.episode_number}`}
               >
                 {episode.name}
+              </Link>
+              <Link
+                href={{
+                  pathname: `/show/${showId}/${
+                    typeof showName === "string"
+                      ? encodeURIComponent(showName)
+                      : ""
+                  }/season/${episode.season_number}/episode/${
+                    episode.episode_number
+                  }`,
+                }}
+              >
+                See all episode and seasons
               </Link>
             </Box>
           ))}
