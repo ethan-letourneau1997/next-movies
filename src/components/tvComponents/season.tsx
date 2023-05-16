@@ -42,13 +42,8 @@ export default function Season(props: SeasonProps) {
           season.episodes.map((episode) => (
             <Box key={episode.id}>
               <Link
-                href={`episode/${props.showId}-${episode.season_number}-${episode.episode_number}`}
-              >
-                {episode.name}
-              </Link>
-              <Link
                 href={{
-                  pathname: `/show/${showId}/${
+                  pathname: `/shows/${showId}/${
                     typeof showName === "string"
                       ? encodeURIComponent(showName)
                       : ""
@@ -57,7 +52,7 @@ export default function Season(props: SeasonProps) {
                   }`,
                 }}
               >
-                See all episode and seasons
+                {episode.name}
               </Link>
             </Box>
           ))}

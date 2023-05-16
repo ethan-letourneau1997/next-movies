@@ -97,7 +97,6 @@ export default function Episode() {
 
           <Title order={1}>{episodeDetails.name}</Title>
           <Box>
-            <p></p>
             <p>{episodeDetails.overview}</p>
           </Box>
         </>

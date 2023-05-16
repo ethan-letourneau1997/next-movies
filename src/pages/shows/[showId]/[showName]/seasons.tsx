@@ -2,18 +2,16 @@ import { Box, Select, SelectItem } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
-import Season from "@/components/tvComponents/season";
-import { SeasonType } from "../../../../../../types";
+import Season from "../../../../components/tvComponents/season";
+import { SeasonType } from "../../../../../types";
 import { useRouter } from "next/router";
 
 export default function Seasons({}) {
   const router = useRouter();
   const { slug } = router.query;
 
-  const path = router.pathname;
-  console.log(path);
+  const { showId, showName } = router.query;
 
-  let showId = slug as string;
   const [seasons, setSeasons] = useState<SeasonType[]>([]);
   const [currentSeason, setCurrentSeason] = useState(1); // initialize with first season
   const apiKey = "0fd7a8764e6522629a3b7e78c452c348";

@@ -60,7 +60,7 @@ export default function MediaItem() {
       </Flex>
       <Link
         href={{
-          pathname: `/show/${showId}/${
+          pathname: `/shows/${showId}/${
             typeof showName === "string" ? encodeURIComponent(showName) : ""
           }/seasons`,
         }}

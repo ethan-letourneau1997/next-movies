@@ -88,7 +88,7 @@ export const TmdbSearch = () => {
         />
         <Stack mah={500} pt="xs">
           {results
-            .slice(0, 15)
+            .slice(0, 10)
             .filter((result) => result.poster_path || result.profile_path)
             .map((result) => (
               <Link
@@ -119,8 +119,8 @@ export const TmdbSearch = () => {
                     <Image
                       src={
                         result.media_type == "person"
-                          ? `https://image.tmdb.org/t/p/w500${result.profile_path}`
-                          : `https://image.tmdb.org/t/p/w500${result.poster_path}`
+                          ? `https://image.tmdb.org/t/p/w154${result.profile_path}`
+                          : `https://image.tmdb.org/t/p/w154${result.poster_path}`
                       }
                       withPlaceholder
                       alt={result.title}
