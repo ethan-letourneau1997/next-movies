@@ -2,7 +2,7 @@ export function dateToString(date: Date | null): string {
   if (!date) {
     return "";
   }
-  console.log(date);
+
   const dateString = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "2-digit",

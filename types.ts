@@ -249,15 +249,16 @@ export interface Seasons {
 export interface SeasonType {
   _id: string;
   air_date?: string;
-  episodes?: Episode[];
+  episodes?: EpisodeDetails[];
   name?: string;
   overview?: string;
   id: number;
   poster_path?: string;
   season_number?: number;
+  episode_count?: number;
 }
 
-export interface Episode {
+export interface EpisodeDetails {
   air_date?: string;
   episode_number?: number;
   id: number;

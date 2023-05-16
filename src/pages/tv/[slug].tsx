@@ -22,6 +22,10 @@ import { useRouter } from "next/router";
 export default function MediaItem() {
   const mediaType = "tv";
   const router = useRouter();
+
+  const path = router.pathname;
+  console.log(path);
+
   const { slug } = router.query;
   let str = slug as string;
   const num = parseInt(str);
@@ -48,8 +52,6 @@ export default function MediaItem() {
     return <div>Loading...</div>;
   }
 
-  console.log(mediaDetails);
-
   return (
     <Container>
       <Center>
@@ -63,8 +65,8 @@ export default function MediaItem() {
         ></Image>
         <Text my="auto">{mediaDetails.overview}</Text>
       </Flex>
-      <Link href={`seasons/${mediaDetails.id}`}>
-        See all episode and seasons
+      <Link href="/tv/seasons/[...slug]" as={`/tv/seasons/${mediaDetails.id}`}>
+        See all episodes and seasons
       </Link>
 
       <SimpleGrid cols={2} mt="xl">

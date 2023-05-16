@@ -1,6 +1,8 @@
 import { Box, Text, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
+import { EpisodeDetails } from "../../../types";
+import Link from "next/link";
 import { SeasonType } from "../../../types";
 
 interface SeasonProps {
@@ -28,12 +30,18 @@ export default function Season(props: SeasonProps) {
 
   return (
     <Box>
+      <Link href="#"></Link>
       <Title order={1}>{season.name}</Title>
+
       <Box>
         {season.episodes &&
           season.episodes.map((episode) => (
             <Box key={episode.id}>
-              <Text>{episode.name}</Text>
+              <Link
+                href={`episode/${props.showId}-${episode.season_number}-${episode.episode_number}`}
+              >
+                {episode.name}
+              </Link>
             </Box>
           ))}
       </Box>

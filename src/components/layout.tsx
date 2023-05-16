@@ -20,7 +20,6 @@ function Navigation() {
   return (
     <Flex gap="xl" px="xl" mb="xl" mt="md">
       <Link href="/">Home</Link>
-      <Link href="/about">About</Link>
 
       <Menu trigger="hover" shadow="md">
         <Menu.Target>

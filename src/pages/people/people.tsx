@@ -29,8 +29,6 @@ export default function People() {
       });
   }, []);
 
-  console.log(people);
-
   return (
     <Container size="xl">
       <Title>People</Title>

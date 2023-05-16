@@ -57,8 +57,6 @@ export const TmdbSearch = () => {
     setResults(updatedResults);
   };
 
-  console.log(results);
-
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
 

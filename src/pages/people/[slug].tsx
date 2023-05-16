@@ -98,9 +98,6 @@ export default function MediaItem() {
     });
   }
 
-  console.log(mediaDetails);
-  console.log(crewDepartments);
-
   return (
     <Container>
       <Center>

@@ -64,7 +64,7 @@ export async function fetchMediaDetails(
 ): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits,similar`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits,similar,seasons`
   );
 
   if (!response.ok) {
@@ -72,16 +72,6 @@ export async function fetchMediaDetails(
   }
   const data = await response.json();
   return data;
-  // {
-  //   id: data.id,
-  //   title: mediaType === "movie" ? data.title : data.name,
-  //   overview: data.overview,
-  //   poster_path: data.poster_path,
-
-  //   release_date: mediaType === "movie" ? data.release_date : undefined,
-  //   first_air_date: mediaType === "tv" ? data.first_air_date : undefined,
-  //   vote_average: data.vote_average,
-  // };
 }
 
 // * Fetches person items from TMDB API

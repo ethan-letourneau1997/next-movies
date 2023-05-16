@@ -10,6 +10,9 @@ export default function Seasons({}) {
   const router = useRouter();
   const { slug } = router.query;
 
+  const path = router.pathname;
+  console.log(path);
+
   let showId = slug as string;
   const [seasons, setSeasons] = useState<SeasonType[]>([]);
   const [currentSeason, setCurrentSeason] = useState(1); // initialize with first season
@@ -36,7 +39,7 @@ export default function Seasons({}) {
     seasonSelectData = seasons.map((season) => {
       return {
         value: season.season_number?.toString() ?? "0",
-        label: `Season ${season.season_number ?? "unknown"}: ${season.name}`,
+        label: `${season.name} - ${season.episode_count}`,
       };
     });
   }

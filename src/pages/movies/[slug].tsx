@@ -37,8 +37,6 @@ export default function MediaItem() {
     return <div>Loading...</div>;
   }
 
-  console.log(mediaDetails.similar);
-
   return (
     <Container>
       <Center>
