@@ -1,7 +1,17 @@
-import { AspectRatio, Box, Flex, Image, Text } from "@mantine/core";
+import {
+  AspectRatio,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Image,
+  Modal,
+  Text,
+} from "@mantine/core";
 import React, { ChangeEvent, useState } from "react";
 
 import { MediaItemType } from "../../types";
+import { useDisclosure } from "@mantine/hooks";
 
 interface SearchResult extends MediaItemType {
   title: string;
@@ -26,36 +36,43 @@ const Autocomplete = () => {
       console.error("Error fetching data:", error);
     }
   };
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={query}
-        onChange={handleInputChange}
-      />
-      <Box>
-        {results.map(
-          (item) =>
-            (item.poster_path || item.profile_path) && (
-              <Flex key={item.id}>
-                <Text>{item.title || item.name}</Text>
-                <AspectRatio ratio={2 / 3} w={100}>
-                  <Image
-                    placeholder="blur"
-                    src={`https://image.tmdb.org/t/p/w500${
-                      item.media_type === "person"
-                        ? item.profile_path
-                        : item.poster_path
-                    }`}
-                    alt={item.title}
-                  />
-                </AspectRatio>
-              </Flex>
-            )
-        )}
-      </Box>
+      <Modal opened={opened} onClose={close} title="Authentication">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={handleInputChange}
+        />
+        <Box>
+          {results.map(
+            (item) =>
+              (item.poster_path || item.profile_path) && (
+                <Flex key={item.id}>
+                  <Text>{item.title || item.name}</Text>
+                  <AspectRatio ratio={2 / 3} w={100}>
+                    <Image
+                      placeholder="blur"
+                      src={`https://image.tmdb.org/t/p/w500${
+                        item.media_type === "person"
+                          ? item.profile_path
+                          : item.poster_path
+                      }`}
+                      alt={item.title}
+                    />
+                  </AspectRatio>
+                </Flex>
+              )
+          )}
+        </Box>
+      </Modal>
+
+      <Group position="center">
+        <Button onClick={open}>Open modal</Button>
+      </Group>
     </div>
   );
 };
