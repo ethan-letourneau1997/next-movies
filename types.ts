@@ -30,6 +30,7 @@ export interface MediaItemType {
 }
 
 export interface Credits {
+  slice: any;
   cast: Cast[];
   crew: Crew[];
   id: number;

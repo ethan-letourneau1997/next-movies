@@ -16,10 +16,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {/* <Center>
+        <Center>
           <Title>Home</Title>
-        </Center> */}
-        <Autocomplete />
+        </Center>
       </main>
     </>
   );
