@@ -20,7 +20,7 @@ export default function MediaTop100(props: { mediaType: string }) {
     };
 
     fetchAllMedia();
-  }, [media]);
+  }, [media, props.mediaType]);
   return (
     <div>
       <h1>Top 100 {props.mediaType == "movie" ? "Movies" : "Shows"}</h1>

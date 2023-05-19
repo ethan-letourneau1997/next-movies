@@ -1,10 +1,10 @@
 import {
   AspectRatio,
   Box,
-  Container,
   Image,
   SimpleGrid,
   Skeleton,
+  Text,
   Title,
 } from "@mantine/core";
 

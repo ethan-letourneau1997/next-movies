@@ -53,7 +53,12 @@ const Autocomplete = () => {
 
   return (
     <div>
-      <Modal opened={opened} onClose={close} title="Authentication">
+      <Modal
+        zIndex={600}
+        opened={opened}
+        onClose={close}
+        title="Authentication"
+      >
         <input
           type="text"
           placeholder="Search..."
@@ -140,109 +145,12 @@ const Autocomplete = () => {
         </Box>
       </Modal>
       <Group position="center">
-        <Button onClick={open}>Open modal</Button>
+        <Button radius="md" fw={400} bg="dark.5" pr={100} onClick={open}>
+          Search
+        </Button>
       </Group>
     </div>
   );
 };
 
 export default Autocomplete;
-
-// import {
-//   AspectRatio,
-//   Box,
-//   Button,
-//   Flex,
-//   Group,
-//   Image,
-//   Modal,
-//   Text,
-// } from "@mantine/core";
-// import React, { ChangeEvent, useState } from "react";
-
-// import { MediaItemType } from "../../types";
-// import { useDisclosure } from "@mantine/hooks";
-
-// interface SearchResult extends MediaItemType {
-//   title: string;
-//   name: string;
-// }
-
-// const Autocomplete = () => {
-//   const [query, setQuery] = useState("");
-//   const [results, setResults] = useState<SearchResult[]>([]);
-
-//   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-//     const value = e.target.value;
-//     setQuery(value);
-//     console.log(value);
-
-//     try {
-//       const response = await fetch(
-//         `https://api.themoviedb.org/3/search/multi?api_key=0fd7a8764e6522629a3b7e78c452c348&query=${value}`
-//       );
-//       const data = await response.json();
-//       setResults(data.results || []);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//     }
-//   };
-//   const [opened, { open, close }] = useDisclosure(false);
-
-//   return (
-//     <div>
-//       <Modal opened={opened} onClose={close} title="Authentication">
-//         <input
-//           type="text"
-//           placeholder="Search..."
-//           value={query}
-//           onChange={handleInputChange}
-//         />
-//         <Box>
-//           {results.map(
-//             (item) =>
-//               (item.poster_path || item.profile_path) && (
-//                 <Flex key={item.id}>
-//                   <AspectRatio ratio={2 / 3} w={50}>
-//                     <Image
-//                       placeholder="blur"
-//                       src={`https://image.tmdb.org/t/p/w500${
-//                         item.media_type === "person"
-//                           ? item.profile_path
-//                           : item.poster_path
-//                       }`}
-//                       alt={item.title}
-//                     />
-//                   </AspectRatio>
-//                   <Box>
-//                     <Text>{item.title || item.name}</Text>
-//                     {item.media_type === "person" &&
-//                       item.known_for &&
-//                       item.known_for.length > 1 && (
-//                         <Group spacing={0}>
-//                           <Text fz="sm">{item.known_for[1].title},</Text>&nbsp;
-//                           <Text fz="sm">{item.known_for[2].title}</Text>
-//                         </Group>
-//                         // <Text>
-//                         //   {item.known_for.slice(0, 2).map((knownItem) => (
-//                         //     <Text fz="sm" span key={knownItem.id}>
-//                         //       {knownItem.title}
-//                         //     </Text>
-//                         //   ))}
-//                         // </Text>
-//                       )}
-//                   </Box>
-//                 </Flex>
-//               )
-//           )}
-//         </Box>
-//       </Modal>
-
-//       <Group position="center">
-//         <Button onClick={open}>Open modal</Button>
-//       </Group>
-//     </div>
-//   );
-// };
-
-// export default Autocomplete;

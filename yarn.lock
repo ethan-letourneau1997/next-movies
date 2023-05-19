@@ -84,6 +84,18 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.9.1.tgz#4ffb0055f7ef676ebc3a5a91fb621393294e2f43"
   integrity sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==
 
+"@emotion/is-prop-valid@^0.8.2":
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
+  integrity sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==
+  dependencies:
+    "@emotion/memoize" "0.7.4"
+
+"@emotion/memoize@0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.4.tgz#19bf0f5af19149111c40d98bb0cf82119f5d9eeb"
+  integrity sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==
+
 "@emotion/memoize@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.8.1.tgz#c1ddb040429c6d21d38cc945fe75c818cfb68e17"
@@ -227,13 +239,6 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
-
-"@mantine/carousel@^6.0.10":
-  version "6.0.10"
-  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.10.tgz#9bc8346601a1ea9c775afa19ceed5046696cd5d3"
-  integrity sha512-zYYNnGhsU8vXM37fyDg6jFmmPviE/yK5LfEn40VdAn0cLalELRrrgEvn4wp1u6N9rikp5TlHL6szH0zfJunomA==
-  dependencies:
-    "@mantine/utils" "6.0.10"
 
 "@mantine/core@^6.0.10":
   version "6.0.10"
@@ -1048,24 +1053,6 @@ duplexer2@^0.1.2:
   dependencies:
     readable-stream "^2.0.2"
 
-embla-carousel-react@^8.0.0-rc03:
-  version "8.0.0-rc03"
-  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.0.0-rc03.tgz#92a5388fe9364974a9eafe0fb9153b88a6457368"
-  integrity sha512-PxxBdAUlUgPXqeoO7JRuG2l/axXBzSxjz6eYRw3ifzGW0maIBWkdVB5lLC8JSFmCDXI8R3ZaQuL5d7KFvJOkBw==
-  dependencies:
-    embla-carousel "8.0.0-rc03"
-    embla-carousel-reactive-utils "8.0.0-rc03"
-
-embla-carousel-reactive-utils@8.0.0-rc03:
-  version "8.0.0-rc03"
-  resolved "https://registry.yarnpkg.com/embla-carousel-reactive-utils/-/embla-carousel-reactive-utils-8.0.0-rc03.tgz#78dc390965d292ac1d080036435701e49064ffe4"
-  integrity sha512-m2ZaxmG0MBs9nFsA3vEz0ZUNiwJaoJM8f//ENe8ODM/rEIiHkSQ1fN90k3k2NX9JemcllYGqz/bmE5cMYGXjJQ==
-
-embla-carousel@8.0.0-rc03:
-  version "8.0.0-rc03"
-  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-8.0.0-rc03.tgz#fadbea5a699a1a791f3ba1b424f2ac0ca170c622"
-  integrity sha512-2goVwmTYZdGFcRejbYJlaC/iWDPv/VAsASE60uLQYLSKpuQRTxq/huu548OozLsH/2uSelVszvmzfinZnnk/iw==
-
 emoji-regex@^9.2.2:
   version "9.2.2"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
@@ -1501,6 +1488,22 @@ for-each@^0.3.3:
   integrity sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==
   dependencies:
     is-callable "^1.1.3"
+
+framer-motion-ticker@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/framer-motion-ticker/-/framer-motion-ticker-1.0.19.tgz#7fc2904e625ffc1ebe209b5ff1592bcb648ab150"
+  integrity sha512-7c0DaD3rc36TsTEysT3R0bQlChqJuYydbPFgAJDMHVrZrsw+h7oWU3y32ErK8Nm5/LT1TdQYGymL1+btwwUIcw==
+  dependencies:
+    framer-motion "^10.9.1"
+
+framer-motion@^10.9.1:
+  version "10.12.12"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-10.12.12.tgz#24c3620520f225e446972c42cad1c94d6ce70bbc"
+  integrity sha512-DDCqp60U6hR7aUrXj/BXc/t0Sd/U4ep6w/NZQkw898K+u7s+Vv/P8yxq4WTNA86kU9QCsqOgn1Qhz2DpYK0Oag==
+  dependencies:
+    tslib "^2.4.0"
+  optionalDependencies:
+    "@emotion/is-prop-valid" "^0.8.2"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -2455,6 +2458,11 @@ react-dom@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-fast-marquee@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/react-fast-marquee/-/react-fast-marquee-1.5.2.tgz#6cc037363c6b7cb65a16f19ea00500e164196977"
+  integrity sha512-gb66X3crBlOdaoY9u6nawsXnU3v7s0UC0PKy9ApuAzE/F/pMWuvnUrQqoRseOyoXSo+DzMdjQC8Mcs4lftzYxA==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
