@@ -10,7 +10,6 @@ import {
   Drawer,
   Group,
   Header,
-  Image,
   Menu,
   ScrollArea,
   Text,
@@ -29,12 +28,12 @@ import {
   IconFingerprint,
   IconNotification,
 } from "@tabler/icons-react";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 import Autocomplete from "../autocomplete";
 import Link from "next/link";
 import Logo from "../../../public/cinegraph-logo.png";
 import styles from "@/styles/Home.module.css";
-import { useDisclosure } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -144,6 +143,9 @@ export default function NavHeader() {
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { classes, theme } = useStyles();
 
+  // responsive styles
+  const desktop = useMediaQuery("(min-width: 768px)");
+
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
       <Group noWrap align="flex-start">
@@ -163,65 +165,76 @@ export default function NavHeader() {
   ));
 
   return (
-    <Box pb="xl" pt="sm">
-      <Container fluid>
-        <Header
-          px="xl"
-          height={60}
-          bg="brand.5"
-          sx={{
-            borderBottom: "none",
-          }}
-        >
-          <Group position="apart" sx={{ height: "100%" }}>
-            <Title
-              c="brand.4"
-              size="h2"
-              sx={{
-                letterSpacing: "2px",
-              }}
-            >
-              Cinegraph
-            </Title>
-            <Group
-              sx={{ height: "100%" }}
-              spacing={0}
-              className={classes.hiddenMobile}
-            >
-              <Link href="/" className={classes.link}>
-                Home
-              </Link>
-              <Menu trigger="hover" shadow="md" zIndex={800}>
-                <Menu.Target>
-                  <Text className={classes.link}>Shows</Text>
-                </Menu.Target>
-                <Menu.Dropdown classNames={styles.dropdown}>
-                  <Menu.Item>
-                    <Link href="/shows/popular">Popular</Link>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Link href="/shows/trending">Trending</Link>
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-              <a href="#" className={classes.link}>
-                Learn
-              </a>
-              <a href="#" className={classes.link}>
-                Academy
-              </a>
-            </Group>
-            <Group className={classes.hiddenMobile}>
-              <Autocomplete />
-            </Group>
-            <Burger
-              opened={drawerOpened}
-              onClick={toggleDrawer}
-              className={classes.hiddenDesktop}
-            />
+    <Box>
+      <Header
+        py="sm"
+        px={desktop ? "xl" : "md"}
+        height={desktop ? "fit-content" : "fit-content"}
+        bg={desktop ? "brand.9" : "brand.8"}
+        sx={{
+          borderBottom: "none",
+        }}
+      >
+        <Group position="apart" sx={{ height: "100%" }}>
+          <Title
+            c="accent.0"
+            size={desktop ? "h2" : "h3"}
+            fw={400}
+            sx={{
+              letterSpacing: "2px",
+            }}
+          >
+            Cinegraph.
+          </Title>
+
+          <Group
+            sx={{ height: "100%" }}
+            spacing={0}
+            className={classes.hiddenMobile}
+          >
+            <Link href="/" className={classes.link}>
+              Home
+            </Link>
+            <Menu trigger="hover" shadow="md" zIndex={800}>
+              <Menu.Target>
+                <Text className={classes.link}>Shows</Text>
+              </Menu.Target>
+              <Menu.Dropdown classNames={styles.dropdown}>
+                <Menu.Item>
+                  <Link href="/shows/popular">Popular</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link href="/shows/trending">Trending</Link>
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+            <a href="#" className={classes.link}>
+              Learn
+            </a>
+            <a href="#" className={classes.link}>
+              Academy
+            </a>
           </Group>
-        </Header>
-      </Container>
+          <Group className={classes.hiddenMobile}>
+            <Autocomplete />
+          </Group>
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            className={classes.hiddenDesktop}
+          />
+        </Group>
+      </Header>
+      <Divider
+        mb={30}
+        mt="sm"
+        color="rgba(255,255,255,.1)"
+        className={classes.hiddenMobile}
+      />
+      {/* <Divider
+          color="rgba(255,255,255,.1)"
+          className={classes.hiddenDesktop}
+        /> */}
 
       <Drawer
         opened={drawerOpened}

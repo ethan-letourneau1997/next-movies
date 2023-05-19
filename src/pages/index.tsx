@@ -1,33 +1,11 @@
-import {
-  Anchor,
-  BackgroundImage,
-  Badge,
-  Box,
-  Container,
-  Flex,
-  Grid,
-  Image,
-  Overlay,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import React, { use, useEffect, useState } from "react";
-import {
-  fetchNowPlaying,
-  fetchTopMovies,
-  fetchTopTV,
-  fetchTrendingItems,
-  fetchUpcomingMovies,
-} from "./api/homeApi";
+import { Anchor, Box, Image, Skeleton, Title } from "@mantine/core";
+import React, { useEffect, useState } from "react";
 
-import { AspectRatio } from "@mantine/core";
 import HomeGrid from "@/components/home/homeGrid";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";
-import styles from "@/styles/Home.module.css";
+import { fetchTrendingItems } from "./api/homeApi";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
@@ -44,7 +22,6 @@ export default function Home() {
     <Box>
       <HomeGrid />
       <Box
-        mt="xl"
         sx={{
           height: "fit-content",
         }}

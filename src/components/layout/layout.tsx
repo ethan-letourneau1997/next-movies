@@ -1,6 +1,6 @@
+import { Box, Divider } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 
-import { Box } from "@mantine/core";
 import NavHeader from "./navHeaders";
 
 const Layout = ({ children }: PropsWithChildren) => {
@@ -13,5 +13,3 @@ const Layout = ({ children }: PropsWithChildren) => {
   );
 };
 export default Layout;
-
-// components/Navbar.tsx

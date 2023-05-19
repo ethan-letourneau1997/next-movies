@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AspectRatio,
   BackgroundImage,
   Badge,
@@ -23,6 +24,7 @@ import { useEffect, useState } from "react";
 
 import Home from "@/pages";
 import HomeCard from "./homeCard";
+import Link from "next/link";
 import { MediaItemType } from "../../../types";
 import { get } from "http";
 import styles from "@/styles/Home.module.css";
@@ -109,17 +111,29 @@ export default function HomeGrid() {
               <Grid.Col span={6} h={225}>
                 {" "}
                 {topMovies && topMovies.length > 0 && (
-                  <HomeCard
-                    mediaItem={topMovies[0]}
-                    title="Top Movies"
-                    releaseDate
-                  />
+                  <Anchor
+                    href="/movies/top100"
+                    underline={false}
+                    component={Link}
+                  >
+                    <HomeCard
+                      mediaItem={topMovies[0]}
+                      title="Top Movies"
+                      releaseDate
+                    />
+                  </Anchor>
                 )}
               </Grid.Col>
               <Grid.Col span={6} h={225}>
                 {" "}
                 {topTV && topTV.length > 0 && (
-                  <HomeCard mediaItem={topTV[0]} title="Top TV" releaseDate />
+                  <Anchor
+                    href="/shows/top100"
+                    underline={false}
+                    component={Link}
+                  >
+                    <HomeCard mediaItem={topTV[0]} title="Top TV" releaseDate />
+                  </Anchor>
                 )}
               </Grid.Col>
             </Grid>
@@ -138,7 +152,7 @@ export default function HomeGrid() {
                   justify="space-between"
                 >
                   <Box p="xs">
-                    <Badge size="lg" c="brand.4">
+                    <Badge size="lg" c="accent.0">
                       #1 IN TRENDING
                     </Badge>
                   </Box>

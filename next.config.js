@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
+  images: {
+    domains: ["image.tmdb.org"],
+  },
 };
 
 module.exports = nextConfig;

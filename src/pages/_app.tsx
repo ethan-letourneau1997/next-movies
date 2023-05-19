@@ -1,7 +1,6 @@
-import { Inter, Roboto } from "next/font/google";
-
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { Inter } from "next/font/google";
 import Layout from "@/components/layout/layout";
 import { MantineProvider } from "@mantine/core";
 
@@ -33,17 +32,29 @@ export default function App(props: AppProps) {
               ...theme.fn.fontStyles(),
               backgroundColor:
                 theme.colorScheme === "dark"
-                  ? theme.colors.brand[5]
+                  ? theme.colors.brand[9]
                   : theme.white,
               color:
                 theme.colorScheme === "dark"
-                  ? theme.colors.gray[4]
+                  ? theme.colors.brand[1]
                   : theme.black,
               lineHeight: theme.lineHeight,
             },
           }),
           colors: {
-            brand: ["#FFFFFF", "#313440", "#222733", "#151718", "#FED644", "#171217", "#040615"],
+            brand: [
+              "#e5e4e5",
+              "#cbc9cb",
+              "#b1afb1",
+              "#999699",
+              "#817d81",
+              "#6a666a",
+              "#534f53",
+              "#3e393e",
+              "#2a252a",
+              "#171217",
+            ],
+            accent: ["#ffd452"],
           },
 
           primaryColor: "brand",
