@@ -1,6 +1,7 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  lastAirDate: string;
   runtimeOrEpisodeLength: string;
   certification: string;
   biography?: string;

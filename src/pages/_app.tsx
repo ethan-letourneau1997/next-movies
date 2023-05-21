@@ -36,7 +36,7 @@ export default function App(props: AppProps) {
                   : theme.white,
               color:
                 theme.colorScheme === "dark"
-                  ? theme.colors.brand[1]
+                  ? theme.colors.gray[4]
                   : theme.black,
               lineHeight: theme.lineHeight,
             },
@@ -54,7 +54,7 @@ export default function App(props: AppProps) {
               "#2a252a",
               "#171217",
             ],
-            accent: ["#ffd452"],
+            accent: ["#FFCA05"],
           },
 
           primaryColor: "brand",

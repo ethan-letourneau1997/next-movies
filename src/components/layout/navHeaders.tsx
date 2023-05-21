@@ -3,37 +3,32 @@ import {
   Box,
   Burger,
   Button,
-  Center,
   Collapse,
-  Container,
   Divider,
   Drawer,
+  Flex,
   Group,
   Header,
   Menu,
+  NavLink,
   ScrollArea,
   Text,
-  ThemeIcon,
   Title,
   UnstyledButton,
   createStyles,
   rem,
 } from "@mantine/core";
-import {
-  IconBook,
-  IconChartPie3,
-  IconChevronDown,
-  IconCode,
-  IconCoin,
-  IconFingerprint,
-  IconNotification,
-} from "@tabler/icons-react";
+import { IconChevronDown, IconFingerprint } from "@tabler/icons-react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 import Autocomplete from "../autocomplete";
 import Link from "next/link";
-import Logo from "../../../public/cinegraph-logo.png";
+import { TbMovie } from "react-icons/tb";
 import styles from "@/styles/Home.module.css";
+
+// import Autocomplete from "../autocomplete";
+// import Link from "next/link";
+// import TmdbSearch from "../search";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -52,6 +47,7 @@ const useStyles = createStyles((theme) => ({
       display: "flex",
       alignItems: "center",
       width: "100%",
+      fontSize: rem(16),
     },
 
     ...theme.fn.hover({
@@ -104,39 +100,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const mockdata = [
-  {
-    icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
-  },
-  {
-    icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
-  },
-  {
-    icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
-  },
-];
-
 export default function NavHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -146,23 +109,17 @@ export default function NavHeader() {
   // responsive styles
   const desktop = useMediaQuery("(min-width: 768px)");
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group noWrap align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon size={rem(22)} color={theme.fn.primaryColor()} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" color="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
+  <UnstyledButton className={classes.subLink}>
+    <Group noWrap align="flex-start">
+      <div>
+        <Text size="sm" fw={500}>
+          Popular
+        </Text>
+      </div>
+    </Group>
+  </UnstyledButton>;
+
+  const [openedMovies, { toggle }] = useDisclosure(false);
 
   return (
     <Box>
@@ -206,14 +163,33 @@ export default function NavHeader() {
                 <Menu.Item>
                   <Link href="/shows/trending">Trending</Link>
                 </Menu.Item>
+                <Menu.Item>
+                  <Link href="/shows/top100">Top 100</Link>
+                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
+            <Menu trigger="hover" shadow="md" zIndex={800}>
+              <Menu.Target>
+                <Text className={classes.link}>Movies</Text>
+              </Menu.Target>
+              <Menu.Dropdown classNames={styles.dropdown}>
+                <Menu.Item>
+                  <Link href="/movies/popular">Popular</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link href="/movies/trending">Trending</Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link href="/movies/top100">Top 100</Link>
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+            <Link href="/" className={classes.link}>
+              People
+            </Link>
+            <Link href="/" className={classes.link}>
+              Explore
+            </Link>
           </Group>
           <Group className={classes.hiddenMobile}>
             <Autocomplete />
@@ -254,21 +230,50 @@ export default function NavHeader() {
           <Anchor href="/" component={Link} className={classes.link}>
             Home
           </Anchor>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.fn.primaryColor()} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
+
+          <Box>
+            <Group position="center" mb={5}>
+              <UnstyledButton className={classes.link} onClick={toggle}>
+                <Flex justify="center" w="100%">
+                  <TbMovie color="#ced4da" size={18} />
+                  <Box component="span" mx={5}>
+                    Movies
+                  </Box>
+                  <IconChevronDown size={16} color="#909296" />
+                </Flex>
+              </UnstyledButton>
+            </Group>
+
+            <Collapse in={openedMovies}>
+              <Flex direction="column" align="center">
+                <Text>Popular</Text>
+                <Text>Trending</Text>
+                <Text>Top 100</Text>
+              </Flex>
+            </Collapse>
+          </Box>
+          <Box w={240}>
+            <NavLink
+              label="First parent link"
+              icon={<TbMovie size="1rem" />}
+              childrenOffset={28}
+            >
+              <NavLink label="Popular" />
+              <NavLink label="Trending" />
+              <NavLink label="Top 100" />
+            </NavLink>
+
+            <NavLink
+              label="Second parent link"
+              icon={<IconFingerprint size="1rem" stroke={1.5} />}
+              childrenOffset={28}
+              defaultOpened
+            >
+              <NavLink label="First child link" />
+              <NavLink label="Second child link" />
+              <NavLink label="Third child link" />
+            </NavLink>
+          </Box>
 
           <Divider
             my="sm"
@@ -286,10 +291,6 @@ export default function NavHeader() {
 }
 
 // import { Flex, Menu, Text } from "@mantine/core";
-
-// import Autocomplete from "../autocomplete";
-// import Link from "next/link";
-// import TmdbSearch from "../search";
 
 // export default function NavHeader() {
 //   return (
