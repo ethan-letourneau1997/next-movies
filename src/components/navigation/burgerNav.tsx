@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 import Autocomplete from "../autocomplete";
 import DesktopHeader from "./desktopHeader";
+import { FaSearch } from "react-icons/fa";
 import MobileCollapse from "./mobileCollapse";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -50,20 +51,20 @@ export default function BurgerNav() {
     <Box bg="hsl(300, 12%, 6%)">
       <Flex justify="space-between" p="sm">
         <Center>
-          <Title size="h3">Cinegraph</Title>
+          <Burger
+            className={classes.hiddenDesktop}
+            opened={opened}
+            onClick={toggle}
+            aria-label={label}
+          />
+          <Title size="h3" ml="xs">
+            Cinegraph
+          </Title>
         </Center>
 
         <DesktopHeader />
 
-        <Group className={classes.hiddenMobile}>
-          <Autocomplete />
-        </Group>
-        <Burger
-          className={classes.hiddenDesktop}
-          opened={opened}
-          onClick={toggle}
-          aria-label={label}
-        />
+        <Autocomplete />
       </Flex>
       <Collapse
         className={classes.hiddenDesktop}
