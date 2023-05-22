@@ -3,7 +3,7 @@ import Discover from "@/components/discover";
 
 export default function Popular() {
   return (
-    <Container size="xl">
+    <Container fluid>
       <Discover type="movie" />
     </Container>
   );

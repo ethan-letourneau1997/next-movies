@@ -1,5 +1,7 @@
 import { LastEpisodeToAir, MediaItemType, PersonDetails } from "../../../types";
 
+import { AutocompleteItem } from "@mantine/core";
+
 // const temp =
 //   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
 
@@ -15,12 +17,25 @@ export async function fetchDiscover(
   bottomScore: string,
   topScore: string,
   runtimeMin: string,
-  runtimeMax: string
+  runtimeMax: string,
+  keywords: string
 ): Promise<MediaItemType[]> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
+  //* extras based on filters
+
+  console.log(keywords);
+
+  let extras = "";
+
+  if (sortBy === "vote_average") {
+    extras = "&vote_count.gte=3000";
+  }
+
+  console.log(sortBy);
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}&sort_by=${sortBy}.desc&with_genres=${genres}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${bottomScore}&vote_average.lte=${topScore}&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&air_date.gte=${startDate}&air_date.lte=${endDate}&with_original_language=en&language=en-US`
+    `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}${extras}&sort_by=${sortBy}.desc&with_genres=${genres}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${bottomScore}&vote_average.lte=${topScore}&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&air_date.gte=${startDate}&air_date.lte=${endDate}&with_keywords=${keywords}&with_original_language=en&language=en-US`
   );
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);

@@ -1,10 +1,17 @@
 import {
+  AutocompleteItem,
   Box,
+  Button,
+  Center,
+  CloseButton,
   Container,
+  Flex,
   Grid,
   MultiSelect,
+  Paper,
   RangeSlider,
   Select,
+  SimpleGrid,
   Text,
 } from "@mantine/core";
 import {
@@ -18,6 +25,7 @@ import { useEffect, useState } from "react";
 
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendarTime } from "@tabler/icons-react";
+import KeywordSearch from "./tvComponents/keywords/keywordSearch";
 import MediaGrid from "@/components/mediaGrid";
 import { MediaItemType } from "../../types";
 import { dateToString } from "../pages/api/format";
@@ -27,9 +35,15 @@ import { useDisclosure } from "@mantine/hooks";
 interface DiscoverTypes {
   items: MediaItemType[];
   sortBy: string;
-  selectedGenres: string[];
+  selectedGenres: (string | AutocompleteItem | null)[];
   startDate: Date | null;
   endDate: Date;
+  keywords: AutocompleteItem[];
+}
+
+interface Keyword {
+  id: number;
+  name: string;
 }
 
 export default function Discover(props: { type: string }) {
@@ -53,7 +67,10 @@ export default function Discover(props: { type: string }) {
     selectedGenres: [],
     startDate: null,
     endDate: new Date(),
+    keywords: [],
   });
+
+  console.log(state);
 
   //*Discover functions
   const handleSortBy = (value: string) => {
@@ -74,6 +91,19 @@ export default function Discover(props: { type: string }) {
       endDate: date !== null ? date : new Date(),
     }));
   };
+
+  const handleKeywordClick = (item: AutocompleteItem): void => {
+    const keyword = item;
+    setState((prevState) => ({
+      ...prevState,
+      keywords: [...prevState.keywords, keyword],
+    }));
+  };
+
+  // const handleKeywordClick = (item: AutocompleteItem): void => {
+  //   const keyword = item;
+  //   setKeywords((prevKeywords) => [...prevKeywords, keyword]);
+  // };
 
   // * --------------- Genres ----------------------
 
@@ -99,6 +129,20 @@ export default function Discover(props: { type: string }) {
 
   let runtimeMax = runtimeValue[1].toString();
 
+  // * --------------- Keyword Search ----------------------
+
+  const keywordString: string = state.keywords
+    .map((keyword) => keyword.id)
+    .join("|");
+
+  // remove a keyword
+  function removeKeyword(id: number): void {
+    setState((prevState) => ({
+      ...prevState,
+      keywords: prevState.keywords.filter((keyword) => keyword.id !== id),
+    }));
+  }
+
   // * API calls
   useEffect(() => {
     fetchDiscover(
@@ -110,7 +154,8 @@ export default function Discover(props: { type: string }) {
       bottomScore,
       topScore,
       runtimeMin,
-      runtimeMax
+      runtimeMax,
+      keywordString
     )
       .then((data) => {
         setMovies(data);
@@ -126,104 +171,151 @@ export default function Discover(props: { type: string }) {
     runtimeMin,
     runtimeMax,
     mediaType,
+    keywordString,
   ]);
 
   // ! Collapse logic
   const [opened, { toggle }] = useDisclosure(false);
 
-  return (
-    <Container size="xl">
-      <Box>
-        <Grid>
-          <Grid.Col xl={3}>
-            <Select
-              label="Sort By"
-              defaultChecked
-              defaultValue="popularity"
-              placeholder="Pick one"
-              onChange={(value: string) => handleSortBy(value)}
-              data={sortByData}
-            />
-          </Grid.Col>
-          <Grid.Col xl={3}>
-            <MultiSelect
-              data={genresData}
-              label="Genres"
-              placeholder="Select genres"
-              value={state.selectedGenres}
-              onChange={handleGenreChange}
-            />
-          </Grid.Col>
+  // ! Autocomplete logic
+  const [keywords, setKeywords] = useState<AutocompleteItem[]>([]);
 
-          <Grid.Col xl={3}>
-            <Text w="25%">From</Text>
-            <DatePickerInput
-              icon={<IconCalendarTime size="1.1rem" stroke={1.5} />}
-              defaultLevel="decade"
-              value={state.startDate}
-              onChange={handleStartDateChange}
-              mx="auto"
-              sx={{
-                flexGrow: 1,
-              }}
+  return (
+    <Flex>
+      <Box
+        miw={250}
+        maw={250}
+        // bg="red"
+      >
+        <Select
+          label="Sort By"
+          defaultChecked
+          defaultValue="popularity"
+          placeholder="Pick one"
+          onChange={(value: string) => handleSortBy(value)}
+          data={sortByData}
+        />
+        <Box mt="xl">
+          {/* Render the KeywordSearch component */}
+          <KeywordSearch
+            handleKeywordClick={handleKeywordClick}
+            keywords={state.keywords}
+          />
+
+          {/* Render the selected keywords */}
+          <Flex mt="sm" gap="sm" wrap="wrap">
+            {state.keywords.map((keyword) => (
+              <Flex
+                py={5}
+                px="xs"
+                bg="brand.7"
+                align="center"
+                key={keyword.id}
+                sx={(theme) => ({
+                  borderRadius: theme.radius.sm,
+                })}
+              >
+                <Text fz="sm"> {keyword.name}</Text>{" "}
+                <CloseButton
+                  pt={3}
+                  size="xs"
+                  onClick={() => removeKeyword(keyword.id)}
+                />
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+      </Box>
+      {/* <Grid>
+        <Grid.Col xl={12}>
+          <Select
+            label="Sort By"
+            defaultChecked
+            defaultValue="popularity"
+            placeholder="Pick one"
+            onChange={(value: string) => handleSortBy(value)}
+            data={sortByData}
+          />
+        </Grid.Col>
+        <Grid.Col xl={12}>
+          <MultiSelect
+            data={genresData}
+            label="Genres"
+            placeholder="Select genres"
+            value={state.selectedGenres}
+            onChange={handleGenreChange}
+          />
+        </Grid.Col>
+        <Grid.Col xl={12}>
+          <Text w="25%">From</Text>
+          <DatePickerInput
+            icon={<IconCalendarTime size="1.1rem" stroke={1.5} />}
+            defaultLevel="decade"
+            value={state.startDate}
+            onChange={handleStartDateChange}
+            mx="auto"
+            sx={{
+              flexGrow: 1,
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col xl={12}>
+          <Text w="25%">To</Text>
+          <DatePickerInput
+            icon={<IconCalendarTime size="1.1rem" stroke={1.5} />}
+            defaultLevel="year"
+            value={state.endDate}
+            onChange={handleEndDateChange}
+            mx="auto"
+            sx={{
+              flexGrow: 1,
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col xl={12}>
+          <Box>
+            <Text fz="sm" ta="center">
+              User Score
+            </Text>
+          </Box>
+          <Box w="90%" mx="auto" mb="xl">
+            <RangeSlider
+              label={null}
+              step={10}
+              min={0}
+              max={100}
+              value={scoreValue}
+              onChange={setScoreValue}
+              onChangeEnd={setScoreValue}
+              marks={scoreMarks}
             />
-          </Grid.Col>
-          <Grid.Col xl={3}>
-            <Text w="25%">To</Text>
-            <DatePickerInput
-              icon={<IconCalendarTime size="1.1rem" stroke={1.5} />}
-              defaultLevel="year"
-              value={state.endDate}
-              onChange={handleEndDateChange}
-              mx="auto"
-              sx={{
-                flexGrow: 1,
-              }}
-            />
-          </Grid.Col>
-          <Grid.Col xl={6}>
+          </Box>
+        </Grid.Col>
+        {isMovie ? (
+          <Grid.Col xl={12}>
             <Box>
               <Text fz="sm" ta="center">
-                User Score
+                Runtime
               </Text>
             </Box>
             <Box w="90%" mx="auto" mb="xl">
               <RangeSlider
                 label={null}
-                step={10}
-                min={0}
-                max={100}
-                value={scoreValue}
-                onChange={setScoreValue}
-                onChangeEnd={setScoreValue}
-                marks={scoreMarks}
+                step={25}
+                min={25}
+                max={400}
+                value={runtimeValue}
+                onChange={setRuntimeValue}
+                marks={runtimeMarks}
               />
             </Box>
           </Grid.Col>
-          {isMovie ? (
-            <Grid.Col xl={6}>
-              <Box>
-                <Text fz="sm" ta="center">
-                  Runtime
-                </Text>
-              </Box>
-              <Box w="90%" mx="auto" mb="xl">
-                <RangeSlider
-                  label={null}
-                  step={25}
-                  min={25}
-                  max={400}
-                  value={runtimeValue}
-                  onChange={setRuntimeValue}
-                  marks={runtimeMarks}
-                />
-              </Box>
-            </Grid.Col>
-          ) : null}
-        </Grid>
-      </Box>
-
-      <MediaGrid items={items} title="Discover" />
-    </Container>
+        ) : null}
+      </Grid> */}
+      <Container fluid size="md">
+        <Box></Box>
+        <MediaGrid items={items} title="Discover" />
+      </Container>
+    </Flex>
   );
 }

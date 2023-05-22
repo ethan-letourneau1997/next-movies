@@ -5,7 +5,6 @@ import {
   Divider,
   Flex,
   Grid,
-  Loader,
   Paper,
   Skeleton,
   Spoiler,

@@ -1,7 +1,17 @@
-import { Anchor, Box, Image, Skeleton, Title } from "@mantine/core";
+import {
+  Anchor,
+  Autocomplete,
+  Box,
+  Container,
+  Image,
+  Skeleton,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 import HomeGrid from "@/components/home/homeGrid";
+import KeywordSearch from "@/components/tvComponents/keywords/keywordSearch";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";
@@ -9,18 +19,25 @@ import { fetchTrendingItems } from "./api/homeApi";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
+interface Keyword {
+  id: number;
+  name: string;
+}
+
 export default function Home() {
   const [trendingItems, setTrendingItems] = useState<MediaItemType[]>([]);
 
-  useEffect(() => {
-    fetchTrendingItems().then((items) => {
-      setTrendingItems(items);
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetchTrendingItems().then((items) => {
+  //     setTrendingItems(items);
+  //   });
+  // }, []);
 
   return (
     <Box>
-      <HomeGrid />
+      {/* <Autocomplete data={results} /> */}
+
+      {/* <HomeGrid />
       <Box
         sx={{
           height: "fit-content",
@@ -66,7 +83,7 @@ export default function Home() {
               ))}
           </Marquee>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
