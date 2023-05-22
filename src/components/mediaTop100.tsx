@@ -264,7 +264,7 @@ export default function MediaTop100(props: { mediaType: string }) {
                         alt="poster"
                         src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
                         fill
-                      ></Image>
+                      />
                     </AspectRatio>
                   </Paper>
                 </Grid.Col>

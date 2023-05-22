@@ -1,12 +1,12 @@
 import {
+  Anchor,
   AspectRatio,
   Box,
   Button,
   Center,
   Divider,
-  Grid,
+  Flex,
   Group,
-  Image,
   Modal,
   ScrollArea,
   Text,
@@ -14,13 +14,15 @@ import {
   createStyles,
 } from "@mantine/core";
 import { Cast, MediaItemType } from "../../types";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useDisclosure, useFocusWithin } from "@mantine/hooks";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
-import { BiSearch } from "react-icons/bi";
 import { FaSearch } from "react-icons/fa";
 import { HiTrendingUp } from "react-icons/hi";
+import Image from "next/image";
+import Link from "next/link";
+import { TbSearch } from "react-icons/tb";
 import { fetchTrending } from "@/pages/api/tmdb";
+import { useDisclosure } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   hiddenMobile: {
@@ -77,7 +79,7 @@ const Autocomplete = () => {
     };
 
     fetchTrendingData();
-  }, [fetchTrending]);
+  }, []);
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -144,27 +146,29 @@ const Autocomplete = () => {
   };
 
   // toggle focus trap when modal is opened
-  useEffect(() => {
-    if (opened) {
-      toggle();
-    }
-  }, [opened]);
 
   return (
     <div>
       <Modal.Root
         opened={opened}
         onClose={handleClose}
-        size="lg"
+        size={700}
         scrollAreaComponent={ScrollArea.Autosize}
       >
         <Modal.Overlay />
         <Modal.Content>
-          <Modal.Header>
-            <Modal.Title w="100%">
+          <Modal.Header
+            p={0}
+            sx={(theme) => ({
+              // borderBottom: "1px solid gray",
+              // borderColor: theme.colors.gray[8],
+            })}
+          >
+            <Modal.Title w="100%" pt={10}>
               <TextInput
+                pb={4}
                 data-autofocus
-                icon={<BiSearch />}
+                icon={<TbSearch />}
                 placeholder="Search Movies, TV Shows, and People"
                 onChange={handleInputChange}
                 value={query}
@@ -180,113 +184,203 @@ const Autocomplete = () => {
                   },
                 })}
               />
+              <Divider mx={16} />
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {isEmpty && (
-              <Box mb={4}>
-                <Center inline>
+          <Modal.Body mt="sm" p={0}>
+            {isEmpty ? (
+              <Box px="md">
+                <Center inline c="gray.3">
                   <HiTrendingUp size={23} />
-                  <Text pl={7} size="xl" fw={500}>
+                  <Text pl={7} size="lg" fw={600}>
                     Trending
                   </Text>
                 </Center>
               </Box>
-            )}
+            ) : null}
+
             <Box>
               {results.map(
-                (item) =>
+                (item, index) =>
                   (item.poster_path || item.profile_path) && (
-                    <Box key={item.id}>
-                      <Grid>
-                        <Grid.Col span="content">
-                          <AspectRatio ratio={2 / 3} w={48}>
-                            <Image
-                              placeholder="blur"
-                              src={`https://image.tmdb.org/t/p/w500${
-                                item.media_type === "person"
-                                  ? item.profile_path
-                                  : item.poster_path
-                              }`}
-                              alt={item.title}
-                            />
-                          </AspectRatio>
-                        </Grid.Col>
-                        <Grid.Col span={10}>
-                          <Text fw={600} truncate>
-                            {item.title || item.name}
-                          </Text>
-                          <Text fz="sm" c="dimmed">
-                            {item.release_date?.substring(0, 4) ||
-                              item.first_air_date?.substring(0, 4)}
-                          </Text>
-                          {item.media_type === "person" && item.known_for && (
-                            <Group spacing={0}>
-                              {item.known_for
-                                .slice(0, 2)
-                                .map((knownItem, index) => (
-                                  <React.Fragment key={knownItem.id}>
-                                    <Text fz="sm" c="dimmed">
-                                      {knownItem.title || knownItem.name}
-                                    </Text>
-                                    {item.known_for &&
-                                      index !==
-                                        item.known_for.slice(0, 2).length -
-                                          1 && (
-                                        <Text fz="sm" c="dimmed">
-                                          ,&nbsp;
-                                        </Text>
-                                      )}
-                                  </React.Fragment>
-                                ))}
-                            </Group>
-                          )}
-                          {item.media_type === "movie" && item.credits && (
-                            <Group spacing={0}>
-                              {item.credits
-                                .slice(0, 2)
-                                .map((credit: Cast, index: number) => (
-                                  <React.Fragment key={credit.id}>
-                                    <Text fz="sm" c="dimmed">
-                                      {credit.name}
-                                    </Text>
+                    <Box
+                      key={item.id}
+                      px="md"
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "hsl(225, 7%, 15%)",
+                        },
+                      }}
+                    >
+                      {item.media_type == "person" ? (
+                        <Anchor
+                          component={Link}
+                          href={`/people/${item.id}/${encodeURIComponent(
+                            item.name || ""
+                          )}`}
+                          underline={false}
+                          onClick={handleClose}
+                        >
+                          <Flex
+                            py="xs"
+                            gap="md"
+                            sx={
+                              index == 0
+                                ? {}
+                                : { borderTop: "1px solid hsl(0, 0%, 40%)" }
+                            }
+                          >
+                            <AspectRatio
+                              ratio={2 / 3}
+                              w={48}
+                              bg="brand.8"
+                              sx={{
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <Image
+                                style={{
+                                  borderRadius: "4px",
+                                }}
+                                alt="poster"
+                                src={`https://image.tmdb.org/t/p/w92${
+                                  item.media_type === "person"
+                                    ? item.profile_path
+                                    : item.poster_path
+                                }`}
+                                fill
+                              />
+                            </AspectRatio>
+                            <Box w={600}>
+                              <Text fw={600} color="brand.0" truncate>
+                                {item.name}
+                              </Text>
 
-                                    {item.credits &&
-                                      index !==
-                                        item.credits.slice(0, 2).length - 1 && (
-                                        <Text fz="sm" c="dimmed">
-                                          ,&nbsp;
-                                        </Text>
-                                      )}
-                                  </React.Fragment>
-                                ))}
-                            </Group>
-                          )}
-                          {item.media_type === "tv" && item.credits && (
-                            <Group spacing={0}>
-                              {item.credits &&
-                                item.credits
-                                  .slice(0, 2)
-                                  .map((credit: Cast, index: number) => (
-                                    <React.Fragment key={credit.id}>
-                                      <Text fz="sm" c="dimmed">
-                                        {credit.name}
-                                      </Text>
-                                      {item.credits &&
-                                        index !==
-                                          item.credits.slice(0, 2).length -
-                                            1 && (
+                              {item.media_type === "person" &&
+                                item.known_for && (
+                                  <Group spacing={0}>
+                                    {item.known_for
+                                      .slice(0, 2)
+                                      .map((knownItem, index) => (
+                                        <React.Fragment key={knownItem.id}>
                                           <Text fz="sm" c="dimmed">
-                                            ,&nbsp;
+                                            {knownItem.title || knownItem.name}
                                           </Text>
-                                        )}
-                                    </React.Fragment>
-                                  ))}
-                            </Group>
-                          )}
-                        </Grid.Col>
-                      </Grid>
-                      <Divider my="xs" />
+                                          {item.known_for &&
+                                            index !==
+                                              item.known_for.slice(0, 2)
+                                                .length -
+                                                1 && (
+                                              <Text fz="sm" c="dimmed">
+                                                ,&nbsp;
+                                              </Text>
+                                            )}
+                                        </React.Fragment>
+                                      ))}
+                                  </Group>
+                                )}
+                            </Box>
+                          </Flex>
+                        </Anchor>
+                      ) : (
+                        <Anchor
+                          component={Link}
+                          href={`/${
+                            item.media_type == "movie" ? "movies" : "shows"
+                          }/${item.id}/${
+                            item.title
+                              ? encodeURIComponent(item.title)
+                              : encodeURIComponent(item.name || "")
+                          }`}
+                          onClick={handleClose}
+                          underline={false}
+                        >
+                          <Flex
+                            py="xs"
+                            gap="md"
+                            sx={
+                              index == 0
+                                ? {}
+                                : { borderTop: "1px solid hsl(0, 0%, 40%)" }
+                            }
+                          >
+                            <AspectRatio
+                              ratio={2 / 3}
+                              w={48}
+                              bg="brand.8"
+                              sx={{
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <Image
+                                style={{
+                                  borderRadius: "4px",
+                                }}
+                                alt="poster"
+                                src={`https://image.tmdb.org/t/p/w92${
+                                  item.media_type === "person"
+                                    ? item.profile_path
+                                    : item.poster_path
+                                }`}
+                                fill
+                              />
+                            </AspectRatio>
+                            <Box w={600}>
+                              <Text fw={600} color="brand.0" truncate>
+                                {item.title || item.name}
+                              </Text>
+                              <Text fz="sm" c="dimmed">
+                                {item.release_date?.substring(0, 4) ||
+                                  item.first_air_date?.substring(0, 4)}
+                              </Text>
+                              {item.media_type === "movie" && item.credits && (
+                                <Group spacing={0}>
+                                  {item.credits
+                                    .slice(0, 2)
+                                    .map((credit: Cast, index: number) => (
+                                      <React.Fragment key={credit.id}>
+                                        <Text fz="sm" c="dimmed">
+                                          {credit.name}
+                                        </Text>
+                                        {item.credits &&
+                                          index !==
+                                            item.credits.slice(0, 2).length -
+                                              1 && (
+                                            <Text fz="sm" c="dimmed">
+                                              ,&nbsp;
+                                            </Text>
+                                          )}
+                                      </React.Fragment>
+                                    ))}
+                                </Group>
+                              )}
+                              {item.media_type === "tv" && item.credits && (
+                                <Group spacing={0}>
+                                  {item.credits &&
+                                    item.credits
+                                      .slice(0, 2)
+                                      .map((credit: Cast, index: number) => (
+                                        <React.Fragment key={credit.id}>
+                                          <Text fz="sm" c="dimmed">
+                                            {credit.name}
+                                          </Text>
+                                          {item.credits &&
+                                            index !==
+                                              item.credits.slice(0, 2).length -
+                                                1 && (
+                                              <Text fz="sm" c="dimmed">
+                                                ,&nbsp;
+                                              </Text>
+                                            )}
+                                        </React.Fragment>
+                                      ))}
+                                </Group>
+                              )}
+                            </Box>
+                          </Flex>
+                        </Anchor>
+                      )}
+                      {/* {index !== results.length - 1 && <Divider my="xs" />} */}
                     </Box>
                   )
               )}
