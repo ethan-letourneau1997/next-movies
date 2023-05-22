@@ -188,7 +188,7 @@ export default function DesktopHeader() {
         >
           <NavLink
             component={Link}
-            href="/movies/top100"
+            href="/shows/top100"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
@@ -201,7 +201,7 @@ export default function DesktopHeader() {
           />
           <NavLink
             component={Link}
-            href="/movies/popular"
+            href="/shows/popular"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
@@ -215,7 +215,7 @@ export default function DesktopHeader() {
 
           <NavLink
             component={Link}
-            href="/movies/trending"
+            href="/shows/trending"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
@@ -229,7 +229,7 @@ export default function DesktopHeader() {
 
           <NavLink
             component={Link}
-            href="/movies/popular"
+            href="/shows/popular"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
