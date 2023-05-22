@@ -150,22 +150,18 @@ const Autocomplete = () => {
   return (
     <div>
       <Modal.Root
+        radius="sm"
         opened={opened}
         onClose={handleClose}
         size={700}
-        scrollAreaComponent={ScrollArea.Autosize}
+        // scrollAreaComponent={ScrollArea.Autosize}
       >
-        <Modal.Overlay />
+        <Modal.Overlay blur={3} />
         <Modal.Content>
-          <Modal.Header
-            p={0}
-            sx={(theme) => ({
-              // borderBottom: "1px solid gray",
-              // borderColor: theme.colors.gray[8],
-            })}
-          >
+          <Modal.Header p={0}>
             <Modal.Title w="100%" pt={10}>
               <TextInput
+                px="md"
                 pb={4}
                 data-autofocus
                 icon={<TbSearch />}
@@ -189,7 +185,7 @@ const Autocomplete = () => {
           </Modal.Header>
           <Modal.Body mt="sm" p={0}>
             {isEmpty ? (
-              <Box px="md">
+              <Box px="xl">
                 <Center inline c="gray.3">
                   <HiTrendingUp size={23} />
                   <Text pl={7} size="lg" fw={600}>
@@ -199,13 +195,13 @@ const Autocomplete = () => {
               </Box>
             ) : null}
 
-            <Box>
+            <ScrollArea h={600}>
               {results.map(
                 (item, index) =>
                   (item.poster_path || item.profile_path) && (
                     <Box
                       key={item.id}
-                      px="md"
+                      px="xl"
                       sx={{
                         "&:hover": {
                           backgroundColor: "hsl(225, 7%, 15%)",
@@ -227,7 +223,9 @@ const Autocomplete = () => {
                             sx={
                               index == 0
                                 ? {}
-                                : { borderTop: "1px solid hsl(0, 0%, 40%)" }
+                                : {
+                                    borderTop: "1px solid hsla(0, 0%, 40%, .4)",
+                                  }
                             }
                           >
                             <AspectRatio
@@ -251,7 +249,7 @@ const Autocomplete = () => {
                                 fill
                               />
                             </AspectRatio>
-                            <Box w={600}>
+                            <Box w={550}>
                               <Text fw={600} color="brand.0" truncate>
                                 {item.name}
                               </Text>
@@ -296,12 +294,14 @@ const Autocomplete = () => {
                           underline={false}
                         >
                           <Flex
-                            py="xs"
+                            py="sm"
                             gap="md"
                             sx={
                               index == 0
                                 ? {}
-                                : { borderTop: "1px solid hsl(0, 0%, 40%)" }
+                                : {
+                                    borderTop: "1px solid hsla(0, 0%, 40%, .4)",
+                                  }
                             }
                           >
                             <AspectRatio
@@ -325,7 +325,7 @@ const Autocomplete = () => {
                                 fill
                               />
                             </AspectRatio>
-                            <Box w={600}>
+                            <Box w={550}>
                               <Text fw={600} color="brand.0" truncate>
                                 {item.title || item.name}
                               </Text>
@@ -384,7 +384,7 @@ const Autocomplete = () => {
                     </Box>
                   )
               )}
-            </Box>
+            </ScrollArea>
           </Modal.Body>
         </Modal.Content>
       </Modal.Root>
