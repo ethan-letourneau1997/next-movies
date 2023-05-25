@@ -63,11 +63,20 @@ export default function KeywordSearch(props: KeywordSearchProps): JSX.Element {
 
   return (
     <Autocomplete
+      label="Keywords"
       data={results}
       placeholder="Search keywords"
       onChange={setSearchTerm}
       onItemSubmit={handleSelect}
       value={searchTerm}
+      styles={(theme) => ({
+        label: {
+          marginBottom: theme.spacing.xs,
+
+          fontSize: theme.fontSizes.md,
+          fontWeight: 300,
+        },
+      })}
     />
   );
 }

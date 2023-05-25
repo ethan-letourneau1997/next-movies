@@ -15,6 +15,7 @@ import KeywordSearch from "@/components/tvComponents/keywords/keywordSearch";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";
+import RatingsGrid from "@/components/shows/ratingsGrid";
 import { fetchTrendingItems } from "./api/homeApi";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";

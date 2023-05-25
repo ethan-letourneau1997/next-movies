@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Title } from "@mantine/core";
+import { Anchor, Box, Flex, Text, Title } from "@mantine/core";
 import {
   EpisodeDetails,
   SeasonType,
@@ -127,7 +127,8 @@ export default function Episode() {
 
   return (
     <Box>
-      <Link
+      <Anchor
+        component={Link}
         href={{
           pathname: `/shows/${showId}/${
             typeof showName === "string" ? encodeURIComponent(showName) : ""
@@ -135,11 +136,12 @@ export default function Episode() {
         }}
       >
         Back to Seasons
-      </Link>
+      </Anchor>
       <Flex bg="dark.6" justify="space-between" py="xl" px="md">
         {prevSeasonNumber && prevEpisodeNumber ? (
           <Box>
-            <Link
+            <Anchor
+              component={Link}
               href={{
                 pathname: `/shows/${showIdNumber}/${
                   typeof showName === "string"
@@ -149,7 +151,7 @@ export default function Episode() {
               }}
             >
               Prev Episode
-            </Link>
+            </Anchor>
             <Text>
               s{prevSeasonNumber}e{prevEpisodeNumber}
             </Text>
@@ -159,7 +161,8 @@ export default function Episode() {
         )}
         {nextSeasonNumber && nextEpisodeNumber ? (
           <Box>
-            <Link
+            <Anchor
+              component={Link}
               href={{
                 pathname: `/shows/${showIdNumber}/${
                   typeof showName === "string"
@@ -169,7 +172,7 @@ export default function Episode() {
               }}
             >
               Next Episode
-            </Link>
+            </Anchor>
             <Text>
               s{nextSeasonNumber}e{nextEpisodeNumber}
             </Text>

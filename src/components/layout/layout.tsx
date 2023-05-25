@@ -8,7 +8,6 @@ const Layout = ({ children }: PropsWithChildren) => {
     <Box mb="xl">
       {" "}
       <BurgerNav />
-      {/* <NavHeader /> */}
       {children}
     </Box>
   );

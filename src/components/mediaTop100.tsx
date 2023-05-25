@@ -281,10 +281,10 @@ export default function MediaTop100(props: { mediaType: string }) {
                         {" "}
                         {item.vote_average}
                       </Text>
-                      <Text c="brand.3" fw={500} fz={desktop ? "sm" : "xs"}>
+                      <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
                         {item.certification}
                       </Text>
-                      <Text c="brand.3" fw={500} fz={desktop ? "sm" : "xs"}>
+                      <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
                         {" "}
                         {item.release_date?.substring(0, 4) ||
                           item.first_air_date?.substring(0, 4)}
@@ -292,7 +292,7 @@ export default function MediaTop100(props: { mediaType: string }) {
                           ? `-${item.lastAirDate.substring(0, 4)}`
                           : null}
                       </Text>
-                      <Text c="brand.3" fw={500} fz={desktop ? "sm" : "xs"}>
+                      <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
                         {item.runtimeOrEpisodeLength}
                       </Text>
                     </Flex>

@@ -1,4 +1,4 @@
-import { Box, Select, SelectItem } from "@mantine/core";
+import { Anchor, Box, Select, SelectItem } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
@@ -52,7 +52,8 @@ export default function Seasons({}) {
 
   return (
     <div>
-      <Link
+      <Anchor
+        component={Link}
         href={{
           pathname: `/shows/${showId}/${
             typeof showName === "string" ? encodeURIComponent(showName) : ""
@@ -60,7 +61,8 @@ export default function Seasons({}) {
         }}
       >
         Back to Show
-      </Link>
+      </Anchor>
+
       <h2>Seasons:</h2>
 
       <Select

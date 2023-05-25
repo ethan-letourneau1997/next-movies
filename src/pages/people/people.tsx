@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AspectRatio,
   Center,
   Container,
@@ -35,7 +36,10 @@ export default function People() {
       <Grid>
         {people.map((person) => (
           <Grid.Col span={2} key={person.id}>
-            <Link href={`/people/${person.id}/${person.name}`}>
+            <Anchor
+              component={Link}
+              href={`/people/${person.id}/${person.name}`}
+            >
               <AspectRatio ratio={2 / 3}>
                 <Skeleton visible></Skeleton>
                 <Image
@@ -44,7 +48,8 @@ export default function People() {
                   alt={person.name}
                 />
               </AspectRatio>
-            </Link>
+            </Anchor>
+
             <h3>{person.name}</h3>
           </Grid.Col>
         ))}

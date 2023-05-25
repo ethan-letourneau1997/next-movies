@@ -75,7 +75,7 @@ export default function MobileCollapse() {
       <Accordion.Item value="home">
         <Accordion.Control
           className={styles.unstyledControl}
-          icon={<AiFillHome size="1rem" />}
+          icon={<AiFillHome size={16} />}
           chevron={<div></div>}
         >
           <NavLink
@@ -93,7 +93,7 @@ export default function MobileCollapse() {
         </Accordion.Control>
       </Accordion.Item>
       <Accordion.Item value="movies">
-        <Accordion.Control icon={<TbMovie size="1rem" />}>
+        <Accordion.Control icon={<TbMovie size={16} />}>
           <Text fw={600}>Movies</Text>
         </Accordion.Control>
         <Accordion.Panel>
@@ -160,7 +160,7 @@ export default function MobileCollapse() {
       </Accordion.Item>
 
       <Accordion.Item value="shows">
-        <Accordion.Control icon={<TbMovie size="1rem" />}>
+        <Accordion.Control icon={<TbMovie size={16} />}>
           <Text fw={700}>TV Shows</Text>
         </Accordion.Control>
         <Accordion.Panel>
@@ -203,7 +203,7 @@ export default function MobileCollapse() {
       </Accordion.Item>
 
       <Accordion.Item value="camera">
-        <Accordion.Control icon={<RiNetflixFill size="1rem" />}>
+        <Accordion.Control icon={<RiNetflixFill size={16} />}>
           Where to Watch
         </Accordion.Control>
         <Accordion.Panel>Content</Accordion.Panel>

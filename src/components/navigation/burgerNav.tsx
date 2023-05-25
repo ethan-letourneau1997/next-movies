@@ -48,7 +48,7 @@ export default function BurgerNav() {
   }, [opened]);
 
   return (
-    <Box bg="hsl(300, 12%, 6%)">
+    <Box bg="#27272A">
       <Flex justify="space-between" p="sm">
         <Center>
           <Burger

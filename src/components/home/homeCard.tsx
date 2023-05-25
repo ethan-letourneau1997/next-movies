@@ -28,7 +28,7 @@ export default function HomeCard(props: {
           h={70}
           display="flex"
           sx={{
-            gap: ".3rem",
+            gap: 5,
           }}
           style={{
             backgroundImage:

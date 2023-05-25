@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AspectRatio,
   Box,
   Image,
@@ -33,13 +34,15 @@ export default function MediaGrid(props: {
                     alt={item.title}
                   />
                 </AspectRatio>
-                <Link
+                <Anchor
+                  component={Link}
                   href={`/${item.title ? "movies" : "shows"}/${item.id}/${
                     item.title ? item.title : item.name
                   }`}
                 >
+                  {" "}
                   {item.title ? item.title : item.name}
-                </Link>
+                </Anchor>
               </Box>
             )
         )}

@@ -1,6 +1,7 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  number_of_seasons: number;
   lastAirDate: string;
   runtimeOrEpisodeLength: string;
   certification: string;
@@ -247,6 +248,10 @@ export interface SimilarResult {
 }
 
 export interface Seasons {
+  map(
+    arg0: (season: any) => import("react").JSX.Element
+  ): import("react").ReactNode;
+  forEach(arg0: (season: any) => void): unknown;
   seasons?: SeasonType[];
   length: number;
 }

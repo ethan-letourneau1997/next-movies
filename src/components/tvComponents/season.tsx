@@ -1,4 +1,4 @@
-import { Box, Title } from "@mantine/core";
+import { Anchor, Box, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 import Link from "next/link";
@@ -49,14 +49,16 @@ export default function Season(props: SeasonProps) {
 
   return (
     <Box>
-      <Link href="#"></Link>
+      <Anchor component={Link} href="#"></Anchor>
+
       <Title order={1}>{season.name}</Title>
 
       <Box>
         {season.episodes &&
           season.episodes.map((episode) => (
             <Box key={episode.id}>
-              <Link
+              <Anchor
+                component={Link}
                 href={{
                   pathname: `/shows/${showId}/${
                     typeof showName === "string"
@@ -67,8 +69,9 @@ export default function Season(props: SeasonProps) {
                   }`,
                 }}
               >
+                {" "}
                 {episode.name}
-              </Link>
+              </Anchor>
             </Box>
           ))}
       </Box>

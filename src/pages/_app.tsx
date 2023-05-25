@@ -43,22 +43,25 @@ export default function App(props: AppProps) {
           }),
           colors: {
             brand: [
-              "#e5e4e5",
-              "#cbc9cb",
-              "#b1afb1",
-              "#999699",
-              "#817d81",
-              "#6a666a",
-              "#534f53",
-              "#3e393e",
-              "#2a252a",
-              "#171217",
+              "#FAFAFA",
+              "#F4F4F5",
+              "#E4E4E7",
+              "#A1A1AA",
+              "#A1A1AA",
+              "#71717A",
+              "#52525B",
+              "#3F3F46",
+              "#27272A",
+              "#18181B",
             ],
             accent: ["#FFCA05"],
           },
 
           primaryColor: "brand",
           components: {
+            Accordian: {
+              defaultProps: {},
+            },
             Title: {
               styles: {
                 root: {
@@ -69,7 +72,7 @@ export default function App(props: AppProps) {
             Card: {
               styles: {
                 root: {
-                  backgroundColor: "#59A494",
+                  backgroundColor: "#414141",
                 },
               },
             },

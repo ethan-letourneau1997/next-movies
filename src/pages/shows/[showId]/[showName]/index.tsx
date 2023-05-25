@@ -1,4 +1,5 @@
 import {
+  Anchor,
   Box,
   Center,
   Container,
@@ -13,6 +14,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import MediaCredits from "@/components/mediaDetails.tsx/mediaCredits";
 import MediaSimilar from "@/components/mediaDetails.tsx/mediaSimilar";
+import RatingsGrid from "@/components/shows/ratingsGrid";
 import { TVRoot } from "../../../../../types";
 import { fetchMediaDetails } from "@/pages/api/tmdb";
 import { useRouter } from "next/router";
@@ -58,16 +60,19 @@ export default function MediaItem() {
         ></Image>
         <Text my="auto">{mediaDetails.overview}</Text>
       </Flex>
-      <Link
+      <Anchor
+        component={Link}
         href={{
           pathname: `/shows/${showId}/${
             typeof showName === "string" ? encodeURIComponent(showName) : ""
           }/seasons`,
         }}
       >
+        {" "}
         See all episode and seasons
-      </Link>
+      </Anchor>
 
+      <RatingsGrid showId={mediaDetails.id} />
       <SimpleGrid cols={2} mt="xl">
         <Box>
           <Text>
