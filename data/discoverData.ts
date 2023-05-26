@@ -68,3 +68,15 @@ export const runtimeMarks = [
   { value: 200, label: "200" },
   { value: 350, label: "350" },
 ];
+
+export const movieCertifications = ["G", "PG", "PG-13", "R", "NC-17", "NR"];
+
+export const tvCertifications = [
+  "TV-Y",
+  "TV-Y7",
+  "TV-G",
+  "TV-PG",
+  "TV-14",
+  "TV-MA",
+  "NR",
+];

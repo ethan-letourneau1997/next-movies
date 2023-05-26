@@ -11,12 +11,13 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { fetchReleaseDates, fetchTop100 } from "../pages/api/tmdb";
 import { useEffect, useState } from "react";
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
 import { MediaItemType } from "../../types";
+import { fetchReleaseDates } from "@/pages/api/dicsover";
+import { fetchTop100 } from "../pages/api/tmdb";
 import { useMediaQuery } from "@mantine/hooks";
 
 export default function MediaTop100(props: { mediaType: string }) {

@@ -1,14 +1,9 @@
 import {
-  Anchor,
   AspectRatio,
   Box,
-  Card,
   Divider,
   Flex,
   Grid,
-  Paper,
-  SimpleGrid,
-  Skeleton,
   Spoiler,
   Stack,
   Text,
@@ -17,13 +12,13 @@ import {
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
-import Link from "next/link";
 import { MediaItemType } from "../../../types";
 import { useMediaQuery } from "@mantine/hooks";
 
 export default function DiscoverGrid(props: {
   mediaType: string;
   items: MediaItemType[];
+  upcoming: boolean;
 }) {
   // responsive styles
   const desktop = useMediaQuery("(min-width: 768px)");
@@ -33,7 +28,7 @@ export default function DiscoverGrid(props: {
     <Box mt="xl">
       <Grid gutter="xl">
         {items.map((item, index) => (
-          <Grid.Col span={6} key={item.id}>
+          <Grid.Col span={12} md={6} key={item.id}>
             <Grid
               gutter="md"
               // bg="hsl(240, 10%, 7%)"
@@ -42,7 +37,7 @@ export default function DiscoverGrid(props: {
               }}
             >
               <Grid.Col span="content">
-                <AspectRatio ratio={2 / 3} miw={100}>
+                <AspectRatio ratio={2 / 3} miw={desktop ? 100 : 80}>
                   <Image
                     fill
                     style={{
@@ -56,22 +51,37 @@ export default function DiscoverGrid(props: {
               </Grid.Col>
               <Grid.Col span="auto">
                 <Stack spacing={0}>
-                  {/* <Title size={desktop ? "h4" : "h5"} order={2}>
+                  <Title size={desktop ? "h4" : "h5"} order={2}>
                     {item.title || item.name}
-                  </Title> */}
-                  <Text fw={600} size="xl">
-                    {item.title || item.name}
-                  </Text>
+                  </Title>
+
                   <Flex align="center" gap={8} mt={2}>
-                    <Flex align="center" gap={3}>
-                      <BsFillStarFill
-                        size={desktop ? 14 : 12}
-                        color="#ffd452"
-                      />
-                      <Text fz={desktop ? "sm" : "xs"} fw={600}>
-                        {item.vote_average}
+                    {props.upcoming ? null : (
+                      <Flex align="center" gap={3}>
+                        <BsFillStarFill
+                          size={desktop ? 14 : 12}
+                          color="#ffd452"
+                        />
+
+                        <Text fz={desktop ? "sm" : "xs"} fw={600}>
+                          {item.vote_average}
+                        </Text>
+                      </Flex>
+                    )}
+                    {item.certification && (
+                      <Text
+                        sx={(theme) => ({
+                          // border: "1.3px solid #585757",
+                          // paddingLeft: 6,
+                          // paddingRight: 6,
+                        })}
+                        c="brand.4"
+                        fw={600}
+                        fz={desktop ? 10 : "xs"}
+                      >
+                        {item.certification}
                       </Text>
-                    </Flex>
+                    )}
                     <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
                       {item.release_date?.substring(0, 4) ||
                         item.first_air_date?.substring(0, 4)}
@@ -79,10 +89,11 @@ export default function DiscoverGrid(props: {
                         ? `-${item.lastAirDate.substring(0, 4)}`
                         : null}
                     </Text>
+
                     <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
                       {item.runtimeOrEpisodeLength}
                     </Text>
-                    {item.certification && (
+                    {/* {item.certification && (
                       <Text
                         sx={(theme) => ({
                           border: "1.3px solid #585757",
@@ -91,14 +102,14 @@ export default function DiscoverGrid(props: {
                         })}
                         c="brand.4"
                         fw={500}
-                        fz={desktop ? 10 : "xs"}
+                        fz={desktop ? 10 : 10}
                       >
                         {item.certification}
                       </Text>
-                    )}
+                    )} */}
                   </Flex>
                   <Spoiler
-                    mt="md"
+                    mt={desktop ? "md" : 6}
                     fz={desktop ? "sm" : "xs"}
                     maxHeight={desktop ? 46 : 40}
                     showLabel="Read More"

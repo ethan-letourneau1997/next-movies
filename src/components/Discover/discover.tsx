@@ -2,23 +2,24 @@ import {
   Accordion,
   AspectRatio,
   AutocompleteItem,
-  BackgroundImage,
   Box,
   Button,
+  Checkbox,
   CloseButton,
   Container,
   Divider,
   Flex,
-  Grid,
   Overlay,
   RangeSlider,
   Select,
   SimpleGrid,
   Spoiler,
+  Stack,
   Text,
   Title,
   Tooltip,
 } from "@mantine/core";
+import { MediaItemType, WatchProvider, WatchProviders } from "../../../types";
 import {
   movieGenres,
   runtimeMarks,
@@ -31,14 +32,14 @@ import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import { DatePickerInput } from "@mantine/dates";
 import DiscoverGrid from "./discoverGrid";
+import DiscoverGridLoading from "./discoverGridLoading";
 import { IconCalendarTime } from "@tabler/icons-react";
 import Image from "next/image";
 import KeywordSearch from "../tvComponents/keywords/keywordSearch";
-import MediaGrid from "@/components/mediaGrid";
-import { MediaItemType } from "../../../types";
 import { dateToString } from "../../pages/api/format";
 import { fetchDiscover } from "@/pages/api/dicsover";
-import styles from "@/styles/Home.module.css";
+import { movieCertifications } from "../../../data/discoverData";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface DiscoverTypes {
   items: MediaItemType[];
@@ -50,16 +51,15 @@ interface DiscoverTypes {
 }
 
 export default function Discover(props: { type: string }) {
-  let isMovie;
-  {
-    props.type === "movie" ? (isMovie = true) : (isMovie = false);
-  }
-  const mediaType = props.type;
+  // responsive styles
+  const desktop = useMediaQuery("(min-width: 768px)");
 
-  let genresData;
-  {
-    isMovie ? (genresData = movieGenres) : (genresData = tvGenres);
-  }
+  // loading state
+  const [isLoading, setIsLoading] = useState(true);
+
+  const isMovie = props.type === "movie";
+  const genresData = isMovie ? movieGenres : tvGenres;
+  const mediaType = props.type;
 
   const [items, setMovies] = useState<MediaItemType[]>([]);
 
@@ -76,10 +76,6 @@ export default function Discover(props: { type: string }) {
   //*Discover functions
   const handleSortBy = (value: string) => {
     setState((prevState) => ({ ...prevState, sortBy: value }));
-  };
-
-  const handleGenreChange = (values: string[]) => {
-    setState((prevState) => ({ ...prevState, selectedGenres: values }));
   };
 
   const handleStartDateChange = (date: Date | null) => {
@@ -148,13 +144,12 @@ export default function Discover(props: { type: string }) {
 
   // * --------------- Watch Providers ----------------------
 
-  const [providers, setProviders] = useState<any>([]);
-  const [selectedProviders, setSelectedProviders] = useState([]);
+  const [providers, setProviders] = useState<WatchProvider[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
 
   const selectedProvidersString = selectedProviders
     .map((provider) => provider)
     .join("| ");
-  console.log(selectedProvidersString);
 
   const handleProviderClick = (providerId: string) => {
     if (selectedProviders.includes(providerId)) {
@@ -168,13 +163,23 @@ export default function Discover(props: { type: string }) {
     }
   };
 
+  // * --------------- Certifications ----------------------
+
+  const [certifications, setCertifications] =
+    useState<string[]>(movieCertifications);
+
+  const certificationString = certifications
+    .map((certification) => certification)
+    .join("|");
+
   // * API calls
   useEffect(() => {
+    setIsLoading(true);
     fetchDiscover(
       mediaType,
       state.sortBy,
       selectedGenresString,
-      // state.selectedGenres.join(", "),
+
       dateToString(state.startDate),
       dateToString(state.endDate),
       bottomScore,
@@ -182,10 +187,12 @@ export default function Discover(props: { type: string }) {
       runtimeMin,
       runtimeMax,
       keywordString,
-      selectedProvidersString
+      selectedProvidersString,
+      certificationString
     )
       .then((data) => {
         setMovies(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -201,9 +208,8 @@ export default function Discover(props: { type: string }) {
     mediaType,
     keywordString,
     selectedProvidersString,
+    certificationString,
   ]);
-
-  console.log(selectedProviders);
 
   useEffect(() => {
     const options = {
@@ -224,14 +230,54 @@ export default function Discover(props: { type: string }) {
       .catch((err) => console.error(err));
   }, []);
 
+  const today = new Date();
+  const sixWeeksAgo = new Date(today.getTime() - 6 * 7 * 24 * 60 * 60 * 1000);
+
+  const nextMonday = new Date(
+    today.getTime() + ((7 - today.getDay()) % 7) * 24 * 60 * 60 * 1000
+  );
+  const fourWeeksAfterNextMonday = new Date(
+    nextMonday.getTime() + 4 * 7 * 24 * 60 * 60 * 1000
+  );
+
+  //* checkbox
+  const [checkedAll, setCheckedAll] = useState(true);
+  const toggleAll = () => {
+    setCheckedAll(!checkedAll);
+    handleStartDateChange(null);
+    handleEndDateChange(today);
+    setCheckedUpcoming(false);
+    setCheckedNowPlaying(false);
+  };
+
+  const [checkedNowPlaying, setCheckedNowPlaying] = useState(false);
+  const toggleNowPlaying = () => {
+    setCheckedNowPlaying(!checkedNowPlaying);
+    handleStartDateChange(sixWeeksAgo);
+    handleEndDateChange(today);
+    setCheckedUpcoming(false);
+    setCheckedAll(false);
+  };
+
+  const [checkedUpcoming, setCheckedUpcoming] = useState(false);
+
+  const toggleUpcoming = () => {
+    setCheckedUpcoming(!checkedUpcoming);
+    handleStartDateChange(nextMonday);
+    handleEndDateChange(fourWeeksAfterNextMonday);
+    setCheckedNowPlaying(false);
+    setCheckedAll(false);
+  };
+
+  console.log(mediaType);
+
   return (
     <Flex mt="xl">
-      <Box miw={250} maw={250} mx="lg">
+      <Box miw={250} maw={250} mx="md" display={desktop ? "block" : "none"}>
         <Accordion
           variant="separated"
           chevron={<BsChevronRight size={14} />}
-          // defaultValue="filters"
-          defaultValue="where to watch"
+          defaultValue="filters"
           styles={(theme) => ({
             chevron: {
               "&[data-rotate]": {
@@ -360,6 +406,60 @@ export default function Discover(props: { type: string }) {
             </Accordion.Control>
             <Accordion.Panel>
               <Divider mb="lg"></Divider>
+              {isMovie ? (
+                <>
+                  <Box px="md">
+                    <Text fw={300}>Show Me</Text>
+                    <Stack mt="sm">
+                      <Checkbox
+                        color="indigo"
+                        label="All"
+                        checked={checkedAll}
+                        onChange={checkedAll ? undefined : toggleAll}
+                      />
+                      <Checkbox
+                        // disabled={checkedNowPlaying}
+                        color="indigo"
+                        label="Now Playing"
+                        checked={checkedNowPlaying}
+                        onChange={
+                          checkedNowPlaying ? undefined : toggleNowPlaying
+                        }
+                      />
+                      <Checkbox
+                        color="indigo"
+                        label="Upcoming"
+                        checked={checkedUpcoming}
+                        onChange={checkedUpcoming ? undefined : toggleUpcoming}
+                      />
+                    </Stack>
+                  </Box>
+                  <Divider my="lg"></Divider>{" "}
+                  <Box px="md" pb="xl">
+                    <Text fw={300}>Age Ratings</Text>
+
+                    <Checkbox.Group
+                      value={certifications}
+                      onChange={setCertifications}
+                      label=""
+                      description=""
+                      withAsterisk
+                    >
+                      <SimpleGrid cols={2} mt="sm">
+                        {/* Render the checkboxes for each certification */}
+
+                        <Checkbox color="indigo" value="G" label="G" />
+                        <Checkbox color="indigo" value="R" label="R" />
+                        <Checkbox color="indigo" value="PG" label="PG" />
+                        <Checkbox color="indigo" value="NC-17" label="NC-17" />
+                        <Checkbox color="indigo" value="PG-13" label="PG-13" />
+                        <Checkbox color="indigo" value="NR" label="NR" />
+                      </SimpleGrid>
+                    </Checkbox.Group>
+                  </Box>
+                  <Divider my="lg"></Divider>
+                </>
+              ) : null}
               <Box px="md">
                 {/* Render the KeywordSearch component */}
                 <KeywordSearch
@@ -397,6 +497,7 @@ export default function Discover(props: { type: string }) {
                     From
                   </Text>
                   <DatePickerInput
+                    disabled={!checkedAll}
                     icon={<IconCalendarTime size={16} stroke={1.5} />}
                     defaultLevel="decade"
                     value={state.startDate}
@@ -421,6 +522,7 @@ export default function Discover(props: { type: string }) {
                     To
                   </Text>
                   <DatePickerInput
+                    disabled={!checkedAll}
                     icon={<IconCalendarTime size={16} stroke={1.5} />}
                     defaultLevel="year"
                     value={state.endDate}
@@ -440,7 +542,7 @@ export default function Discover(props: { type: string }) {
                   <RangeSlider
                     thumbSize={12}
                     label={(value) => `${value / 10}`}
-                    color="blue"
+                    color="indigo"
                     size="xs"
                     step={10}
                     min={0}
@@ -472,7 +574,7 @@ export default function Discover(props: { type: string }) {
                         thumbSize={10}
                         showLabelOnHover
                         label={(value) => `${value} min`}
-                        color="blue"
+                        color="indigo"
                         step={25}
                         size="xs"
                         min={50}
@@ -506,7 +608,9 @@ export default function Discover(props: { type: string }) {
                       variant={
                         isGenreSelected(genre.value) ? "filled" : "outline"
                       }
-                      color={isGenreSelected(genre.value) ? "blue.8" : "blue.5"}
+                      color={
+                        isGenreSelected(genre.value) ? "indigo.6" : "indigo.8"
+                      }
                       onClick={() => handleButtonClick(genre.value)}
                     >
                       {genre.label}
@@ -519,9 +623,17 @@ export default function Discover(props: { type: string }) {
         </Accordion>
       </Box>
 
-      <Container fluid size="md" px="xl">
+      <Container fluid size="md" px={desktop ? "xl" : "xs"}>
         <Title size="h2">Discover Movies</Title>
-        <DiscoverGrid mediaType="movie" items={items} />
+        {isLoading ? (
+          <DiscoverGridLoading />
+        ) : (
+          <DiscoverGrid
+            mediaType="movie"
+            items={items}
+            upcoming={checkedUpcoming}
+          />
+        )}
       </Container>
     </Flex>
   );

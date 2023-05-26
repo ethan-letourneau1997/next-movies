@@ -312,3 +312,13 @@ export interface GuestStar {
   popularity?: number;
   profile_path?: string;
 }
+
+export interface WatchProviders {
+  watchProvider?: WatchProvider[];
+}
+
+export interface WatchProvider {
+  provider_id: string;
+  provider_name?: string;
+  logo_path?: string;
+}
