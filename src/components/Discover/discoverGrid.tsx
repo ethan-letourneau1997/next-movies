@@ -1,19 +1,22 @@
 import {
   AspectRatio,
   Box,
+  Button,
+  Collapse,
   Divider,
   Flex,
   Grid,
+  Group,
   Spoiler,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
 import { MediaItemType } from "../../../types";
-import { useMediaQuery } from "@mantine/hooks";
 
 export default function DiscoverGrid(props: {
   mediaType: string;
@@ -28,7 +31,7 @@ export default function DiscoverGrid(props: {
     <Box mt="xl">
       <Grid gutter="xl">
         {items.map((item, index) => (
-          <Grid.Col span={12} md={6} key={item.id}>
+          <Grid.Col span={12} lg={6} key={item.id}>
             <Grid
               gutter="md"
               // bg="hsl(240, 10%, 7%)"
@@ -51,11 +54,11 @@ export default function DiscoverGrid(props: {
               </Grid.Col>
               <Grid.Col span="auto">
                 <Stack spacing={0}>
-                  <Title size={desktop ? "h4" : "h5"} order={2}>
+                  <Title fw={600} size={desktop ? "h4" : "h4"} order={2}>
                     {item.title || item.name}
                   </Title>
 
-                  <Flex align="center" gap={8} mt={2}>
+                  <Flex align="center" gap={10} mt={2}>
                     {props.upcoming ? null : (
                       <Flex align="center" gap={3}>
                         <BsFillStarFill
@@ -63,12 +66,12 @@ export default function DiscoverGrid(props: {
                           color="#ffd452"
                         />
 
-                        <Text fz={desktop ? "sm" : "xs"} fw={600}>
+                        <Text fz={desktop ? "sm" : "sm"} fw={600}>
                           {item.vote_average}
                         </Text>
                       </Flex>
                     )}
-                    {item.certification && (
+                    {/* {item.certification && !desktop && (
                       <Text
                         sx={(theme) => ({
                           // border: "1.3px solid #585757",
@@ -77,12 +80,12 @@ export default function DiscoverGrid(props: {
                         })}
                         c="brand.4"
                         fw={600}
-                        fz={desktop ? 10 : "xs"}
+                        fz={desktop ? "xs" : "xs"}
                       >
                         {item.certification}
                       </Text>
-                    )}
-                    <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
+                    )} */}
+                    <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
                       {item.release_date?.substring(0, 4) ||
                         item.first_air_date?.substring(0, 4)}
                       {props.mediaType === "tv" && item.lastAirDate
@@ -90,10 +93,10 @@ export default function DiscoverGrid(props: {
                         : null}
                     </Text>
 
-                    <Text c="brand.4" fw={500} fz={desktop ? "sm" : "xs"}>
+                    <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
                       {item.runtimeOrEpisodeLength}
                     </Text>
-                    {/* {item.certification && (
+                    {item.certification && (
                       <Text
                         sx={(theme) => ({
                           border: "1.3px solid #585757",
@@ -106,7 +109,7 @@ export default function DiscoverGrid(props: {
                       >
                         {item.certification}
                       </Text>
-                    )} */}
+                    )}
                   </Flex>
                   <Spoiler
                     mt={desktop ? "md" : 6}

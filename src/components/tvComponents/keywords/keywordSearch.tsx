@@ -1,6 +1,8 @@
 import { Autocomplete, AutocompleteItem, Box, Container } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
+import { useMediaQuery } from "@mantine/hooks";
+
 interface KeywordSearchProps {
   handleKeywordClick: (item: AutocompleteItem) => void;
   keywords: AutocompleteItem[];
@@ -61,6 +63,9 @@ export default function KeywordSearch(props: KeywordSearchProps): JSX.Element {
     setSearchTerm("");
   };
 
+  // responsive styles
+  const desktop = useMediaQuery("(min-width: 768px)");
+
   return (
     <Autocomplete
       label="Keywords"
@@ -73,8 +78,8 @@ export default function KeywordSearch(props: KeywordSearchProps): JSX.Element {
         label: {
           marginBottom: theme.spacing.xs,
 
-          fontSize: theme.fontSizes.md,
-          fontWeight: 300,
+          fontWeight: desktop ? 300 : 500,
+          fontSize: desktop ? theme.fontSizes.md : theme.fontSizes.sm,
         },
       })}
     />
