@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import HomeGrid from "@/components/home/homeGrid";
-import KeywordSearch from "@/components/tvComponents/keywords/keywordSearch";
+import KeywordSearch from "@/components/Discover/disoverAccordianComponents/keywordSearch";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";

@@ -29,8 +29,6 @@ export async function fetchDiscover(
     extras = "&vote_count.gte=3000";
   }
 
-  console.log(certifications);
-
   const response = await fetch(
     `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}${extras}&sort_by=${sortBy}.desc&with_genres=${genres}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${bottomScore}&vote_average.lte=${topScore}&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&air_date.gte=${startDate}&air_date.lte=${endDate}&with_keywords=${keywords}&watch_region=US&with_watch_providers=${providers}&certification=${certifications}&certification_country=US&&with_original_language=en&language=en-US`
   );

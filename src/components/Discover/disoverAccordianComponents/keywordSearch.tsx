@@ -79,7 +79,7 @@ export default function KeywordSearch(props: KeywordSearchProps): JSX.Element {
           marginBottom: theme.spacing.xs,
 
           fontWeight: desktop ? 300 : 500,
-          fontSize: desktop ? theme.fontSizes.md : theme.fontSizes.sm,
+          fontSize: desktop ? theme.fontSizes.md : theme.fontSizes.md,
         },
       })}
     />

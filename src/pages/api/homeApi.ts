@@ -15,7 +15,6 @@ export async function fetchTrendingItems() {
 }
 
 export async function fetchUpcomingMovies() {
-  console.log(tomorrowString);
   const response = await fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&include_adult=false&include_video=false&page=1&primary_release_date.gte=${tomorrowString}&region=US&sort_by=popularity.desc&with_origin_country=US`
   );

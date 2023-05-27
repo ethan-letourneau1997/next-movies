@@ -74,7 +74,6 @@ export default function RatingsGrid(props: { showId: number }) {
     (_, index) => index + 1
   );
 
-  console.log("Highest episode count:", highestEpisodeCount);
   return (
     <Container pt="xl">
       <Flex gap="xs">

@@ -1,44 +1,26 @@
 import {
   Accordion,
-  AspectRatio,
   AutocompleteItem,
   Box,
-  Button,
-  Checkbox,
   CloseButton,
-  Collapse,
-  Container,
   Divider,
   Flex,
-  Group,
-  Overlay,
-  RangeSlider,
-  Select,
-  SimpleGrid,
-  Spoiler,
-  Stack,
   Text,
-  Title,
-  Tooltip,
 } from "@mantine/core";
-import { MediaItemType, WatchProvider, WatchProviders } from "../../../types";
-import {
-  movieGenres,
-  runtimeMarks,
-  scoreMarks,
-  sortByData,
-  tvGenres,
-} from "../../../data/discoverData";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { MediaItemType, WatchProvider } from "../../../types";
+import { movieGenres, sortByData, tvGenres } from "../../../data/discoverData";
+import { useDisclosure, useElementSize } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 
 import { BsChevronRight } from "react-icons/bs";
-import { DatePickerInput } from "@mantine/dates";
-import DiscoverGrid from "./discoverGrid";
-import DiscoverGridLoading from "./discoverGridLoading";
-import { IconCalendarTime } from "@tabler/icons-react";
-import Image from "next/image";
-import KeywordSearch from "../tvComponents/keywords/keywordSearch";
+import Checkboxes from "./disoverAccordianComponents/checkBoxes";
+import DatePickers from "./disoverAccordianComponents/datePickers";
+import Genres from "./disoverAccordianComponents/genres";
+import KeywordSearch from "./disoverAccordianComponents/keywordSearch";
+import Runtime from "./disoverAccordianComponents/runtime";
+import SortBy from "./disoverAccordianComponents/sortBy";
+import UserScore from "./disoverAccordianComponents/userScore";
+import WhereToWatch from "./disoverAccordianComponents/whereToWatch";
 import { dateToString } from "../../pages/api/format";
 import { fetchDiscover } from "@/pages/api/dicsover";
 import { movieCertifications } from "../../../data/discoverData";
@@ -50,23 +32,43 @@ interface DiscoverTypes {
   startDate: Date | null;
   endDate: Date;
   keywords: AutocompleteItem[];
+  type: string;
+  setResults: any;
+  setLoading: any;
+  desktop?: boolean;
 }
 
-export default function Discover(props: { type: string }) {
+interface DiscoverPropTypes {
+  type: string;
+  setResults: any;
+  setLoading: any;
+  desktop: boolean;
+  upcoming: any;
+}
+
+export default function Discover({
+  type,
+  setResults,
+  setLoading,
+  desktop,
+  upcoming,
+}: DiscoverPropTypes) {
   // responsive styles
-  const desktop = useMediaQuery("(min-width: 768px)");
 
   // loading state
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const isMovie = props.type === "movie";
+  const isMovie = type === "movie";
   const genresData = isMovie ? movieGenres : tvGenres;
-  const mediaType = props.type;
+  const mediaType = type;
 
-  const [items, setMovies] = useState<MediaItemType[]>([]);
+  const [items, setItems] = useState<MediaItemType[]>([]);
 
   //* Discover state
   const [state, setState] = useState<DiscoverTypes>({
+    type: "", // Add the 'type' property with an appropriate type
+    setResults: () => {}, // Add the 'setResults' property with an appropriate type
+    setLoading: () => {}, // Add the 'setLoading' property with an appropriate type
     items: [],
     sortBy: "popularity",
     selectedGenres: [],
@@ -176,7 +178,7 @@ export default function Discover(props: { type: string }) {
 
   // * API calls
   useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
     fetchDiscover(
       mediaType,
       state.sortBy,
@@ -193,8 +195,9 @@ export default function Discover(props: { type: string }) {
       certificationString
     )
       .then((data) => {
-        setMovies(data);
-        setIsLoading(false);
+        setItems(data);
+        setResults(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -211,6 +214,8 @@ export default function Discover(props: { type: string }) {
     keywordString,
     selectedProvidersString,
     certificationString,
+    setResults,
+    setLoading,
   ]);
 
   useEffect(() => {
@@ -271,452 +276,184 @@ export default function Discover(props: { type: string }) {
     setCheckedAll(false);
   };
 
+  upcoming(checkedUpcoming);
+
   // filter dropdown state
   const [opened, { toggle }] = useDisclosure(false);
 
+  // height ref for spoiler
+  const { ref, width, height } = useElementSize();
+
   return (
     <>
-      {/* <Group
-        mt={desktop ? 0 : "md"}
-        position="center"
-        mb={5}
-        sx={{
-          visibility: desktop ? "hidden" : "visible",
-        }}
+      <Box
+        miw={desktop ? 250 : "90vw"}
+        maw={desktop ? 250 : "90vw"}
+        mx={desktop ? "md" : 0}
       >
-        <Button fullWidth color="indigo" onClick={toggle}>
-          Filters
-        </Button>
-      </Group> */}
-      <Flex mt="xl" direction={desktop ? "row" : "column"}>
-        {/* <Collapse in={opened}> */}
-        <Box maw={400} mx="auto">
-          <Box
-            miw={desktop ? 250 : "90vw"}
-            maw={desktop ? 250 : "90vw"}
-            mx={desktop ? "md" : 0}
-            //  display={desktop ? "block" : "none"}
-          >
-            <Accordion
-              multiple={desktop ? false : true}
-              variant="separated"
-              chevron={<BsChevronRight size={desktop ? 14 : 12} />}
-              defaultValue={desktop ? "filters" : ""}
-              styles={(theme) => ({
-                label: {
-                  paddingTop: desktop ? "" : 12,
-                  paddingBottom: desktop ? "" : 12,
-                  fontSize: desktop ? theme.fontSizes.md : theme.fontSizes.sm,
+        {desktop != undefined && (
+          <Accordion
+            variant="separated"
+            chevron={<BsChevronRight size={desktop ? 14 : 12} />}
+            defaultValue={desktop ? "filters" : ""}
+            styles={(theme) => ({
+              label: {
+                paddingTop: desktop ? "" : 12,
+                paddingBottom: desktop ? "" : 12,
+                fontSize: desktop ? theme.fontSizes.md : theme.fontSizes.md,
+              },
+              chevron: {
+                "&[data-rotate]": {
+                  transform: "rotate(90deg)",
                 },
-                chevron: {
-                  "&[data-rotate]": {
-                    transform: "rotate(90deg)",
-                  },
-                },
-                content: {
-                  paddingTop: desktop ? "" : 0,
+              },
+              content: {
+                paddingTop: desktop ? "" : 0,
+                backgroundColor: theme.colors.dark[8],
+                paddingLeft: 0,
+                paddingRight: 0,
+              },
+              control: {
+                "&[data-active]": {
                   backgroundColor: theme.colors.dark[8],
-                  paddingLeft: 0,
-                  paddingRight: 0,
                 },
-                control: {
-                  // backgroundColor: theme.colors.dark[8],
-                  "&[data-active]": {
-                    backgroundColor: theme.colors.dark[8],
-                  },
-                },
-              })}
-            >
-              <Accordion.Item value="sort by">
-                <Accordion.Control px="md">
-                  {" "}
-                  <Text fw={500}>Sort by</Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Divider mb={desktop ? "lg" : "sm"}></Divider>
-                  <Box px="md">
-                    <Select
-                      label="Sort Results By"
-                      size={desktop ? "sm" : "sm"}
-                      defaultChecked
-                      defaultValue="popularity"
-                      placeholder="Pick one"
-                      onChange={(value: string) => handleSortBy(value)}
-                      data={sortByData}
-                      styles={(theme) => ({
-                        label: {
-                          fontSize: desktop
-                            ? theme.fontSizes.md
-                            : theme.fontSizes.sm,
-                          fontWeight: 300,
-                          marginBottom: 8,
-                        },
-                      })}
-                    />
-                  </Box>
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="where to watch">
-                <Accordion.Control px="md">
-                  {" "}
-                  <Text fw={500}>Where to Watch</Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Box px="md">
-                    <Divider mb="lg"></Divider>
-                    <Text fz={desktop ? "md" : "sm"} mb={desktop ? "" : "xl"}>
-                      Sort results by provider:
-                    </Text>
-                    <Spoiler
-                      mt="xs"
-                      maxHeight={desktop ? 220 : 205}
-                      showLabel="See all"
-                      fz={desktop ? "md" : "sm"}
-                      hideLabel="Hide"
-                      transitionDuration={0}
-                      styles={(theme) => ({
-                        control: {},
-                      })}
-                      sx={{
-                        flexGrow: 1,
-                      }}
-                    >
-                      {/* Content here */}
-                      <SimpleGrid
-                        cols={desktop ? 4 : 5}
-                        spacing={desktop ? "xs" : "md"}
-                      >
-                        {providers.map((provider) => (
-                          <Tooltip
-                            fz="xs"
-                            label={provider.provider_name}
-                            key={provider.provider_id}
-                          >
-                            <AspectRatio
-                              // handle provider click and add or remove from selectedProviders
-                              onClick={() =>
-                                handleProviderClick(provider.provider_id)
-                              }
-                              ratio={1 / 1}
-                              sx={{
-                                border: selectedProviders.includes(
-                                  provider.provider_id
-                                )
-                                  ? "2px solid #fcc419"
-                                  : "none", // Add border if ID is in state
-                                borderRadius: "6px",
-                                "&:hover": {
-                                  border: "2px solid #fcc419",
-                                },
-                              }}
-                            >
-                              <Overlay
-                                color="#fcc419"
-                                sx={{
-                                  opacity: selectedProviders.includes(
-                                    provider.provider_id
-                                  )
-                                    ? 0.5
-                                    : 0, // Add border if ID is in state
-                                  borderRadius: "6px",
-                                  "&:hover": {
-                                    border: "2px solid #fcc419",
-                                  },
-                                }}
-                              ></Overlay>
-                              <Image
-                                fill
-                                style={{
-                                  borderRadius: "4px",
-                                  // border: "1px solid hsla(0, 0%, 30%, .25)",
-                                }}
-                                alt="poster"
-                                src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
-                              />
-                            </AspectRatio>
-                          </Tooltip>
-                        ))}
-                      </SimpleGrid>
-                    </Spoiler>
-                  </Box>
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="filters">
-                <Accordion.Control px="md">
-                  <Text fw={500}>Filters</Text>
-                </Accordion.Control>
-                <Accordion.Panel>
+              },
+            })}
+          >
+            <Accordion.Item value="sort by">
+              <Accordion.Control px="md">
+                {" "}
+                <Text fw={500}>Sort by</Text>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Divider mb={desktop ? "lg" : "sm"}></Divider>
+
+                <Box px="md">
+                  <SortBy
+                    handleSortBy={handleSortBy}
+                    sortByData={sortByData}
+                    desktop={desktop}
+                  />
+                </Box>
+              </Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item value="where to watch">
+              <Accordion.Control px="md">
+                <Text fw={500}>Where to Watch</Text>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <WhereToWatch
+                  desktop={desktop}
+                  handleProviderClick={handleProviderClick}
+                  providers={providers}
+                  selectedProviders={selectedProviders}
+                />
+                <Box px="md">
                   <Divider mb="lg"></Divider>
-                  {isMovie ? (
-                    <>
-                      <Box px="md">
-                        <Text
-                          fw={desktop ? 300 : 500}
-                          fz={desktop ? "md" : "sm"}
-                        >
-                          Show Me
-                        </Text>
-                        <Stack mt="sm">
-                          <Checkbox
-                            color="indigo"
-                            label="All"
-                            checked={checkedAll}
-                            onChange={checkedAll ? undefined : toggleAll}
-                          />
-                          <Checkbox
-                            // disabled={checkedNowPlaying}
-                            color="indigo"
-                            label="Now Playing"
-                            checked={checkedNowPlaying}
-                            onChange={
-                              checkedNowPlaying ? undefined : toggleNowPlaying
-                            }
-                          />
-                          <Checkbox
-                            color="indigo"
-                            label="Upcoming"
-                            checked={checkedUpcoming}
-                            onChange={
-                              checkedUpcoming ? undefined : toggleUpcoming
-                            }
-                          />
-                        </Stack>
-                      </Box>
-                      <Divider my="lg"></Divider>{" "}
-                      <Box px="md" pb="xl">
-                        <Text
-                          fw={desktop ? 300 : 500}
-                          fz={desktop ? "md" : "sm"}
-                        >
-                          Age Ratings
-                        </Text>
 
-                        <Checkbox.Group
-                          value={certifications}
-                          onChange={setCertifications}
-                          label=""
-                          description=""
-                          withAsterisk
-                        >
-                          <SimpleGrid cols={2} mt="sm">
-                            {/* Render the checkboxes for each certification */}
-
-                            <Checkbox color="indigo" value="G" label="G" />
-                            <Checkbox color="indigo" value="R" label="R" />
-                            <Checkbox color="indigo" value="PG" label="PG" />
-                            <Checkbox
-                              color="indigo"
-                              value="NC-17"
-                              label="NC-17"
-                            />
-                            <Checkbox
-                              color="indigo"
-                              value="PG-13"
-                              label="PG-13"
-                            />
-                            <Checkbox color="indigo" value="NR" label="NR" />
-                          </SimpleGrid>
-                        </Checkbox.Group>
-                      </Box>
-                      <Divider my="lg"></Divider>
-                    </>
-                  ) : null}
-                  <Box px="md">
-                    {/* Render the KeywordSearch component */}
-                    <KeywordSearch
-                      handleKeywordClick={handleKeywordClick}
-                      keywords={state.keywords}
+                  <Text fz={desktop ? "md" : "md"} mb={desktop ? "" : "xl"}>
+                    Sort results by provider:
+                  </Text>
+                </Box>
+              </Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item value="filters">
+              <Accordion.Control px="md">
+                <Text fw={500}>Filters</Text>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Divider mb="lg"></Divider>
+                {isMovie ? (
+                  <>
+                    <Checkboxes
+                      desktop={desktop}
+                      checkedAll={checkedAll}
+                      toggleAll={toggleAll}
+                      checkedNowPlaying={checkedNowPlaying}
+                      toggleNowPlaying={toggleNowPlaying}
+                      checkedUpcoming={checkedUpcoming}
+                      toggleUpcoming={toggleUpcoming}
+                      certifications={certifications}
+                      setCertifications={setCertifications}
+                      handleProviderClick={function (value: string): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                      providers={[]}
                     />
-                    {/* Render the selected keywords */}
-                    <Flex mt="sm" gap="sm" wrap="wrap">
-                      {state.keywords.map((keyword) => (
-                        <Flex
-                          py={5}
-                          px="xs"
-                          bg="brand.7"
-                          align="center"
-                          key={keyword.id}
-                          sx={(theme) => ({
-                            borderRadius: theme.radius.sm,
-                          })}
-                        >
-                          <Text fz="sm"> {keyword.name}</Text>{" "}
-                          <CloseButton
-                            pt={3}
-                            size="xs"
-                            onClick={() => removeKeyword(keyword.id)}
-                          />
-                        </Flex>
-                      ))}
-                    </Flex>
-                  </Box>
-                  <Divider my="lg"></Divider>
-                  <Box px="md">
-                    <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "sm"}>
-                      Release Dates
-                    </Text>
-                    <Flex mt="sm">
-                      <Text c="dimmed" fz="sm" w="25%" my="auto">
-                        From
-                      </Text>
-                      <DatePickerInput
-                        disabled={!checkedAll}
-                        icon={<IconCalendarTime size={16} stroke={1.5} />}
-                        defaultLevel="decade"
-                        value={state.startDate}
-                        onChange={handleStartDateChange}
-                        mx="auto"
-                        styles={(theme) => ({
-                          label: {
-                            backgroundColor: theme.colors.brand[8],
-                          },
-                          markLabel: {
-                            fontSize: theme.fontSizes.xs,
-                          },
-                        })}
-                        sx={{
-                          flexGrow: 1,
-                        }}
-                      />
-                    </Flex>
 
-                    <Flex mt="md">
-                      <Text c="dimmed" fz="sm" w="25%" my="auto">
-                        To
-                      </Text>
-                      <DatePickerInput
-                        disabled={!checkedAll}
-                        icon={<IconCalendarTime size={16} stroke={1.5} />}
-                        defaultLevel="year"
-                        value={state.endDate}
-                        onChange={handleEndDateChange}
-                        mx="auto"
-                        sx={{
-                          flexGrow: 1,
-                        }}
-                      />
-                    </Flex>
-                  </Box>
-                  <Divider my="lg"></Divider>
-                  <Box px="md" pb="md">
-                    {" "}
-                    <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "sm"}>
-                      User Score
-                    </Text>
-                    <Box mb="xl" mt="sm">
-                      <RangeSlider
-                        thumbSize={12}
-                        label={(value) => `${value / 10}`}
-                        color="indigo"
-                        size="xs"
-                        step={10}
-                        min={0}
-                        max={100}
-                        value={scoreValue}
-                        onChange={setScoreValue}
-                        onChangeEnd={setScoreValue}
-                        marks={scoreMarks}
-                        styles={(theme) => ({
-                          label: {
-                            backgroundColor: theme.colors.brand[8],
-                          },
-                          markLabel: {
-                            marginTop: 3,
-                            fontSize: theme.fontSizes.xs,
-                          },
-                        })}
-                      />
-                    </Box>
-                  </Box>
-                  {isMovie ? (
-                    <Box pb="xl">
-                      <Divider mb="lg"></Divider>
-                      <Box px="md">
-                        <Text
-                          fw={desktop ? 300 : 500}
-                          fz={desktop ? "md" : "sm"}
-                        >
-                          Runtime
-                        </Text>
+                    <Divider my="lg"></Divider>
+                  </>
+                ) : null}
 
-                        <Box mt="sm">
-                          <RangeSlider
-                            thumbSize={10}
-                            showLabelOnHover
-                            label={(value) => `${value} min`}
-                            color="indigo"
-                            step={25}
-                            size="xs"
-                            min={50}
-                            max={350}
-                            value={runtimeValue}
-                            onChange={setRuntimeValue}
-                            marks={runtimeMarks}
-                            styles={(theme) => ({
-                              label: {
-                                backgroundColor: theme.colors.brand[8],
-                              },
-                              markLabel: {
-                                marginTop: 3,
-                                fontSize: theme.fontSizes.xs,
-                              },
-                            })}
-                          />
-                        </Box>
-                      </Box>
-                    </Box>
-                  ) : null}
-                  <Divider my="lg"></Divider>
-                  <Box px="md">
-                    <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "sm"}>
-                      Genres
-                    </Text>
-                    <Flex mt="sm" wrap="wrap" gap="xs">
-                      {genresData.map((genre) => (
-                        <Button
+                <Box px="md">
+                  {/* Render the KeywordSearch component */}
+                  <KeywordSearch
+                    handleKeywordClick={handleKeywordClick}
+                    keywords={state.keywords}
+                  />
+                  {/* Render the selected keywords */}
+                  <Flex mt="sm" gap="sm" wrap="wrap">
+                    {state.keywords.map((keyword) => (
+                      <Flex
+                        py={5}
+                        px="xs"
+                        bg="brand.7"
+                        align="center"
+                        key={keyword.id}
+                        sx={(theme) => ({
+                          borderRadius: theme.radius.sm,
+                        })}
+                      >
+                        <Text fz="sm"> {keyword.name}</Text>{" "}
+                        <CloseButton
+                          pt={3}
                           size="xs"
-                          radius="xl"
-                          key={genre.value}
-                          variant={
-                            isGenreSelected(genre.value) ? "filled" : "outline"
-                          }
-                          color={
-                            isGenreSelected(genre.value)
-                              ? "indigo.6"
-                              : "indigo.8"
-                          }
-                          onClick={() => handleButtonClick(genre.value)}
-                        >
-                          {genre.label}
-                        </Button>
-                      ))}
-                    </Flex>
-                  </Box>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Box>
-        </Box>
-        {/* </Collapse> */}
+                          onClick={() => removeKeyword(keyword.id)}
+                        />
+                      </Flex>
+                    ))}
+                  </Flex>
+                </Box>
+                <Divider my="lg"></Divider>
+                <DatePickers
+                  desktop={desktop}
+                  handleStartDateChange={handleStartDateChange}
+                  handleEndDateChange={handleEndDateChange}
+                  startDate={state.startDate}
+                  endDate={state.endDate}
+                  checkedAll={checkedAll}
+                />
 
-        <Container
-          mt={desktop ? 0 : "xl"}
-          fluid
-          size="md"
-          px={desktop ? "xl" : "xs"}
-        >
-          <Title size="h2">Discover Movies</Title>
-          {isLoading ? (
-            <DiscoverGridLoading />
-          ) : (
-            <DiscoverGrid
-              mediaType="movie"
-              items={items}
-              upcoming={checkedUpcoming}
-            />
-          )}
-        </Container>
-      </Flex>
+                <Divider my="lg"></Divider>
+                <UserScore
+                  desktop={desktop}
+                  scoreValue={scoreValue}
+                  setScoreValue={setScoreValue}
+                />
+
+                {isMovie ? (
+                  <Box pb="xl">
+                    <Divider mb="lg"></Divider>
+                    <Runtime
+                      desktop={desktop}
+                      runtimeValue={runtimeValue}
+                      setRuntimeValue={setRuntimeValue}
+                    />
+                  </Box>
+                ) : null}
+                <Divider my="lg"></Divider>
+
+                <Genres
+                  mediaType={type}
+                  desktop={desktop}
+                  handleButtonClick={handleButtonClick}
+                  isGenreSelected={isGenreSelected}
+                />
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+        )}
+      </Box>
     </>
   );
 }

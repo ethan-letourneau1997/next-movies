@@ -71,20 +71,7 @@ export default function DiscoverGrid(props: {
                         </Text>
                       </Flex>
                     )}
-                    {/* {item.certification && !desktop && (
-                      <Text
-                        sx={(theme) => ({
-                          // border: "1.3px solid #585757",
-                          // paddingLeft: 6,
-                          // paddingRight: 6,
-                        })}
-                        c="brand.4"
-                        fw={600}
-                        fz={desktop ? "xs" : "xs"}
-                      >
-                        {item.certification}
-                      </Text>
-                    )} */}
+
                     <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
                       {item.release_date?.substring(0, 4) ||
                         item.first_air_date?.substring(0, 4)}
