@@ -1,19 +1,14 @@
-import { Accordion, AutocompleteItem, Box, Divider, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Accordion, Box, Divider, Text } from "@mantine/core";
 
 import { BsChevronRight } from "react-icons/bs";
 import DatePickers from "./disoverAccordianComponents/datePickers";
 import Genres from "./disoverAccordianComponents/genreToggles";
 import Keywords from "./disoverAccordianComponents/keywordAutocomplete";
-import { MediaItemType } from "../../../types";
 import Runtime from "./disoverAccordianComponents/runtimeSlider";
 import { ShowMe } from "./disoverAccordianComponents/showMeRadio";
 import SortBy from "./disoverAccordianComponents/sortBySelect";
 import UserScore from "./disoverAccordianComponents/userScoreSlider";
 import WhereToWatch from "./disoverAccordianComponents/whereToWatch";
-import { dateToString } from "../../pages/api/format";
-import { fetchDiscover } from "@/pages/api/dicsoverAPI";
-import { movieCertifications } from "../../../data/discoverData";
 import { useStore } from "@/store/store";
 
 interface DiscoverPropTypes {
@@ -29,70 +24,7 @@ export default function Discover({
 }: DiscoverPropTypes) {
   const isMovie = type === "movie";
 
-  const mediaType = type;
-
-  const [items, setItems] = useState<MediaItemType[]>([]);
-
-  // * --------------- Certifications (MPAA ratings) ----------------------
-
-  // const [certifications, setCertifications] =
-  //   useState<string[]>(movieCertifications);
-
-  // const certificationString = certifications
-  //   .map((certification) => certification)
-  //   .join("|");
-
-  // // * --------------- retrieve states from useStore ----------------------
-
-  // const startDate = useStore((state) => state.startDate);
-  // const endDate = useStore((state) => state.endDate);
-  // const genres = useStore((state) => state.genres);
-  // const keywords = useStore((state) => state.keywordString);
-  // const sortBy = useStore((state) => state.sortBy);
-  // const providersString = useStore((state) => state.selectedProvidersString);
-  // const scoreSliderValue = useStore((state) => state.scoreSliderValue);
-  // const runtimeSliderValue = useStore((state) => state.runtimeSliderValue);
-
-  // // * API calls
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetchDiscover(
-  //     mediaType,
-  //     sortBy,
-  //     genres.map((genre) => genre).join(", "),
-  //     dateToString(startDate),
-  //     dateToString(endDate),
-  //     (scoreSliderValue[0] / 10).toString(),
-  //     (scoreSliderValue[1] / 10).toString(),
-  //     runtimeSliderValue[0].toString(),
-  //     runtimeSliderValue[1].toString(),
-  //     keywords,
-  //     providersString,
-  //     certificationString
-  //   )
-  //     .then((data) => {
-  //       setItems(data);
-  //       setResults(data);
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, [
-  //   mediaType,
-
-  //   certificationString,
-  //   setResults,
-  //   setLoading,
-  //   startDate,
-  //   endDate,
-  //   genres,
-  //   keywords,
-  //   sortBy,
-  //   providersString,
-  //   scoreSliderValue,
-  //   runtimeSliderValue,
-  // ]);
+  const showMeValue = useStore((state) => state.showMeValue);
 
   return (
     <>
@@ -144,7 +76,10 @@ export default function Discover({
               </Accordion.Panel>
             </Accordion.Item>
             <Accordion.Item value="where to watch">
-              <Accordion.Control px="md">
+              <Accordion.Control
+                px="md"
+                disabled={showMeValue === "all" ? false : true}
+              >
                 <Text fw={500}>Where to Watch</Text>
               </Accordion.Control>
               <Accordion.Panel>

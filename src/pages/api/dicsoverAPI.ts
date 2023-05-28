@@ -1,11 +1,8 @@
 import { MediaItemType } from "../../../types";
-
-// const temp =
-//   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
+import { useState } from "react";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
-// * Fetches discover media items from TMDB API
 export async function fetchDiscover(
   mediaType: string,
   sortBy: string,
@@ -21,9 +18,6 @@ export async function fetchDiscover(
   certifications: string,
   page: number
 ): Promise<MediaItemType[]> {
-  const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
-
-  //* extras based on filters
   let extras = "";
 
   if (sortBy === "vote_average") {
@@ -39,12 +33,14 @@ export async function fetchDiscover(
   const data = await response.json();
 
   const mediaWithDetails = await Promise.all(
-    data.results.map(async (media: { id: number }) => {
+    data.results.map(async (media: { id: number; popularity: number }) => {
       const { certification, runtimeOrEpisodeLength, lastAirDate } =
         await fetchReleaseDates(mediaType, media.id);
 
-      // Add the certification and runtime/episode length to the media
-      // object
+      // Filter out media items with popularity less than 10
+      if (media.popularity < 10) {
+        return null;
+      }
 
       return {
         ...media,
@@ -55,7 +51,10 @@ export async function fetchDiscover(
     })
   );
 
-  return mediaWithDetails;
+  // Remove any null values from the filtered media array
+  const filteredMedia = mediaWithDetails.filter((media) => media !== null);
+
+  return filteredMedia;
 }
 
 export const fetchReleaseDates = async (mediaType: string, mediaId: number) => {

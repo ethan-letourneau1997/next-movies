@@ -1,21 +1,25 @@
 import {
+  Affix,
   Button,
   Container,
   Flex,
-  Pagination,
   Text,
   Title,
+  Transition,
+  rem,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useMediaQuery, useWindowScroll } from "@mantine/hooks";
 
 import Discover from "./discoverAccordian";
 import DiscoverGrid from "./discoverGrid";
 import DiscoverGridLoading from "./discoverGridLoading";
+import { IconArrowUp } from "@tabler/icons-react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { MediaItemType } from "../../../types";
 import { dateToString } from "@/pages/api/format";
 import { fetchDiscover } from "@/pages/api/dicsoverAPI";
 import { movieCertifications } from "../../../data/discoverData";
-import { useMediaQuery } from "@mantine/hooks";
 import { useStore } from "@/store/store";
 
 interface DiscoverLayoutProps {
@@ -23,16 +27,16 @@ interface DiscoverLayoutProps {
 }
 
 export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
-  const [results, setResults] = useState<MediaItemType[]>([]);
+  const [items, setItems] = useState<MediaItemType[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [scroll, scrollTo] = useWindowScroll();
 
   // responsive styles
   const desktop = useMediaQuery("(min-width: 768px)");
 
   // loading state
   const [isLoading, setIsLoading] = useState(true);
-
-  // Page number
-  const [activePage, setPage] = useState(1);
 
   // * --------------- retrieve states from useStore ----------------------
 
@@ -57,6 +61,7 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
   // * API calls
   useEffect(() => {
     setIsLoading(true);
+    setHasMore(true);
     fetchDiscover(
       type,
       sortBy,
@@ -70,11 +75,10 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
       keywords,
       providersString,
       certificationString,
-      activePage
+      1
     )
       .then((data) => {
-        setResults(data);
-        setResults(data);
+        setItems(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -82,9 +86,7 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
       });
   }, [
     type,
-
     certificationString,
-    setResults,
     setIsLoading,
     startDate,
     endDate,
@@ -94,11 +96,55 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
     providersString,
     scoreSliderValue,
     runtimeSliderValue,
-    activePage,
   ]);
+
+  const fetchMoreItems = () => {
+    const nextPage = Math.ceil(items.length / 20) + 1; // Adjust the page size as per your API's response
+
+    fetchDiscover(
+      type,
+      sortBy,
+      genres.map((genre) => genre).join(", "),
+      dateToString(startDate),
+      dateToString(endDate),
+      (scoreSliderValue[0] / 10).toString(),
+      (scoreSliderValue[1] / 10).toString(),
+      runtimeSliderValue[0].toString(),
+      runtimeSliderValue[1].toString(),
+      keywords,
+      providersString,
+      certificationString,
+      nextPage
+    )
+      .then((data) => {
+        if (data.length === 0) {
+          setHasMore(false);
+          console.log(data.length);
+        } else {
+          setItems((prevItems) => [...prevItems, ...data]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div>
+      <Affix position={{ bottom: rem(60), right: rem(40) }}>
+        <Transition transition="slide-up" mounted={scroll.y > 0}>
+          {(transitionStyles) => (
+            <Button
+              leftIcon={<IconArrowUp size="1rem" />}
+              color="indigo"
+              style={transitionStyles}
+              onClick={() => scrollTo({ y: 0 })}
+            >
+              Scroll to top
+            </Button>
+          )}
+        </Transition>
+      </Affix>
       <Flex mt="xl" direction={desktop ? "row" : "column"}>
         <Discover type={type} desktop={desktop} />
         <Container
@@ -113,23 +159,18 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
           <Title size="h2">Discover Movies</Title>
           {isLoading ? (
             <DiscoverGridLoading />
+          ) : items.length === 0 ? (
+            <Text>No results to display</Text>
           ) : (
-            <>
-              <DiscoverGrid
-                mediaType="movie"
-                items={results}
-                upcoming={false}
-              />
-              {results.length === 0 ? <Text>No results to display</Text> : null}
-              <>
-                {/* <Pagination
-                  total={20}
-                  siblings={1}
-                  value={activePage}
-                  onChange={setPage}
-                /> */}
-              </>
-            </>
+            <InfiniteScroll
+              dataLength={items.length}
+              next={fetchMoreItems}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>} // Replace with your loading indicator
+              endMessage={<Text>No more results to display</Text>} // Replace with your end message
+            >
+              <DiscoverGrid mediaType="movie" items={items} upcoming={false} />
+            </InfiniteScroll>
           )}
         </Container>
       </Flex>

@@ -1,12 +1,6 @@
 export const sortByData = [
   { value: "popularity", label: "popularity" },
-  { value: "release_date", label: "release date" },
   { value: "revenue", label: "revenue" },
-  {
-    value: "primary_release_date",
-    label: "primary release date",
-  },
-  { value: "original_title", label: "original title" },
   { value: "vote_average", label: "vote average" },
   { value: "vote_count", label: "vote count" },
 ];

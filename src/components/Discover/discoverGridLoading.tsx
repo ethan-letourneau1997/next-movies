@@ -32,6 +32,48 @@ export default function DiscoverGridLoading() {
       <Grid.Col span={12} lg={6}>
         <MediaItemSkeleton />
       </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
+
+      <Grid.Col span={12} lg={6}>
+        <MediaItemSkeleton />
+      </Grid.Col>
     </Grid>
   );
 }

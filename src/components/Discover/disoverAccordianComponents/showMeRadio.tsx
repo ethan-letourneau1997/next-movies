@@ -10,7 +10,7 @@ export function ShowMe() {
 
   return (
     <Radio.Group
-      description="Select 'All' to change  dates."
+      description="Select 'All' to access all filters."
       name="showMe"
       label="Show me"
       value={showMe}

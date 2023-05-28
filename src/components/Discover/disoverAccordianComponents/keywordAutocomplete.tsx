@@ -64,7 +64,7 @@ export default function Keywords() {
   };
 
   useEffect(() => {
-    updateKeywordString(keywords.map((keyword) => keyword.id).join("|"));
+    updateKeywordString(keywords.map((keyword) => keyword.id).join(","));
   }, [keywords, updateKeywordString]);
 
   function handleSubmit(item: AutocompleteItem): void {
