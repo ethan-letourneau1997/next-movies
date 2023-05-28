@@ -13,7 +13,7 @@ export default function Runtime({ desktop }: GenreTypes) {
     state.updateRuntimeSliderValue,
   ]);
   return (
-    <Box px="md">
+    <Box>
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>
         Runtime
       </Text>

@@ -22,7 +22,7 @@ export default function DatePickers({ desktop }: CheckBoxTypes) {
   const showMeValue = useStore((state) => state.showMeValue);
 
   return (
-    <Box px="md">
+    <Box>
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>
         Release Dates
       </Text>

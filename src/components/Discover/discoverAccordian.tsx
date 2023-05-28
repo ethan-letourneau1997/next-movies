@@ -3,43 +3,28 @@ import { useEffect, useState } from "react";
 
 import { BsChevronRight } from "react-icons/bs";
 import DatePickers from "./disoverAccordianComponents/datePickers";
-import Genres from "./disoverAccordianComponents/genres";
-import Keywords from "./disoverAccordianComponents/keyword";
+import Genres from "./disoverAccordianComponents/genreToggles";
+import Keywords from "./disoverAccordianComponents/keywordAutocomplete";
 import { MediaItemType } from "../../../types";
-import Runtime from "./disoverAccordianComponents/runtime";
-import { ShowMe } from "./showMe";
-import SortBy from "./disoverAccordianComponents/sortBy";
-import UserScore from "./disoverAccordianComponents/userScore";
+import Runtime from "./disoverAccordianComponents/runtimeSlider";
+import { ShowMe } from "./disoverAccordianComponents/showMeRadio";
+import SortBy from "./disoverAccordianComponents/sortBySelect";
+import UserScore from "./disoverAccordianComponents/userScoreSlider";
 import WhereToWatch from "./disoverAccordianComponents/whereToWatch";
 import { dateToString } from "../../pages/api/format";
 import { fetchDiscover } from "@/pages/api/dicsoverAPI";
 import { movieCertifications } from "../../../data/discoverData";
 import { useStore } from "@/store/store";
 
-interface DiscoverTypes {
-  items: MediaItemType[];
-  sortBy: string;
-  selectedGenres: (string | AutocompleteItem | null)[];
-  startDate: Date | null;
-  endDate: Date;
-  keywords: AutocompleteItem[];
-  type: string;
-  setResults: any;
-  setLoading: any;
-  desktop?: boolean;
-}
-
 interface DiscoverPropTypes {
   type: string;
-  setResults: any;
-  setLoading: any;
+
   desktop: boolean;
 }
 
 export default function Discover({
   type,
-  setResults,
-  setLoading,
+
   desktop,
 }: DiscoverPropTypes) {
   const isMovie = type === "movie";
@@ -48,81 +33,66 @@ export default function Discover({
 
   const [items, setItems] = useState<MediaItemType[]>([]);
 
-  //* Discover state
-  const [state, setState] = useState<DiscoverTypes>({
-    type: "", // Add the 'type' property with an appropriate type
-    setResults: () => {}, // Add the 'setResults' property with an appropriate type
-    setLoading: () => {}, // Add the 'setLoading' property with an appropriate type
-    items: [],
-    sortBy: "popularity",
-    selectedGenres: [],
-    startDate: null,
-    endDate: new Date(),
-    keywords: [],
-  });
-
   // * --------------- Certifications (MPAA ratings) ----------------------
 
-  const [certifications, setCertifications] =
-    useState<string[]>(movieCertifications);
+  // const [certifications, setCertifications] =
+  //   useState<string[]>(movieCertifications);
 
-  const certificationString = certifications
-    .map((certification) => certification)
-    .join("|");
+  // const certificationString = certifications
+  //   .map((certification) => certification)
+  //   .join("|");
 
-  // * --------------- retrieve states from useStore ----------------------
+  // // * --------------- retrieve states from useStore ----------------------
 
-  const startDate = useStore((state) => state.startDate);
-  const endDate = useStore((state) => state.endDate);
-  const genres = useStore((state) => state.genres);
-  const keywords = useStore((state) => state.keywordString);
-  const sortBy = useStore((state) => state.sortBy);
-  const providersString = useStore((state) => state.selectedProvidersString);
-  const scoreSliderValue = useStore((state) => state.scoreSliderValue);
-  const runtimeSliderValue = useStore((state) => state.runtimeSliderValue);
+  // const startDate = useStore((state) => state.startDate);
+  // const endDate = useStore((state) => state.endDate);
+  // const genres = useStore((state) => state.genres);
+  // const keywords = useStore((state) => state.keywordString);
+  // const sortBy = useStore((state) => state.sortBy);
+  // const providersString = useStore((state) => state.selectedProvidersString);
+  // const scoreSliderValue = useStore((state) => state.scoreSliderValue);
+  // const runtimeSliderValue = useStore((state) => state.runtimeSliderValue);
 
-  // * API calls
-  useEffect(() => {
-    setLoading(true);
-    fetchDiscover(
-      mediaType,
-      sortBy,
-      genres.map((genre) => genre).join(", "),
-      dateToString(startDate),
-      dateToString(endDate),
-      (scoreSliderValue[0] / 10).toString(),
-      (scoreSliderValue[1] / 10).toString(),
-      runtimeSliderValue[0].toString(),
-      runtimeSliderValue[1].toString(),
-      keywords,
-      providersString,
-      certificationString
-    )
-      .then((data) => {
-        setItems(data);
-        setResults(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [
-    state,
+  // // * API calls
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetchDiscover(
+  //     mediaType,
+  //     sortBy,
+  //     genres.map((genre) => genre).join(", "),
+  //     dateToString(startDate),
+  //     dateToString(endDate),
+  //     (scoreSliderValue[0] / 10).toString(),
+  //     (scoreSliderValue[1] / 10).toString(),
+  //     runtimeSliderValue[0].toString(),
+  //     runtimeSliderValue[1].toString(),
+  //     keywords,
+  //     providersString,
+  //     certificationString
+  //   )
+  //     .then((data) => {
+  //       setItems(data);
+  //       setResults(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [
+  //   mediaType,
 
-    mediaType,
-
-    certificationString,
-    setResults,
-    setLoading,
-    startDate,
-    endDate,
-    genres,
-    keywords,
-    sortBy,
-    providersString,
-    scoreSliderValue,
-    runtimeSliderValue,
-  ]);
+  //   certificationString,
+  //   setResults,
+  //   setLoading,
+  //   startDate,
+  //   endDate,
+  //   genres,
+  //   keywords,
+  //   sortBy,
+  //   providersString,
+  //   scoreSliderValue,
+  //   runtimeSliderValue,
+  // ]);
 
   return (
     <>
@@ -178,9 +148,9 @@ export default function Discover({
                 <Text fw={500}>Where to Watch</Text>
               </Accordion.Control>
               <Accordion.Panel>
-                <WhereToWatch desktop={desktop} />
+                <Divider mb="lg" />
                 <Box px="md">
-                  <Divider mb="lg"></Divider>
+                  <WhereToWatch desktop={desktop} />
                 </Box>
               </Accordion.Panel>
             </Accordion.Item>
@@ -192,7 +162,10 @@ export default function Discover({
                 <Divider mb="lg"></Divider>
                 {isMovie ? (
                   <>
-                    <ShowMe />
+                    <Box px="md">
+                      <ShowMe />
+                    </Box>
+
                     <Divider my="lg"></Divider>
                   </>
                 ) : null}
@@ -201,20 +174,29 @@ export default function Discover({
                   <Keywords />
                 </Box>
                 <Divider my="lg"></Divider>
-                <DatePickers desktop={desktop} />
+
+                <Box px="md">
+                  <DatePickers desktop={desktop} />
+                </Box>
 
                 <Divider my="lg"></Divider>
-                <UserScore desktop={desktop} />
+                <Box px="md">
+                  <UserScore desktop={desktop} />
+                </Box>
 
                 {isMovie ? (
                   <Box pb="xl">
                     <Divider mb="lg"></Divider>
-                    <Runtime desktop={desktop} />
+                    <Box px="md">
+                      <Runtime desktop={desktop} />
+                    </Box>
                   </Box>
                 ) : null}
                 <Divider my="lg"></Divider>
 
-                <Genres mediaType={type} desktop={desktop} />
+                <Box px="md">
+                  <Genres mediaType={type} desktop={desktop} />
+                </Box>
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>

@@ -4,13 +4,12 @@ import { Container } from "@mantine/core";
 import DiscoverLayout from "@/components/Discover/discoverLayout";
 import { useStore } from "@/store/store";
 
-export default function UpcomingMovies() {
+export default function NowPlayingMovies() {
   const updateShowMeValue = useStore((state) => state.updateShowMeValue);
   const [isLoading, setIsLoading] = useState(true);
 
-  // set states for Upcoming
   useEffect(() => {
-    updateShowMeValue("all"); // Set the showMeValue as "upcoming" when the component renders
+    updateShowMeValue("nowPlaying"); // Set the showMeValue as "nowPlaying" when the component renders
     useStore.setState({
       genres: [],
       keywordString: "",
@@ -19,6 +18,7 @@ export default function UpcomingMovies() {
       scoreSliderValue: [0, 100],
       runtimeSliderValue: [0, 350],
     });
+
     setIsLoading(false); // Mark the useEffect as finished
   }, []);
 
@@ -28,7 +28,7 @@ export default function UpcomingMovies() {
 
   return (
     <Container fluid>
-      <DiscoverLayout type="tv" />
+      <DiscoverLayout type="movie" />
     </Container>
   );
 }

@@ -14,7 +14,7 @@ export default function UserScore({ desktop }: UserScoreTypes) {
   ]);
 
   return (
-    <Box px="md" pb="md">
+    <Box pb="md">
       {" "}
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>
         User Score

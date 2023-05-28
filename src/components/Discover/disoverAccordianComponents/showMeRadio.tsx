@@ -10,15 +10,16 @@ export function ShowMe() {
 
   return (
     <Radio.Group
+      description="Select 'All' to change  dates."
       name="showMe"
       label="Show me"
       value={showMe}
       onChange={updateShowMeValue}
     >
       <Stack>
-        <Radio value="all" label="all"></Radio>
-        <Radio value="nowPlaying" label="nowPlaying"></Radio>
-        <Radio value="upcoming" label="upcoming"></Radio>
+        <Radio color="indigo" value="all" label="all"></Radio>
+        <Radio color="indigo" value="nowPlaying" label="nowPlaying"></Radio>
+        <Radio color="indigo" value="upcoming" label="upcoming"></Radio>
       </Stack>
     </Radio.Group>
   );

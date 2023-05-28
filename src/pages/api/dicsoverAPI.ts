@@ -18,7 +18,8 @@ export async function fetchDiscover(
   runtimeMax: string,
   keywords: string,
   providers: string,
-  certifications: string
+  certifications: string,
+  page: number
 ): Promise<MediaItemType[]> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
@@ -30,7 +31,7 @@ export async function fetchDiscover(
   }
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}${extras}&sort_by=${sortBy}.desc&with_genres=${genres}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${bottomScore}&vote_average.lte=${topScore}&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&air_date.gte=${startDate}&air_date.lte=${endDate}&with_keywords=${keywords}&watch_region=US&with_watch_providers=${providers}&certification=${certifications}&certification_country=US&&with_original_language=en&language=en-US`
+    `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}${extras}&sort_by=${sortBy}.desc&with_genres=${genres}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${bottomScore}&vote_average.lte=${topScore}&with_runtime.gte=${runtimeMin}&with_runtime.lte=${runtimeMax}&air_date.gte=${startDate}&air_date.lte=${endDate}&with_keywords=${keywords}&watch_region=US&with_watch_providers=${providers}&certification=${certifications}&certification_country=US&&with_original_language=en&language=en-US&page=${page}`
   );
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);

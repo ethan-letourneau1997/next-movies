@@ -1,4 +1,3 @@
-import { AutocompleteItem } from "@mantine/core";
 import { create } from "zustand";
 
 // date variables
@@ -25,7 +24,7 @@ type State = {
 };
 
 type Action = {
-  updateShowMeValue?: (showMeValue: State["showMeValue"]) => void;
+  updateShowMeValue: (showMeValue: State["showMeValue"]) => void;
   updateStartDate?: (startDate: State["startDate"]) => void;
   updateEndDate?: (endDate: State["endDate"]) => void;
   updateGenres: (genreId: string) => void;

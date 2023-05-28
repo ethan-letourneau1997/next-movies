@@ -25,7 +25,7 @@ export default function Genres({
   const isGenreSelected = (genreId: string) => genres.includes(genreId);
 
   return (
-    <Box px="md">
+    <Box>
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>
         Genres
       </Text>

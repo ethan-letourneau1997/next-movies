@@ -71,9 +71,7 @@ function WhereToWatchSection({ desktop }: WhereToWatchTypes) {
   }, []);
 
   return (
-    <Box px="md">
-      <Divider mb="lg" />
-
+    <Box>
       <Text fz={desktop ? "md" : "md"} mb={desktop ? "" : "xl"}>
         Sort results by provider:
       </Text>

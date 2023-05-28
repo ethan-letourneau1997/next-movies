@@ -83,8 +83,8 @@ export default function Keywords() {
         value={searchTerm}
         onItemSubmit={handleSubmit}
         onChange={setSearchTerm}
-        label="Your favorite framework/library"
-        placeholder="Pick one"
+        label="Keywords"
+        placeholder="Type keyword"
         data={keywordSearchResults}
       />
 

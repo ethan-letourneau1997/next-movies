@@ -113,7 +113,7 @@ export default function DesktopHeader() {
 
           <NavLink
             component={Link}
-            href="/movies/trending"
+            href="/movies/now_playing"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
@@ -122,7 +122,33 @@ export default function DesktopHeader() {
                 },
               },
             })}
-            label="Trending "
+            label="Now Playing"
+          />
+
+          <NavLink
+            component={Link}
+            href="/movies/upcoming"
+            styles={(theme) => ({
+              label: {
+                fontSize: theme.fontSizes.sm,
+                "&:hover": {
+                  color: "white",
+                },
+              },
+            })}
+            label="Upcoming"
+          />
+
+          <NavLink
+            styles={(theme) => ({
+              label: {
+                fontSize: theme.fontSizes.sm,
+                "&:hover": {
+                  color: "white",
+                },
+              },
+            })}
+            label="Top Box Office"
           />
 
           <NavLink
@@ -137,18 +163,6 @@ export default function DesktopHeader() {
               },
             })}
             label="Browse Movies"
-          />
-
-          <NavLink
-            styles={(theme) => ({
-              label: {
-                fontSize: theme.fontSizes.sm,
-                "&:hover": {
-                  color: "white",
-                },
-              },
-            })}
-            label="Top Box Office"
           />
         </Menu.Dropdown>
       </Menu>
