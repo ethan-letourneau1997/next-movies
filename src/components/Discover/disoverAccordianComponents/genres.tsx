@@ -1,21 +1,28 @@
 import { Box, Button, Flex, Text } from "@mantine/core";
 import { movieGenres, tvGenres } from "../../../../data/discoverData";
 
+import { useStore } from "@/store/store";
+
 interface GenresType {
   desktop: boolean;
-  isGenreSelected: (value: string) => boolean;
-  handleButtonClick: (value: string) => void;
+
   mediaType: string;
 }
 
 export default function Genres({
   desktop,
-  isGenreSelected,
-  handleButtonClick,
+
   mediaType,
 }: GenresType) {
   const isMovie = mediaType === "movie";
   const genresData = isMovie ? movieGenres : tvGenres;
+
+  const [genres, updateGenres] = useStore((state) => [
+    state.genres,
+    state.updateGenres,
+  ]);
+
+  const isGenreSelected = (genreId: string) => genres.includes(genreId);
 
   return (
     <Box px="md">
@@ -30,7 +37,7 @@ export default function Genres({
             key={genre.value}
             variant={isGenreSelected(genre.value) ? "filled" : "outline"}
             color={isGenreSelected(genre.value) ? "indigo.6" : "indigo.8"}
-            onClick={() => handleButtonClick(genre.value)}
+            onClick={() => updateGenres(genre.value)}
           >
             {genre.label}
           </Button>

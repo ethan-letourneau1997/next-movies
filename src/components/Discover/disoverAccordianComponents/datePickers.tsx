@@ -1,25 +1,26 @@
 import { Box, Flex, Text } from "@mantine/core";
-import { DatePickerInput, DateValue } from "@mantine/dates";
 
+import { DatePickerInput } from "@mantine/dates";
 import { IconCalendarTime } from "@tabler/icons-react";
+import { useStore } from "@/store/store";
 
 interface CheckBoxTypes {
   desktop: boolean;
-  checkedAll: boolean;
-  startDate: Date | null;
-  endDate: Date;
-  handleStartDateChange: (value: DateValue) => void;
-  handleEndDateChange: (value: DateValue) => void;
 }
 
-export default function DatePickers({
-  desktop,
-  checkedAll,
-  startDate,
-  endDate,
-  handleStartDateChange,
-  handleEndDateChange,
-}: CheckBoxTypes) {
+export default function DatePickers({ desktop }: CheckBoxTypes) {
+  const [startDate, setStartDate] = useStore((state) => [
+    state.startDate,
+    state.updateStartDate,
+  ]);
+
+  const [endDate, setEndDate] = useStore((state) => [
+    state.endDate,
+    state.updateEndDate,
+  ]);
+
+  const showMeValue = useStore((state) => state.showMeValue);
+
   return (
     <Box px="md">
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>
@@ -30,11 +31,11 @@ export default function DatePickers({
           From
         </Text>
         <DatePickerInput
-          disabled={!checkedAll}
+          disabled={showMeValue != "all"}
           icon={<IconCalendarTime size={16} stroke={1.5} />}
           defaultLevel="decade"
           value={startDate}
-          onChange={handleStartDateChange}
+          onChange={setStartDate}
           mx="auto"
           styles={(theme) => ({
             label: {
@@ -55,11 +56,11 @@ export default function DatePickers({
           To
         </Text>
         <DatePickerInput
-          disabled={!checkedAll}
+          disabled={showMeValue != "all"}
           icon={<IconCalendarTime size={16} stroke={1.5} />}
           defaultLevel="year"
           value={endDate}
-          onChange={handleEndDateChange}
+          onChange={setEndDate}
           mx="auto"
           sx={{
             flexGrow: 1,

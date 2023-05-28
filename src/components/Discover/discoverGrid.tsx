@@ -1,22 +1,19 @@
 import {
   AspectRatio,
   Box,
-  Button,
-  Collapse,
   Divider,
   Flex,
   Grid,
-  Group,
   Spoiler,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
 import { MediaItemType } from "../../../types";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function DiscoverGrid(props: {
   mediaType: string;

@@ -7,7 +7,11 @@ import { MediaItemType } from "../../../../types";
 import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 
-export default function DiscoverLayout(props: { type: string }) {
+interface DiscoverLayoutProps {
+  type: string;
+}
+
+export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
   const [results, setResults] = useState<MediaItemType[]>([]);
 
   // responsive styles
@@ -17,19 +21,16 @@ export default function DiscoverLayout(props: { type: string }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // upcoming title state
-  const [upcoming, setUpcoming] = useState(true);
 
   return (
     <div>
       <Flex mt="xl" direction={desktop ? "row" : "column"}>
         <Discover
-          type={props.type}
+          type={type}
           setResults={setResults}
           setLoading={setIsLoading}
           desktop={desktop}
-          upcoming={setUpcoming}
         />
-
         <Container
           mt={desktop ? 0 : "xl"}
           fluid
@@ -47,7 +48,7 @@ export default function DiscoverLayout(props: { type: string }) {
               <DiscoverGrid
                 mediaType="movie"
                 items={results}
-                upcoming={upcoming}
+                upcoming={false}
               />
               {results.length === 0 ? <Text>No results to display</Text> : null}
             </>

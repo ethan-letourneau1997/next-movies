@@ -1,17 +1,16 @@
 import { Select } from "@mantine/core";
-import { SelectProps } from "@mantine/core";
+import { sortByData } from "../../../../data/discoverData";
+import { useStore } from "@/store/store";
 
 interface SortByProps {
-  handleSortBy: (value: string) => void;
-  sortByData: SelectProps["data"];
   desktop: boolean;
 }
 
-export default function SortBy({
-  handleSortBy,
-  sortByData,
-  desktop,
-}: SortByProps) {
+export default function SortBy({ desktop }: SortByProps) {
+  const [sortBy, updateSortBy] = useStore((state) => [
+    state.sortBy,
+    state.updateSortBy,
+  ]);
   return (
     <Select
       label="Sort Results By"
@@ -19,7 +18,7 @@ export default function SortBy({
       defaultChecked
       defaultValue="popularity"
       placeholder="Pick one"
-      onChange={(value) => handleSortBy(value ?? "")}
+      onChange={(value) => updateSortBy(value ?? "")}
       data={sortByData}
       styles={(theme) => ({
         label: {

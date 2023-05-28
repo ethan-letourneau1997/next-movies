@@ -8,27 +8,67 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
-import React from "react";
 import { WatchProvider } from "../../../../types";
 import { useElementSize } from "@mantine/hooks";
+import { useStore } from "@/store/store";
 
 interface WhereToWatchTypes {
-  handleProviderClick: (value: string) => void;
-  providers: WatchProvider[];
   desktop: boolean;
-  selectedProviders: string[];
 }
 
-function WhereToWatchSection({
-  desktop,
-  handleProviderClick,
-  providers,
-  selectedProviders,
-}: WhereToWatchTypes) {
+function WhereToWatchSection({ desktop }: WhereToWatchTypes) {
   // height ref for spoiler
-  const { ref, width, height } = useElementSize();
+  const { ref, height } = useElementSize();
+
+  const [providers, setProviders] = useState<WatchProvider[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+
+  const [selectedProvidersString, updateSelectedProviderString] = useStore(
+    (state) => [
+      state.selectedProvidersString,
+      state.updateSelectedProvidersString,
+    ]
+  );
+
+  const handleProviderClick = (providerId: string) => {
+    if (selectedProviders.includes(providerId)) {
+      // Remove id from providers
+      setSelectedProviders(
+        selectedProviders.filter((value) => value !== providerId)
+      );
+    } else {
+      // Add id to providers
+      setSelectedProviders([...selectedProviders, providerId]);
+    }
+  };
+
+  useEffect(() => {
+    updateSelectedProviderString(
+      selectedProviders.map((provider) => provider).join("|")
+    );
+  }, [selectedProviders, updateSelectedProviderString]);
+
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZmQ3YTg3NjRlNjUyMjYyOWEzYjdlNzhjNDUyYzM0OCIsInN1YiI6IjY0MDE0MmY4YzcxNzZkMDA5ZDZmMjM5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UVopQkVmwaUxWoFjisYglulnsEZvcy9cwHEKA1CFJC4",
+      },
+    };
+
+    fetch(
+      "https://api.themoviedb.org/3/watch/providers/movie?language=en-US&watch_region=US",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => setProviders(response.results))
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <Box px="md">

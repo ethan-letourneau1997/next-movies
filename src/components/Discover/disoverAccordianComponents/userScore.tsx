@@ -1,19 +1,18 @@
 import { Box, RangeSlider, Text } from "@mantine/core";
 
-import { RangeSliderProps } from "@mantine/core";
 import { scoreMarks } from "../../../../data/discoverData";
+import { useStore } from "@/store/store";
 
 interface UserScoreTypes {
   desktop: boolean;
-  scoreValue: [number, number];
-  setScoreValue: RangeSliderProps["onChange"];
 }
 
-export default function UserScore({
-  desktop,
-  scoreValue,
-  setScoreValue,
-}: UserScoreTypes) {
+export default function UserScore({ desktop }: UserScoreTypes) {
+  const [scoreValue, setScoreValue] = useStore((state) => [
+    state.scoreSliderValue,
+    state.updateScoreSlidertValue,
+  ]);
+
   return (
     <Box px="md" pb="md">
       {" "}

@@ -1,29 +1,20 @@
-import {
-  Accordion,
-  AutocompleteItem,
-  Box,
-  CloseButton,
-  Divider,
-  Flex,
-  Text,
-} from "@mantine/core";
-import { MediaItemType, WatchProvider } from "../../../types";
-import { movieGenres, sortByData, tvGenres } from "../../../data/discoverData";
-import { useDisclosure, useElementSize } from "@mantine/hooks";
+import { Accordion, AutocompleteItem, Box, Divider, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { BsChevronRight } from "react-icons/bs";
-import Checkboxes from "./disoverAccordianComponents/checkBoxes";
 import DatePickers from "./disoverAccordianComponents/datePickers";
 import Genres from "./disoverAccordianComponents/genres";
-import KeywordSearch from "./disoverAccordianComponents/keywordSearch";
+import Keywords from "./disoverAccordianComponents/keyword";
+import { MediaItemType } from "../../../types";
 import Runtime from "./disoverAccordianComponents/runtime";
+import { ShowMe } from "./showMe";
 import SortBy from "./disoverAccordianComponents/sortBy";
 import UserScore from "./disoverAccordianComponents/userScore";
 import WhereToWatch from "./disoverAccordianComponents/whereToWatch";
 import { dateToString } from "../../pages/api/format";
-import { fetchDiscover } from "@/pages/api/dicsover";
+import { fetchDiscover } from "@/pages/api/dicsoverAPI";
 import { movieCertifications } from "../../../data/discoverData";
+import { useStore } from "@/store/store";
 
 interface DiscoverTypes {
   items: MediaItemType[];
@@ -43,7 +34,6 @@ interface DiscoverPropTypes {
   setResults: any;
   setLoading: any;
   desktop: boolean;
-  upcoming: any;
 }
 
 export default function Discover({
@@ -51,15 +41,9 @@ export default function Discover({
   setResults,
   setLoading,
   desktop,
-  upcoming,
 }: DiscoverPropTypes) {
-  // responsive styles
-
-  // loading state
-  // const [isLoading, setIsLoading] = useState(true);
-
   const isMovie = type === "movie";
-  const genresData = isMovie ? movieGenres : tvGenres;
+
   const mediaType = type;
 
   const [items, setItems] = useState<MediaItemType[]>([]);
@@ -77,97 +61,7 @@ export default function Discover({
     keywords: [],
   });
 
-  //*Discover functions
-  const handleSortBy = (value: string) => {
-    setState((prevState) => ({ ...prevState, sortBy: value }));
-  };
-
-  const handleStartDateChange = (date: Date | null) => {
-    setState((prevState) => ({ ...prevState, startDate: date }));
-  };
-
-  const handleEndDateChange = (date: Date | null) => {
-    setState((prevState) => ({
-      ...prevState,
-      endDate: date !== null ? date : new Date(),
-    }));
-  };
-
-  const handleKeywordClick = (item: AutocompleteItem): void => {
-    const keyword = item;
-    setState((prevState) => ({
-      ...prevState,
-      keywords: [...prevState.keywords, keyword],
-    }));
-  };
-
-  const handleButtonClick = (genreId: string) => {
-    if (buttonGenres.includes(genreId)) {
-      setButtonGenres(buttonGenres.filter((value) => value !== genreId));
-    } else {
-      setButtonGenres([...buttonGenres, genreId]);
-    }
-  };
-
-  // * ---------------  Genres ----------------------
-
-  const [buttonGenres, setButtonGenres] = useState<string[]>([]);
-
-  const selectedGenresString = buttonGenres.map((genre) => genre).join(", ");
-
-  const isGenreSelected = (genreId: string) => buttonGenres.includes(genreId);
-
-  // * --------------- Score Slider ----------------------
-
-  const [scoreValue, setScoreValue] = useState<[number, number]>([0, 100]);
-  let bottomScore = (scoreValue[0] / 10).toString();
-
-  let topScore = (scoreValue[1] / 10).toString();
-
-  // * --------------- Runtime Slider ----------------------
-
-  const [runtimeValue, setRuntimeValue] = useState<[number, number]>([0, 400]);
-
-  let runtimeMin = runtimeValue[0].toString();
-
-  let runtimeMax = runtimeValue[1].toString();
-
-  // * --------------- Keyword Search ----------------------
-
-  const keywordString: string = state.keywords
-    .map((keyword) => keyword.id)
-    .join("|");
-
-  // remove a keyword
-  function removeKeyword(id: number): void {
-    setState((prevState) => ({
-      ...prevState,
-      keywords: prevState.keywords.filter((keyword) => keyword.id !== id),
-    }));
-  }
-
-  // * --------------- Watch Providers ----------------------
-
-  const [providers, setProviders] = useState<WatchProvider[]>([]);
-  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
-
-  const selectedProvidersString = selectedProviders
-    .map((provider) => provider)
-    .join("| ");
-
-  const handleProviderClick = (providerId: string) => {
-    if (selectedProviders.includes(providerId)) {
-      // Remove id from providers
-      setSelectedProviders(
-        selectedProviders.filter((value) => value !== providerId)
-      );
-    } else {
-      // Add id to providers
-      setSelectedProviders([...selectedProviders, providerId]);
-    }
-  };
-
-  // * --------------- Certifications ----------------------
+  // * --------------- Certifications (MPAA ratings) ----------------------
 
   const [certifications, setCertifications] =
     useState<string[]>(movieCertifications);
@@ -176,22 +70,32 @@ export default function Discover({
     .map((certification) => certification)
     .join("|");
 
+  // * --------------- retrieve states from useStore ----------------------
+
+  const startDate = useStore((state) => state.startDate);
+  const endDate = useStore((state) => state.endDate);
+  const genres = useStore((state) => state.genres);
+  const keywords = useStore((state) => state.keywordString);
+  const sortBy = useStore((state) => state.sortBy);
+  const providersString = useStore((state) => state.selectedProvidersString);
+  const scoreSliderValue = useStore((state) => state.scoreSliderValue);
+  const runtimeSliderValue = useStore((state) => state.runtimeSliderValue);
+
   // * API calls
   useEffect(() => {
     setLoading(true);
     fetchDiscover(
       mediaType,
-      state.sortBy,
-      selectedGenresString,
-
-      dateToString(state.startDate),
-      dateToString(state.endDate),
-      bottomScore,
-      topScore,
-      runtimeMin,
-      runtimeMax,
-      keywordString,
-      selectedProvidersString,
+      sortBy,
+      genres.map((genre) => genre).join(", "),
+      dateToString(startDate),
+      dateToString(endDate),
+      (scoreSliderValue[0] / 10).toString(),
+      (scoreSliderValue[1] / 10).toString(),
+      runtimeSliderValue[0].toString(),
+      runtimeSliderValue[1].toString(),
+      keywords,
+      providersString,
       certificationString
     )
       .then((data) => {
@@ -204,85 +108,21 @@ export default function Discover({
       });
   }, [
     state,
-    selectedGenresString,
-    buttonGenres,
-    bottomScore,
-    topScore,
-    runtimeMin,
-    runtimeMax,
+
     mediaType,
-    keywordString,
-    selectedProvidersString,
+
     certificationString,
     setResults,
     setLoading,
+    startDate,
+    endDate,
+    genres,
+    keywords,
+    sortBy,
+    providersString,
+    scoreSliderValue,
+    runtimeSliderValue,
   ]);
-
-  useEffect(() => {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZmQ3YTg3NjRlNjUyMjYyOWEzYjdlNzhjNDUyYzM0OCIsInN1YiI6IjY0MDE0MmY4YzcxNzZkMDA5ZDZmMjM5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UVopQkVmwaUxWoFjisYglulnsEZvcy9cwHEKA1CFJC4",
-      },
-    };
-
-    fetch(
-      "https://api.themoviedb.org/3/watch/providers/movie?language=en-US&watch_region=US",
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => setProviders(response.results))
-      .catch((err) => console.error(err));
-  }, []);
-
-  const today = new Date();
-  const sixWeeksAgo = new Date(today.getTime() - 6 * 7 * 24 * 60 * 60 * 1000);
-
-  const nextMonday = new Date(
-    today.getTime() + ((7 - today.getDay()) % 7) * 24 * 60 * 60 * 1000
-  );
-  const fourWeeksAfterNextMonday = new Date(
-    nextMonday.getTime() + 4 * 7 * 24 * 60 * 60 * 1000
-  );
-
-  //* checkbox
-  const [checkedAll, setCheckedAll] = useState(true);
-  const toggleAll = () => {
-    setCheckedAll(!checkedAll);
-    handleStartDateChange(null);
-    handleEndDateChange(today);
-    setCheckedUpcoming(false);
-    setCheckedNowPlaying(false);
-  };
-
-  const [checkedNowPlaying, setCheckedNowPlaying] = useState(false);
-  const toggleNowPlaying = () => {
-    setCheckedNowPlaying(!checkedNowPlaying);
-    handleStartDateChange(sixWeeksAgo);
-    handleEndDateChange(today);
-    setCheckedUpcoming(false);
-    setCheckedAll(false);
-  };
-
-  const [checkedUpcoming, setCheckedUpcoming] = useState(false);
-
-  const toggleUpcoming = () => {
-    setCheckedUpcoming(!checkedUpcoming);
-    handleStartDateChange(nextMonday);
-    handleEndDateChange(fourWeeksAfterNextMonday);
-    setCheckedNowPlaying(false);
-    setCheckedAll(false);
-  };
-
-  upcoming(checkedUpcoming);
-
-  // filter dropdown state
-  const [opened, { toggle }] = useDisclosure(false);
-
-  // height ref for spoiler
-  const { ref, width, height } = useElementSize();
 
   return (
     <>
@@ -329,11 +169,7 @@ export default function Discover({
                 <Divider mb={desktop ? "lg" : "sm"}></Divider>
 
                 <Box px="md">
-                  <SortBy
-                    handleSortBy={handleSortBy}
-                    sortByData={sortByData}
-                    desktop={desktop}
-                  />
+                  <SortBy desktop={desktop} />
                 </Box>
               </Accordion.Panel>
             </Accordion.Item>
@@ -342,18 +178,9 @@ export default function Discover({
                 <Text fw={500}>Where to Watch</Text>
               </Accordion.Control>
               <Accordion.Panel>
-                <WhereToWatch
-                  desktop={desktop}
-                  handleProviderClick={handleProviderClick}
-                  providers={providers}
-                  selectedProviders={selectedProviders}
-                />
+                <WhereToWatch desktop={desktop} />
                 <Box px="md">
                   <Divider mb="lg"></Divider>
-
-                  <Text fz={desktop ? "md" : "md"} mb={desktop ? "" : "xl"}>
-                    Sort results by provider:
-                  </Text>
                 </Box>
               </Accordion.Panel>
             </Accordion.Item>
@@ -365,90 +192,29 @@ export default function Discover({
                 <Divider mb="lg"></Divider>
                 {isMovie ? (
                   <>
-                    <Checkboxes
-                      desktop={desktop}
-                      checkedAll={checkedAll}
-                      toggleAll={toggleAll}
-                      checkedNowPlaying={checkedNowPlaying}
-                      toggleNowPlaying={toggleNowPlaying}
-                      checkedUpcoming={checkedUpcoming}
-                      toggleUpcoming={toggleUpcoming}
-                      certifications={certifications}
-                      setCertifications={setCertifications}
-                      handleProviderClick={function (value: string): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                      providers={[]}
-                    />
-
+                    <ShowMe />
                     <Divider my="lg"></Divider>
                   </>
                 ) : null}
 
                 <Box px="md">
-                  {/* Render the KeywordSearch component */}
-                  <KeywordSearch
-                    handleKeywordClick={handleKeywordClick}
-                    keywords={state.keywords}
-                  />
-                  {/* Render the selected keywords */}
-                  <Flex mt="sm" gap="sm" wrap="wrap">
-                    {state.keywords.map((keyword) => (
-                      <Flex
-                        py={5}
-                        px="xs"
-                        bg="brand.7"
-                        align="center"
-                        key={keyword.id}
-                        sx={(theme) => ({
-                          borderRadius: theme.radius.sm,
-                        })}
-                      >
-                        <Text fz="sm"> {keyword.name}</Text>{" "}
-                        <CloseButton
-                          pt={3}
-                          size="xs"
-                          onClick={() => removeKeyword(keyword.id)}
-                        />
-                      </Flex>
-                    ))}
-                  </Flex>
+                  <Keywords />
                 </Box>
                 <Divider my="lg"></Divider>
-                <DatePickers
-                  desktop={desktop}
-                  handleStartDateChange={handleStartDateChange}
-                  handleEndDateChange={handleEndDateChange}
-                  startDate={state.startDate}
-                  endDate={state.endDate}
-                  checkedAll={checkedAll}
-                />
+                <DatePickers desktop={desktop} />
 
                 <Divider my="lg"></Divider>
-                <UserScore
-                  desktop={desktop}
-                  scoreValue={scoreValue}
-                  setScoreValue={setScoreValue}
-                />
+                <UserScore desktop={desktop} />
 
                 {isMovie ? (
                   <Box pb="xl">
                     <Divider mb="lg"></Divider>
-                    <Runtime
-                      desktop={desktop}
-                      runtimeValue={runtimeValue}
-                      setRuntimeValue={setRuntimeValue}
-                    />
+                    <Runtime desktop={desktop} />
                   </Box>
                 ) : null}
                 <Divider my="lg"></Divider>
 
-                <Genres
-                  mediaType={type}
-                  desktop={desktop}
-                  handleButtonClick={handleButtonClick}
-                  isGenreSelected={isGenreSelected}
-                />
+                <Genres mediaType={type} desktop={desktop} />
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>

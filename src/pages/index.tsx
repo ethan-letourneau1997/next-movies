@@ -1,17 +1,7 @@
-import {
-  Anchor,
-  Autocomplete,
-  Box,
-  Container,
-  Image,
-  Skeleton,
-  TextInput,
-  Title,
-} from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
+import { Box } from "@mantine/core";
 import HomeGrid from "@/components/home/homeGrid";
-import KeywordSearch from "@/components/Discover/disoverAccordianComponents/keywordSearch";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";

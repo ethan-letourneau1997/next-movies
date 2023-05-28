@@ -1,18 +1,17 @@
 import { Box, RangeSlider, Text } from "@mantine/core";
 
 import { runtimeMarks } from "../../../../data/discoverData";
+import { useStore } from "@/store/store";
 
 interface GenreTypes {
   desktop: boolean;
-  runtimeValue: [number, number];
-  setRuntimeValue: (value: [number, number]) => void;
 }
 
-export default function Runtime({
-  desktop,
-  runtimeValue,
-  setRuntimeValue,
-}: GenreTypes) {
+export default function Runtime({ desktop }: GenreTypes) {
+  const [runtimeValue, setRuntimeValue] = useStore((state) => [
+    state.runtimeSliderValue,
+    state.updateRuntimeSliderValue,
+  ]);
   return (
     <Box px="md">
       <Text fw={desktop ? 300 : 500} fz={desktop ? "md" : "md"}>

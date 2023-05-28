@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
 import { MediaItemType } from "../../types";
-import { fetchReleaseDates } from "@/pages/api/dicsover";
+import { fetchReleaseDates } from "@/pages/api/dicsoverAPI";
 import { fetchTop100 } from "../pages/api/tmdb";
 import { useMediaQuery } from "@mantine/hooks";
 
