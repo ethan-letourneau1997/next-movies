@@ -138,8 +138,9 @@ export default function DesktopHeader() {
             })}
             label="Upcoming"
           />
-
           <NavLink
+            component={Link}
+            href="/movies/highestGrossing"
             styles={(theme) => ({
               label: {
                 fontSize: theme.fontSizes.sm,
@@ -148,7 +149,7 @@ export default function DesktopHeader() {
                 },
               },
             })}
-            label="Top Box Office"
+            label="Box Office"
           />
 
           <NavLink

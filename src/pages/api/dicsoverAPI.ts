@@ -56,10 +56,9 @@ export async function fetchDiscover(
 
   return filteredMedia;
 }
-
 export const fetchReleaseDates = async (mediaType: string, mediaId: number) => {
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&append_to_response=release_dates,content_ratings`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&append_to_response=release_dates,content_ratings,revenue`
   );
   const data = await response.json();
 
@@ -99,5 +98,14 @@ export const fetchReleaseDates = async (mediaType: string, mediaId: number) => {
   } else {
     lastAirDate = "";
   }
-  return { certification, runtimeOrEpisodeLength, lastAirDate };
+
+  // Fetch revenue data
+  let revenue;
+  if (mediaType === "movie" && data.revenue) {
+    revenue = data.revenue;
+  } else {
+    revenue = 0;
+  }
+
+  return { certification, runtimeOrEpisodeLength, lastAirDate, revenue };
 };

@@ -31,6 +31,7 @@ export interface MediaItemType {
   profile_path?: string;
   known_for?: KnownFor[];
   similar: Similar;
+  revenue?: number;
 }
 
 export interface Credits {

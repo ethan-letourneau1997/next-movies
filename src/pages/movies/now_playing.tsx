@@ -28,7 +28,7 @@ export default function NowPlayingMovies() {
 
   return (
     <Container fluid>
-      <DiscoverLayout type="movie" />
+      <DiscoverLayout type="movie" title="In Theaters Now" />
     </Container>
   );
 }

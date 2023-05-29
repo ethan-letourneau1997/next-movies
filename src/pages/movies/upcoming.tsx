@@ -21,7 +21,7 @@ export default function UpcomingMovies() {
     });
 
     setIsLoading(false); // Mark the useEffect as finished
-  }, []);
+  }, [updateShowMeValue]);
 
   if (isLoading) {
     return <div>Loading...</div>; // Render a loading indicator while the useEffect is running
@@ -29,7 +29,7 @@ export default function UpcomingMovies() {
 
   return (
     <Container fluid>
-      <DiscoverLayout type="movie" />
+      <DiscoverLayout type="movie" title="Upcoming Movies" />
     </Container>
   );
 }

@@ -28,7 +28,7 @@ export default function UpcomingMovies() {
 
   return (
     <Container fluid>
-      <DiscoverLayout type="tv" />
+      <DiscoverLayout type="tv" title="Popular Shows" />
     </Container>
   );
 }

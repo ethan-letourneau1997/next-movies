@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AspectRatio,
   Box,
   Divider,
@@ -12,6 +13,7 @@ import {
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
+import Link from "next/link";
 import { MediaItemType } from "../../../types";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStore } from "@/store/store";
@@ -69,22 +71,45 @@ export default function DiscoverGrid(props: {
               }}
             >
               <Grid.Col span="content">
-                <AspectRatio ratio={2 / 3} miw={desktop ? 100 : 80}>
-                  <Image
-                    fill
-                    style={{
-                      borderRadius: "4px",
-                    }}
-                    alt="poster"
-                    src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
-                  />
-                </AspectRatio>
+                <Anchor
+                  component={Link}
+                  href={`/${props.mediaType == "movie" ? "movies" : "shows"}/${
+                    item.id
+                  }/${
+                    item.title
+                      ? encodeURIComponent(item.title)
+                      : encodeURIComponent(item.name || "")
+                  }`}
+                  underline={false}
+                >
+                  <AspectRatio ratio={2 / 3} miw={desktop ? 100 : 80}>
+                    <Image
+                      fill
+                      style={{
+                        borderRadius: "4px",
+                      }}
+                      alt="poster"
+                      src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
+                    />
+                  </AspectRatio>
+                </Anchor>
               </Grid.Col>
               <Grid.Col span="auto">
                 <Stack spacing={0}>
-                  <Title fw={600} size={desktop ? "h4" : "h4"} order={2}>
-                    {item.title || item.name}
-                  </Title>
+                  <Anchor
+                    component={Link}
+                    href={`/${
+                      props.mediaType == "movie" ? "movies" : "shows"
+                    }/${item.id}/${
+                      item.title
+                        ? encodeURIComponent(item.title)
+                        : encodeURIComponent(item.name || "")
+                    }`}
+                  >
+                    <Title fw={600} size={desktop ? "h4" : "h4"} order={2}>
+                      {item.title || item.name}
+                    </Title>
+                  </Anchor>
 
                   <Flex align="center" gap={10} mt={2}>
                     {showMeValue === "upcoming" ? null : (

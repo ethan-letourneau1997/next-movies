@@ -24,9 +24,10 @@ import { useStore } from "@/store/store";
 
 interface DiscoverLayoutProps {
   type: string;
+  title: string;
 }
 
-export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
+export default function DiscoverLayout({ type, title }: DiscoverLayoutProps) {
   const [items, setItems] = useState<MediaItemType[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
@@ -159,7 +160,7 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
             flexGrow: 1,
           }}
         >
-          <Title size="h2">Discover Movies</Title>
+          <Title size="h2">{title}</Title>
           {isLoading ? (
             <DiscoverGridLoading />
           ) : items.length === 0 ? (

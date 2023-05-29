@@ -28,7 +28,7 @@ export default function PopularMovies() {
 
   return (
     <Container fluid>
-      <DiscoverLayout type="movie" />
+      <DiscoverLayout type="movie" title="Popular Movies" />
     </Container>
   );
 }
