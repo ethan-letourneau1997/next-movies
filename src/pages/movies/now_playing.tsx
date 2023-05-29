@@ -20,7 +20,7 @@ export default function NowPlayingMovies() {
     });
 
     setIsLoading(false); // Mark the useEffect as finished
-  }, []);
+  }, [updateShowMeValue]);
 
   if (isLoading) {
     return <div>Loading...</div>; // Render a loading indicator while the useEffect is running
