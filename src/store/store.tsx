@@ -51,6 +51,8 @@ export const useStore = create<State & Action>((set) => ({
     } else if (showMeValue === "nowPlaying") {
       set(() => ({ startDate: sixWeeksAgo }));
       set(() => ({ endDate: today }));
+      set(() => ({ sortBy: "popularity" }));
+      set(() => ({ selectedProvidersString: "" }));
     } else if (showMeValue === "upcoming") {
       set(() => ({ startDate: nextMonday }));
       set(() => ({ endDate: fourWeeksAfterNextMonday }));

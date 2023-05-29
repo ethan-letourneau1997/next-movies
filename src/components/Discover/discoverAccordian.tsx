@@ -63,7 +63,10 @@ export default function Discover({
             })}
           >
             <Accordion.Item value="sort by">
-              <Accordion.Control px="md">
+              <Accordion.Control
+                px="md"
+                disabled={showMeValue === "all" ? false : true}
+              >
                 {" "}
                 <Text fw={500}>Sort by</Text>
               </Accordion.Control>

@@ -7,18 +7,21 @@ interface SortByProps {
 }
 
 export default function SortBy({ desktop }: SortByProps) {
-  const [sortBy, updateSortBy] = useStore((state) => [
-    state.sortBy,
-    state.updateSortBy,
-  ]);
+  const sortBy = useStore((state) => state.sortBy);
+  const updateSortBy = useStore((state) => state.updateSortBy);
+
+  const handleSortByChange = (value: string) => {
+    updateSortBy(value ?? "");
+  };
+
   return (
     <Select
       label="Sort Results By"
       size={desktop ? "sm" : "sm"}
-      defaultChecked
       defaultValue="popularity"
       placeholder="Pick one"
-      onChange={(value) => updateSortBy(value ?? "")}
+      value={sortBy}
+      onChange={handleSortByChange}
       data={sortByData}
       styles={(theme) => ({
         label: {

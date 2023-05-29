@@ -1,26 +1,51 @@
-import { Radio, Stack } from "@mantine/core";
+import { Box, Checkbox, CheckboxProps, Stack } from "@mantine/core";
+import { IconBiohazard, IconRadioactive } from "@tabler/icons-react";
 
+import { FaCheck } from "react-icons/fa";
+import { ImCheckmark } from "react-icons/im";
+import { useState } from "react";
 import { useStore } from "@/store/store";
 
 export function ShowMe() {
-  const [showMe, updateShowMeValue] = useStore((state) => [
+  const [showMe = "", updateShowMeValue] = useStore((state) => [
     state.showMeValue,
     state.updateShowMeValue,
   ]);
 
+  const handleCheckboxChange = (newValue: string[]) => {
+    const updatedValue =
+      newValue.length === 0 ? "" : newValue[newValue.length - 1];
+    updateShowMeValue(updatedValue);
+  };
+
+  const CheckboxIcon: CheckboxProps["icon"] = ({ className }) => (
+    <ImCheckmark color="black" className={className} />
+  );
+
   return (
-    <Radio.Group
-      description="Select 'All' to access all filters."
-      name="showMe"
-      label="Show me"
-      value={showMe}
-      onChange={updateShowMeValue}
-    >
-      <Stack>
-        <Radio color="indigo" value="all" label="all"></Radio>
-        <Radio color="indigo" value="nowPlaying" label="nowPlaying"></Radio>
-        <Radio color="indigo" value="upcoming" label="upcoming"></Radio>
-      </Stack>
-    </Radio.Group>
+    <Box>
+      <Checkbox.Group value={[showMe]} onChange={handleCheckboxChange}>
+        <Stack>
+          <Checkbox
+            icon={CheckboxIcon}
+            color="yellow.5"
+            value="all"
+            label="All"
+          />
+          <Checkbox
+            icon={CheckboxIcon}
+            color="yellow.5"
+            value="nowPlaying"
+            label="Now Playing"
+          />
+          <Checkbox
+            icon={CheckboxIcon}
+            color="yellow.5"
+            value="upcoming"
+            label="Upcoming"
+          />
+        </Stack>
+      </Checkbox.Group>
+    </Box>
   );
 }

@@ -23,7 +23,7 @@ export default function Runtime({ desktop }: GenreTypes) {
           thumbSize={10}
           showLabelOnHover
           label={(value) => `${value} min`}
-          color="indigo"
+          color="yellow.5"
           step={25}
           size="xs"
           min={50}

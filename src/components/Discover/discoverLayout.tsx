@@ -131,16 +131,19 @@ export default function DiscoverLayout({ type }: DiscoverLayoutProps) {
 
   return (
     <div>
-      <Affix position={{ bottom: rem(60), right: rem(40) }}>
+      <Affix position={{ bottom: rem(10), right: rem(15) }}>
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
             <Button
               leftIcon={<IconArrowUp size="1rem" />}
-              color="indigo"
+              color="yellow.5"
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}
+              sx={(theme) => ({
+                color: theme.colors.brand[9],
+              })}
             >
-              Scroll to top
+              To Top
             </Button>
           )}
         </Transition>

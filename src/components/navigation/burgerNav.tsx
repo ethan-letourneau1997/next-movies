@@ -57,7 +57,7 @@ export default function BurgerNav() {
             onClick={toggle}
             aria-label={label}
           />
-          <Title size="h3" ml="xs">
+          <Title c="yellow.5" size="h2" ml="xs" fw={700}>
             Cinegraph
           </Title>
         </Center>

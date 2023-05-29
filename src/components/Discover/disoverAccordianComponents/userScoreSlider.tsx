@@ -23,7 +23,7 @@ export default function UserScore({ desktop }: UserScoreTypes) {
         <RangeSlider
           thumbSize={12}
           label={(value) => `${value / 10}`}
-          color="indigo"
+          color="yellow.5"
           size="xs"
           step={10}
           min={0}

@@ -1,14 +1,13 @@
 import {
   AspectRatio,
   Box,
-  Divider,
   Overlay,
   SimpleGrid,
   Spoiler,
   Text,
   Tooltip,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 import Image from "next/image";
 import { WatchProvider } from "../../../../types";
@@ -44,6 +43,20 @@ function WhereToWatchSection({ desktop }: WhereToWatchTypes) {
       setSelectedProviders([...selectedProviders, providerId]);
     }
   };
+
+  useEffect(() => {
+    updateSelectedProviderString(
+      selectedProviders.map((provider) => provider).join("|")
+    );
+  }, [selectedProviders, updateSelectedProviderString]);
+
+  // clear selected providers when "all" is not selected
+  const showMeValue = useStore((state) => state.showMeValue);
+  useEffect(() => {
+    if (showMeValue != "all") {
+      setSelectedProviders([]);
+    }
+  }, [showMeValue]);
 
   useEffect(() => {
     updateSelectedProviderString(

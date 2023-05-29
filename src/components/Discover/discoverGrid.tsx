@@ -94,7 +94,7 @@ export default function DiscoverGrid(props: {
                             <Flex align="center" gap={3}>
                               <BsFillStarFill
                                 size={desktop ? 14 : 12}
-                                color="#ffd452"
+                                color="#fcc419"
                               />
 
                               <Text fz={desktop ? "sm" : "sm"} fw={600}>
