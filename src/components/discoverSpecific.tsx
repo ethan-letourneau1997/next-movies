@@ -5,7 +5,7 @@ import { MediaItemType } from "../../types";
 import SingleColumnGrid from "./Discover/disoverAccordianComponents/singleColumn/singleColumnGrid";
 import SingleColumnSkeleton from "./Discover/disoverAccordianComponents/singleColumn/singleColumnSkeleton";
 import { fetchReleaseDates } from "@/pages/api/dicsoverAPI";
-import { fetchSpecific } from "../pages/api/tmdb";
+import { fetchSpecific } from "../pages/api/generalAPI";
 import { useMediaQuery } from "@mantine/hooks";
 
 export default function DiscoverSpecific(props: {

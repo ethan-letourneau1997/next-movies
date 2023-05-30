@@ -10,7 +10,7 @@ import {
 import { MediaItemType, PersonDetails } from "../../../../../types";
 import { useEffect, useState } from "react";
 
-import { fetchPersonDetails } from "@/pages/api/tmdb";
+import { fetchPersonDetails } from "@/pages/api/generalAPI";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {

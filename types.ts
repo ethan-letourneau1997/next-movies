@@ -1,6 +1,11 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  tagline: string;
+  directingCrew?: Crew[];
+  budget?: string;
+  genres?: Genre[];
+  formattedRuntime: string;
   number_of_seasons: number;
   lastAirDate: string;
   runtimeOrEpisodeLength: string;

@@ -1,9 +1,12 @@
+import "../styles/globals.css";
+
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import Layout from "@/components/layout/layout";
 import { MantineProvider } from "@mantine/core";
 
+// import fonts
 const inter = Inter({ subsets: ["latin"] });
 
 export default function App(props: AppProps) {
@@ -25,7 +28,7 @@ export default function App(props: AppProps) {
         theme={{
           // /** Put your mantine theme override here */
           colorScheme: "dark",
-          // fontFamily: " muli, Source Serif Pro",
+          // fontFamily: "  muli, Source Serif Pro",
 
           globalStyles: (theme) => ({
             body: {
@@ -66,6 +69,7 @@ export default function App(props: AppProps) {
               styles: {
                 root: {
                   color: "#dee2e6",
+                  fontFamily: "Montserrat",
                 },
               },
             },

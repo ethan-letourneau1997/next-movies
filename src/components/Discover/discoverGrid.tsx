@@ -138,9 +138,11 @@ export default function DiscoverGrid(props: {
                       </Flex>
                     )}
 
-                    <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
-                      {formatReleaseDate(item.release_date)}
-                    </Text>
+                    {showMeValue === "upcoming" && (
+                      <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
+                        {formatReleaseDate(item.release_date)}
+                      </Text>
+                    )}
 
                     <Text c="brand.4" fw={500} fz={desktop ? "sm" : "sm"}>
                       {item.runtimeOrEpisodeLength}

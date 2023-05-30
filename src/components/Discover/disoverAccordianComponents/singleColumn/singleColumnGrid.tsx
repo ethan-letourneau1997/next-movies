@@ -60,7 +60,7 @@ export default function SingleColumnGrid(props: {
             <Grid.Col span="auto">
               <Flex justify="space-between">
                 <Text fz={desktop ? "sm" : "xs"} fw={400}>
-                  {index + 1}.
+                  {index + 1}
                 </Text>
                 {props.subject === "highestGrossing" && (
                   <Text

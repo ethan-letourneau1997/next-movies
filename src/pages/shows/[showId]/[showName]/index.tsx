@@ -16,7 +16,7 @@ import MediaCredits from "@/components/mediaDetails.tsx/mediaCredits";
 import MediaSimilar from "@/components/mediaDetails.tsx/mediaSimilar";
 import RatingsGrid from "@/components/shows/ratingsGrid";
 import { TVRoot } from "../../../../../types";
-import { fetchMediaDetails } from "@/pages/api/tmdb";
+import { fetchMediaDetails } from "@/pages/api/generalAPI";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {

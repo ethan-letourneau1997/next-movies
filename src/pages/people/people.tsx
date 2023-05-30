@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { MediaItemType } from "../../../types";
-import { fetchTrending } from "../api/tmdb";
+import { fetchTrending } from "../api/generalAPI";
 import { movieGenres } from "../../../data/discoverData";
 
 export default function People() {

@@ -58,13 +58,56 @@ export async function fetchMediaDetails(
 ): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits,similar,seasons`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits,similar,seasons,release_dates`
   );
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
   const data = await response.json();
+
+  // Find the US certification (MPAA rating) for the media
+  let certification;
+  if (mediaType === "movie") {
+    const usRelease = data.release_dates.results.find(
+      (release: any) => release.iso_3166_1 === "US"
+    );
+    certification = usRelease?.release_dates.find(
+      (date: any) => date.certification !== ""
+    )?.certification;
+    data.certification = certification; // Append certification to data
+  } else if (mediaType === "tv") {
+    const usRelease = data.content_ratings.results.find(
+      (release: any) => release.iso_3166_1 === "US"
+    );
+    certification = usRelease?.rating;
+    data.certification = certification; // Append certification to data
+  } else {
+    certification = "N/A";
+    data.certification = certification; // Append certification to data
+  }
+
+  let formattedRuntime;
+
+  if (mediaType === "movie") {
+    const runtimeInMinutes = data.runtime;
+    const hours = Math.floor(runtimeInMinutes / 60);
+    const minutes = runtimeInMinutes % 60;
+
+    formattedRuntime = `${hours}h ${minutes}m`;
+
+    data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
+  } else if (mediaType === "tv") {
+    formattedRuntime = `${data.number_of_episodes}eps`;
+    data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
+  }
+
+  // Find director(s) of the media
+  const directingCrew = data.credits.crew.filter(
+    ({ job }: { job: string }) => job === "Director"
+  );
+  data.directingCrew = directingCrew;
+
   return data;
 }
 
