@@ -50,7 +50,7 @@ export default function DesktopHeader() {
           },
         })}
       />
-      <Menu shadow="md" trigger="hover">
+      <Menu shadow="md" trigger="hover" zIndex={1500}>
         <Menu.Target>
           <Button
             p={0}
@@ -167,7 +167,7 @@ export default function DesktopHeader() {
           />
         </Menu.Dropdown>
       </Menu>
-      <Menu shadow="md" trigger="hover">
+      <Menu shadow="md" trigger="hover" zIndex={1500}>
         <Menu.Target>
           <Button
             p={0}

@@ -25,32 +25,48 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
   // responsive styles
   const desktop = useMediaQuery("(min-width: 768px)");
   return (
-    <Container size="md">
+    <Container
+      size="md"
+      // mt="md"
+    >
       <Box>
+        {/* <Box pos="relative">
+          <Box
+            pos="relative"
+            bottom={-10}
+            w="100%"
+            h={10}
+            sx={{
+              zIndex: 1000,
+              backgroundImage:
+                "linear-gradient(to bottom, #18181B, transparent)",
+            }}
+          ></Box>
+        </Box> */}
         <AspectRatio ratio={16 / 7}>
           <BackgroundImage
             src={`https://image.tmdb.org/t/p/original${items.backdrop_path}`}
           >
             <Group position="apart" h="100%" w="100%">
-              <Box h="100%" w={50} pos="relative">
+              <Box h="100%" w={30} pos="relative">
                 <Box
                   h="100%"
                   w="100%"
                   pos="absolute"
                   sx={{
                     backgroundImage:
-                      "linear-gradient(to right, #18181B, transparent)",
+                      "linear-gradient(to right, #101113, transparent)",
                   }}
                 />
               </Box>
-              <Box h="100%" w={50} pos="relative">
+              <Box h="100%" w={100} pos="relative">
                 <Box
                   h="100%"
                   w="100%"
                   pos="absolute"
                   sx={{
                     backgroundImage:
-                      "linear-gradient(to left, #18181B, transparent)",
+                      "linear-gradient(to left, #101113, transparent)",
                   }}
                 />
               </Box>
@@ -64,7 +80,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
             w="100%"
             h={50}
             sx={{
-              backgroundImage: "linear-gradient(to top, #18181B, transparent)",
+              backgroundImage: "linear-gradient(to top, #101113, transparent)",
             }}
           ></Box>
         </Box>
@@ -79,7 +95,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
               src={`https://image.tmdb.org/t/p/original${items.poster_path}`}
               style={{
                 borderRadius: "4px",
-                border: ".5px solid #71717A",
+                border: ".5px solid #3F3F46",
               }}
             ></Image>
           </AspectRatio>
@@ -114,7 +130,11 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                 {items.certification}
               </Text>
             </Group>
-            <Text>{items.tagline}</Text>
+            {items.tagline && (
+              <Text mt="lg" c="dimmed" italic>
+                {items.tagline}
+              </Text>
+            )}
             <Spoiler
               mt="xl"
               maxHeight={75}
@@ -127,7 +147,10 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
               <Grid.Col md={6}>
                 {" "}
                 <Text fz="sm">Budget</Text>
-                <Text fw={500}> ${items.budget?.toLocaleString()}</Text>
+                <Text fw={400} c="dark.0">
+                  {" "}
+                  ${items.budget?.toLocaleString()}
+                </Text>
               </Grid.Col>
               <Grid.Col md={6}>
                 <Text fz="sm">Directed by:</Text>

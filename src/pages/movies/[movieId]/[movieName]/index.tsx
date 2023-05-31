@@ -61,15 +61,15 @@ export default function MediaItem() {
   }
 
   return (
-    <>
+    <Box bg="dark.9">
       <LetterBoxd items={mediaDetails} mediaType="movie" />
-      <ColorBanner items={mediaDetails} mediaType="movie" />
+      {/* <ColorBanner items={mediaDetails} mediaType="movie" /> */}
       {mediaDetails.credits ? (
         <MediaCredits credits={mediaDetails.credits} />
       ) : null}
       {mediaDetails.similar ? (
         <MediaSimilar similar={mediaDetails.similar} />
       ) : null}
-    </>
+    </Box>
   );
 }

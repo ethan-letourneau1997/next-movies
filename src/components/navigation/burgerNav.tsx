@@ -50,7 +50,8 @@ export default function BurgerNav() {
   return (
     <Box
       // bg="#27272A"
-      bg="dark.9"
+      // bg="dark.9"
+      bg="transparent"
     >
       <Flex justify="space-between" p="sm">
         <Center>
