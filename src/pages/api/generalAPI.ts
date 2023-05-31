@@ -58,13 +58,15 @@ export async function fetchMediaDetails(
 ): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&append_to_response=credits,similar,seasons,release_dates`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&include_image_language=hi,es,vi,ar,he,bn,en,null&append_to_response=credits,similar,seasons,release_dates,recommendations,images,videos`
   );
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
   const data = await response.json();
+
+  console.log(data.videos);
 
   // Find the US certification (MPAA rating) for the media
   let certification;

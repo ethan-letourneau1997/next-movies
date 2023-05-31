@@ -1,6 +1,7 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  recommendations: Similar;
   tagline: string;
   directingCrew?: Crew[];
   budget?: string;
@@ -37,6 +38,24 @@ export interface MediaItemType {
   known_for?: KnownFor[];
   similar: Similar;
   revenue?: number;
+  videos: Videos;
+}
+
+export interface Videos {
+  results: Video[];
+}
+
+export interface Video {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
 }
 
 export interface Credits {

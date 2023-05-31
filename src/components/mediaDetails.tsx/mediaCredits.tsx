@@ -3,10 +3,13 @@ import {
   Avatar,
   Box,
   Container,
+  Divider,
   Flex,
   Grid,
+  Group,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 
 import { BsPersonFill } from "react-icons/bs";
@@ -15,15 +18,32 @@ import Image from "next/image";
 
 export default function MediaCredits(props: { credits: Credits }) {
   const { credits } = props;
+
+  const theme = useMantineTheme();
+
   return (
-    <Container mt="xl" px="xl">
-      <Title px="xl" size="h3">
-        Top Cast
-      </Title>
-      <Grid mt="md" px="xl" gutter="lg">
+    <Box mt={75}>
+      <Group spacing="xs">
+        <Divider
+          my={6}
+          size="sm"
+          color={theme.colors.yellow[5]}
+          orientation="vertical"
+        />
+        <Title size="h3">Top Cast</Title>
+      </Group>
+      <Grid gutter="lg" pt="sm">
         {credits.cast.slice(0, 9).map((castMember) => (
           <Grid.Col key={castMember.id} span={4}>
-            <Flex gap="md" bg="dark.7" w="95%">
+            <Flex
+              gap="md"
+              bg="dark.7"
+              // w="95%"
+              sx={{
+                borderTopRightRadius: "4px",
+                borderBottomRightRadius: "4px",
+              }}
+            >
               {castMember.profile_path ? (
                 <Image
                   style={{
@@ -58,6 +78,6 @@ export default function MediaCredits(props: { credits: Credits }) {
           </Grid.Col>
         ))}
       </Grid>
-    </Container>
+    </Box>
   );
 }

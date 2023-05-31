@@ -18,7 +18,7 @@ import { MediaItemType } from "../../../types";
 import { useMediaQuery } from "@mantine/hooks";
 import { useStore } from "@/store/store";
 
-function formatReleaseDate(inputDate: string | undefined) {
+export function formatReleaseDate(inputDate: string | undefined) {
   if (!inputDate) {
     return ""; // or handle the undefined case in an appropriate way
   }
