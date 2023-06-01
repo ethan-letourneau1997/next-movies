@@ -2,9 +2,6 @@ import { MediaItemType, PersonDetails } from "../../../types";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 
-// const temp =
-//   "https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc";
-
 // * Fetches trending media items from TMDB API
 export async function fetchTrending(
   mediaType: string
@@ -58,7 +55,7 @@ export async function fetchMediaDetails(
 ): Promise<MediaItemType> {
   const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
   const response = await fetch(
-    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&include_image_language=hi,es,vi,ar,he,bn,en,null&append_to_response=credits,similar,seasons,release_dates,recommendations,images,videos`
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US&include_image_language=hi,es,vi,ar,he,bn,en,null&append_to_response=credits,similar,seasons,release_dates,recommendations,videos,content_ratings,aggregate_credits`
   );
 
   if (!response.ok) {
@@ -66,7 +63,21 @@ export async function fetchMediaDetails(
   }
   const data = await response.json();
 
-  console.log(data.videos);
+  console.log(data.images);
+
+  const imageResponse = await fetch(
+    `https://api.themoviedb.org/3/${mediaType}/${mediaId}/images?api_key=${TMDB_API_KEY}`
+  );
+
+  if (!imageResponse.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  const imageData = await imageResponse.json();
+
+  if (data) {
+    data.images = imageData;
+    console.log(data.images);
+  }
 
   // Find the US certification (MPAA rating) for the media
   let certification;
@@ -99,10 +110,15 @@ export async function fetchMediaDetails(
     formattedRuntime = `${hours}h ${minutes}m`;
 
     data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
-  } else if (mediaType === "tv") {
-    formattedRuntime = `${data.number_of_episodes}eps`;
+  } else if (mediaType === "tv" && data.episode_runtime) {
+    formattedRuntime = `${data.episode_runtime}m`;
+    data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
+  } else if (mediaType === "tv" && !data.episode_runtime) {
+    formattedRuntime = `60m`;
     data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
   }
+
+  console.log(data);
 
   // Find director(s) of the media
   const directingCrew = data.credits.crew.filter(
@@ -125,6 +141,7 @@ export const fetchSpecific = async (
     const url = `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${TMDB_API_KEY}&include_adult=false&include_video=false&language=en-US&page=1&region=US&sort_by=vote_average.desc${params}&with_original_language=en&page=${page}`;
     const response = await fetch(url);
     const data = await response.json();
+
     return data.results;
   } catch (error) {
     return [];

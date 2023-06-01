@@ -1,20 +1,24 @@
 import {
   AspectRatio,
   Box,
-  Container,
   Divider,
   Grid,
   Group,
-  Text,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 
 import Image from "next/image";
 import { Similar } from "../../../types";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function MediaSimilar(props: { similar: Similar }) {
   const { similar } = props;
+
+  // responsive styles
+  const desktop = useMediaQuery("(min-width: 950px)");
+  const tablet = useMediaQuery("(max-width: 950px)");
+  const mobile = useMediaQuery("(max-width: 500px)");
 
   // Sort the similar results by vote_count in descending order
   // similar.results.sort((a, b) => b.vote_count - a.vote_count);
@@ -39,9 +43,9 @@ export default function MediaSimilar(props: { similar: Similar }) {
               (credit) =>
                 credit.original_language === "en" && credit.poster_path
             )
-            .slice(0, 6)
+            .slice(0, tablet ? 4 : 6)
             .map((credit) => (
-              <Grid.Col key={credit.id} span={2}>
+              <Grid.Col key={credit.id} span={6} xs={3} md={2}>
                 <AspectRatio
                   ratio={2 / 3}
                   sx={(theme) => ({
@@ -60,7 +64,7 @@ export default function MediaSimilar(props: { similar: Similar }) {
                     }}
                     fill
                     alt=""
-                    src={`https://image.tmdb.org/t/p/original${credit.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w500${credit.poster_path}`}
                   />
                 </AspectRatio>
 

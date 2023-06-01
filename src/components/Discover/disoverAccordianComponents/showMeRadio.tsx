@@ -1,9 +1,6 @@
 import { Box, Checkbox, CheckboxProps, Stack } from "@mantine/core";
-import { IconBiohazard, IconRadioactive } from "@tabler/icons-react";
 
-import { FaCheck } from "react-icons/fa";
 import { ImCheckmark } from "react-icons/im";
-import { useState } from "react";
 import { useStore } from "@/store/store";
 
 export function ShowMe() {

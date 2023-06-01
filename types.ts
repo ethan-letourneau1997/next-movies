@@ -1,6 +1,8 @@
 export type SearchResults = MediaItemType[];
 
 export interface MediaItemType {
+  aggregate_credits: Credits;
+  number_of_episodes: number;
   recommendations: Similar;
   tagline: string;
   directingCrew?: Crew[];
@@ -39,6 +41,43 @@ export interface MediaItemType {
   similar: Similar;
   revenue?: number;
   videos: Videos;
+  images: Images;
+}
+
+export interface Images {
+  backdrops: Backdrop[];
+  logos: Logo[];
+  posters: Poster[];
+}
+
+export interface Backdrop {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1?: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface Logo {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: any;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface Poster {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1?: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
 }
 
 export interface Videos {
@@ -46,6 +85,7 @@ export interface Videos {
 }
 
 export interface Video {
+  title: string;
   iso_639_1: string;
   iso_3166_1: string;
   name: string;
@@ -221,6 +261,7 @@ export interface Credits {
 }
 
 export interface Cast {
+  roles: Role[];
   adult?: boolean;
   gender?: number;
   id?: number;
@@ -235,6 +276,12 @@ export interface Cast {
   release_date?: string;
   first_air_date?: string;
   title?: string;
+}
+
+export interface Role {
+  credit_id?: number;
+  character?: string;
+  episode_count?: number;
 }
 
 export interface Similar {

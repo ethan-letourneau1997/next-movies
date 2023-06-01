@@ -1,15 +1,6 @@
-import {
-  Button,
-  Flex,
-  Menu,
-  NavLink,
-  Text,
-  UnstyledButton,
-  createStyles,
-} from "@mantine/core";
+import { Button, Flex, Menu, NavLink, createStyles } from "@mantine/core";
 
 import Link from "next/link";
-import styles from "@/styles/Burger.module.css";
 
 export default function DesktopHeader() {
   const useStyles = createStyles((theme) => ({

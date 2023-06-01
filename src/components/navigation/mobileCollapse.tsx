@@ -1,7 +1,6 @@
 import { Accordion, Divider, NavLink, Text, createStyles } from "@mantine/core";
 
 import { AiFillHome } from "react-icons/ai";
-import Autocomplete from "../autocomplete";
 import Link from "next/link";
 import { RiNetflixFill } from "react-icons/ri";
 import { TbMovie } from "react-icons/tb";

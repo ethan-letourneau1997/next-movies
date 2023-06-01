@@ -8,7 +8,7 @@ import {
   Transition,
   rem,
 } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery, useWindowScroll } from "@mantine/hooks";
 
 import Discover from "./discoverAccordian";
@@ -120,7 +120,6 @@ export default function DiscoverLayout({ type, title }: DiscoverLayoutProps) {
       .then((data) => {
         if (data.length === 0) {
           setHasMore(false);
-          console.log(data.length);
         } else {
           setItems((prevItems) => [...prevItems, ...data]);
         }
@@ -173,7 +172,7 @@ export default function DiscoverLayout({ type, title }: DiscoverLayoutProps) {
               loader={<h4>Loading...</h4>} // Replace with your loading indicator
               endMessage={<Text>No more results to display</Text>} // Replace with your end message
             >
-              <DiscoverGrid mediaType="movie" items={items} upcoming={false} />
+              <DiscoverGrid mediaType="tv" items={items} upcoming={false} />
             </InfiniteScroll>
           )}
         </Container>

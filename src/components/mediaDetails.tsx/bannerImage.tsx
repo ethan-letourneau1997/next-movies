@@ -9,19 +9,6 @@ interface BannerImageProps {
 export default function BannerImage({ items }: BannerImageProps) {
   return (
     <Box>
-      {/* <Box pos="relative">
-      <Box
-        pos="relative"
-        bottom={-10}
-        w="100%"
-        h={10}
-        sx={{
-          zIndex: 1000,
-          backgroundImage:
-            "linear-gradient(to bottom, #18181B, transparent)",
-        }}
-      ></Box>
-    </Box> */}
       <AspectRatio ratio={16 / 7}>
         <BackgroundImage
           src={`https://image.tmdb.org/t/p/original${items.backdrop_path}`}

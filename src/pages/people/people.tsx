@@ -1,7 +1,6 @@
 import {
   Anchor,
   AspectRatio,
-  Center,
   Container,
   Grid,
   Image,
@@ -13,7 +12,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MediaItemType } from "../../../types";
 import { fetchTrending } from "../api/generalAPI";
-import { movieGenres } from "../../../data/discoverData";
 
 export default function People() {
   const mediaType = "person";

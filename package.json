@@ -11,6 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/server": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@mantine/core": "^6.0.10",
     "@mantine/dates": "^6.0.10",
     "@mantine/hooks": "^6.0.10",
@@ -27,14 +29,21 @@
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "framer-motion-ticker": "^1.0.19",
+    "jquery": "^1.8.0",
     "next": "13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-fast-marquee": "^1.5.2",
     "react-icons": "^4.8.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-slick": "^0.29.0",
     "react-youtube": "^10.1.0",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^9.3.2",
     "typescript": "5.0.4",
     "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "@types/react-slick": "^0.23.10"
   }
 }

@@ -1,15 +1,11 @@
 import {
   Anchor,
-  AspectRatio,
   BackgroundImage,
   Badge,
   Box,
-  Center,
   Container,
   Flex,
   Grid,
-  Overlay,
-  Stack,
   Text,
   Title,
 } from "@mantine/core";

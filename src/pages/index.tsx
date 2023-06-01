@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Box } from "@mantine/core";
-import HomeGrid from "@/components/home/homeGrid";
-import Link from "next/link";
-import Marquee from "react-fast-marquee";
 import { MediaItemType } from "../../types";
-import RatingsGrid from "@/components/shows/ratingsGrid";
-import { fetchTrendingItems } from "./api/homeApi";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 

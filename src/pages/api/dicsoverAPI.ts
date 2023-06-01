@@ -1,5 +1,4 @@
 import { MediaItemType } from "../../../types";
-import { useState } from "react";
 
 const TMDB_API_KEY = "0fd7a8764e6522629a3b7e78c452c348";
 

@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Text } from "@mantine/core";
 import { movieGenres, tvGenres } from "../../../../data/discoverData";
 
-import styles from "@/styles/Burger.module.css";
 import { useStore } from "@/store/store";
 
 interface GenresType {
@@ -39,7 +38,7 @@ export default function Genres({
             fz="sm"
             key={genre.value}
             variant={isGenreSelected(genre.value) ? "outline" : "outline"}
-            color={isGenreSelected(genre.value) ? "yellow.5" : "gray.4"}
+            color={isGenreSelected(genre.value) ? "yellow.5" : "dark.1"}
             onClick={() => updateGenres(genre.value)}
             sx={(theme) => ({
               "&:hover": {

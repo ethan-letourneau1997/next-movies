@@ -1,12 +1,4 @@
-import {
-  BackgroundImage,
-  Box,
-  Center,
-  Flex,
-  Overlay,
-  Text,
-  Title,
-} from "@mantine/core";
+import { BackgroundImage, Box, Center, Flex, Text, Title } from "@mantine/core";
 
 import { MediaItemType } from "../../../types";
 

@@ -2,34 +2,21 @@ import {
   AspectRatio,
   Box,
   Button,
-  Center,
-  Flex,
-  Group,
   Modal,
-  Title,
   useMantineTheme,
 } from "@mantine/core";
+import { MediaItemType, Video } from "../../../types";
 
 import { BsFillPlayFill } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
-import { MediaItemType } from "../../../types";
-import styles from "@/styles/Burger.module.css";
 import { useDisclosure } from "@mantine/hooks";
 
-interface mediaProps {
-  mediaDetails: MediaItemType;
+interface trailerProps {
+  trailer: Video;
 }
 
-export default function Trailer({ mediaDetails }: mediaProps) {
-  const trailers = mediaDetails.videos.results.filter(
-    (video) => video.type === "Trailer"
-  );
-
+export default function Trailer({ trailer }: trailerProps) {
   const theme = useMantineTheme();
-
-  console.log(mediaDetails);
-
-  const trailer = trailers[0];
 
   let videoUrl = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1`;
 
@@ -42,7 +29,7 @@ export default function Trailer({ mediaDetails }: mediaProps) {
         opened={opened}
         onClose={close}
         // withCloseButton={false}
-        title={`${mediaDetails.name || mediaDetails.title} Official Trailer`}
+        title={`${trailer.name || trailer.title} Official Trailer`}
         p={0}
         size="80%"
         withOverlay
@@ -64,22 +51,16 @@ export default function Trailer({ mediaDetails }: mediaProps) {
         }}
       >
         <Box>
-          {mediaDetails.videos.results &&
-            mediaDetails.videos.results
-              .filter((video) => video.type === "Trailer")
-              .slice(0, 1)
-              .map((video) => (
-                <Box key={video.id}>
-                  <AspectRatio ratio={16 / 9}>
-                    <iframe
-                      id="ytplayer"
-                      frameBorder="0"
-                      allowFullScreen
-                      src={videoUrl}
-                    ></iframe>
-                  </AspectRatio>
-                </Box>
-              ))}
+          <Box>
+            <AspectRatio ratio={16 / 9}>
+              <iframe
+                id="ytplayer"
+                frameBorder="0"
+                allowFullScreen
+                src={videoUrl}
+              ></iframe>
+            </AspectRatio>
+          </Box>
         </Box>
       </Modal>
       <Button onClick={open} fullWidth leftIcon={<FaPlay />} mt="md">

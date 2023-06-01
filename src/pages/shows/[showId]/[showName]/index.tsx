@@ -1,30 +1,28 @@
-import {
-  Anchor,
-  Box,
-  Center,
-  Container,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Container } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import Link from "next/link";
+import BannerImage from "@/components/mediaDetails.tsx/bannerImage";
+import { LetterBoxd } from "@/components/Banners/letterboxd";
+import { MediaCarousel } from "@/components/mediaDetails.tsx/mediaCarousel";
 import MediaCredits from "@/components/mediaDetails.tsx/mediaCredits";
+import { MediaItemType } from "../../../../../types";
 import MediaSimilar from "@/components/mediaDetails.tsx/mediaSimilar";
-import RatingsGrid from "@/components/shows/ratingsGrid";
-import { TVRoot } from "../../../../../types";
 import { fetchMediaDetails } from "@/pages/api/generalAPI";
+import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {
-  const router = useRouter();
+  // responsive styles
+  const desktop = useMediaQuery("(min-width: 950px)");
+  const tablet = useMediaQuery("(max-width: 950px)");
+  const mobile = useMediaQuery("(max-width: 500px)");
 
+  let mediaType = "tv";
+
+  const router = useRouter();
   const { showId, showName } = router.query;
 
-  const [mediaDetails, setMediaDetails] = useState<TVRoot | null>(null);
+  const [mediaDetails, setMediaDetails] = useState<MediaItemType | null>(null);
 
   useEffect(() => {
     if (!showId) {
@@ -48,46 +46,28 @@ export default function MediaItem() {
   }
 
   return (
-    <Container>
-      <Center>
-        <Title>{mediaDetails.name}</Title>
-      </Center>
-      <Flex mt="xl" gap="xl">
-        <Image
-          width="200"
-          src={`https://image.tmdb.org/t/p/w500${mediaDetails.poster_path}`}
-          alt="alt text"
-        ></Image>
-        <Text my="auto">{mediaDetails.overview}</Text>
-      </Flex>
-      <Anchor
-        component={Link}
-        href={{
-          pathname: `/shows/${showId}/${
-            typeof showName === "string" ? encodeURIComponent(showName) : ""
-          }/seasons`,
-        }}
-      >
-        {" "}
-        See all episode and seasons
-      </Anchor>
+    <Box bg="dark.9">
+      <Container display={mobile ? "none" : "block"}>
+        <BannerImage items={mediaDetails} />
+      </Container>
 
-      <RatingsGrid showId={mediaDetails.id} />
-      <SimpleGrid cols={2} mt="xl">
-        <Box>
-          <Text>
-            {mediaDetails.last_episode_to_air && (
-              <Text>{mediaDetails.last_episode_to_air.name}</Text>
-            )}
-          </Text>
-        </Box>
-        <Box>
-          {mediaDetails.next_episode_to_air &&
-            mediaDetails.next_episode_to_air.name}
-        </Box>
-      </SimpleGrid>
-      {mediaDetails.credits && <MediaCredits credits={mediaDetails.credits} />}
-      {mediaDetails.similar && <MediaSimilar similar={mediaDetails.similar} />}
-    </Container>
+      <Container pos="relative" top={mobile ? 0 : -40} py="xl" px={50}>
+        <LetterBoxd items={mediaDetails} mediaType="tv" />
+        {/* <ColorBanner items={mediaDetails} mediaType="movie" /> */}
+        {mediaDetails.credits ? (
+          <MediaCredits
+            credits={
+              mediaType == "movie"
+                ? mediaDetails.credits
+                : mediaDetails.aggregate_credits
+            }
+          />
+        ) : null}
+        <MediaCarousel images={mediaDetails.images} />
+        {mediaDetails.similar ? (
+          <MediaSimilar similar={mediaDetails.recommendations} />
+        ) : null}
+      </Container>
+    </Box>
   );
 }

@@ -4,7 +4,6 @@ import {
   Center,
   Collapse,
   Flex,
-  Group,
   Title,
   createStyles,
 } from "@mantine/core";
