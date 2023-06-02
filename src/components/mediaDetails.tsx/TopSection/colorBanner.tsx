@@ -14,7 +14,7 @@ import { darkenColorForContrast, hexToRGBA, rgbToHex } from "@/utils";
 
 import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
-import { MediaItemType } from "../../../types";
+import { MediaItemType } from "../../../../types";
 import { Palette } from "color-thief-react";
 import { useMediaQuery } from "@mantine/hooks";
 

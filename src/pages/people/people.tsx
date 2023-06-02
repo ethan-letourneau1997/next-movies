@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { MediaItemType } from "../../../types";
-import { fetchTrending } from "../api/generalAPI";
+import { fetchTrending } from "../api/mediaItem";
 
 export default function People() {
   const mediaType = "person";

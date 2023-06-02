@@ -10,7 +10,7 @@ import {
 import { MediaItemType, PersonDetails } from "../../../../../types";
 import { useEffect, useState } from "react";
 
-import { fetchPersonDetails } from "@/pages/api/generalAPI";
+import { fetchPersonDetails } from "@/pages/api/mediaItem";
 import { useRouter } from "next/router";
 
 export default function MediaItem() {

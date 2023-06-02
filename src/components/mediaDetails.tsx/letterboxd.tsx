@@ -17,16 +17,16 @@ import { BsFillStarFill } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
 import { MediaItemType } from "../../../types";
-import Trailer from "../mediaDetails.tsx/trailer";
+import Trailer from "./trailer";
 import { formatReleaseDate } from "../Discover/discoverGrid";
 import { useMediaQuery } from "@mantine/hooks";
 
 interface LetterBoxdProp {
-  items: MediaItemType;
+  mediaItem: MediaItemType;
   mediaType: string;
 }
 
-export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
+export function LetterBoxd({ mediaItem, mediaType }: LetterBoxdProp) {
   // responsive styles
   const desktop = useMediaQuery("(min-width: 768px)");
   const tablet = useMediaQuery("(max-width: 950px)");
@@ -34,7 +34,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
 
   const theme = useMantineTheme();
 
-  const trailers = items.videos.results.filter(
+  const trailers = mediaItem.videos.results.filter(
     (video) => video.type === "Trailer"
   );
 
@@ -46,7 +46,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
             <Image
               fill
               alt=""
-              src={`https://image.tmdb.org/t/p/original${items.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w780${mediaItem.poster_path}`}
               style={{
                 borderRadius: "4px",
                 border: ".5px solid #3F3F46",
@@ -57,26 +57,26 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
         </Grid.Col>
         <Grid.Col span={12} xs={8} sm={9}>
           <Box>
-            <Title size="h2">{items.title || items.name}</Title>
+            <Title size="h2">{mediaItem.title || mediaItem.name}</Title>
             <Flex gap={6}>
               <Text fz={mobile ? "sm" : "md"} c="brand.2">
                 {" "}
-                {items.release_date?.substring(0, 4) ||
-                  items.first_air_date?.substring(0, 4)}
-                {mediaType === "tv" && items.lastAirDate
-                  ? `-${items.lastAirDate.substring(0, 4)}`
+                {mediaItem.release_date?.substring(0, 4) ||
+                  mediaItem.first_air_date?.substring(0, 4)}
+                {mediaType === "tv" && mediaItem.lastAirDate
+                  ? `-${mediaItem.lastAirDate.substring(0, 4)}`
                   : null}
               </Text>
               <Text fz={mobile ? "sm" : "md"} c="dimmed">
                 Directed by
               </Text>
               <Text lineClamp={1}>
-                {items.directingCrew?.map((crew, index) => (
+                {mediaItem.directingCrew?.map((crew, index) => (
                   <Text fz={mobile ? "sm" : "md"} c="brand.2" key={crew.id}>
                     {crew.name}
-                    {items.directingCrew &&
-                    items.directingCrew &&
-                    index !== items.directingCrew.length - 1 ? (
+                    {mediaItem.directingCrew &&
+                    mediaItem.directingCrew &&
+                    index !== mediaItem.directingCrew.length - 1 ? (
                       <>, </>
                     ) : null}
                   </Text>
@@ -91,7 +91,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                   color="dark.3"
                   orientation="vertical"
                 />{" "}
-                {items.genres
+                {mediaItem.genres
                   ?.slice(0, tablet ? 2 : 3) // Use the slice() method to get the first three items
                   .map((genre, index) => (
                     <Group spacing={0} key={genre.id}>
@@ -106,10 +106,11 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
 
                       <Text fw={300}>
                         {" "}
-                        {items.genres &&
+                        {mediaItem.genres &&
                         index !== 3 &&
                         index !==
-                          items.genres.slice(0, tablet ? 2 : 3).length - 1 ? (
+                          mediaItem.genres.slice(0, tablet ? 2 : 3).length -
+                            1 ? (
                           <>,</>
                         ) : null}
                       </Text>
@@ -117,9 +118,9 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                   ))}
               </Group>
             </Flex>
-            {items.tagline && (
+            {mediaItem.tagline && (
               <Text fz="sm" mt="md" c="dimmed" italic>
-                {items.tagline}
+                {mediaItem.tagline}
               </Text>
             )}
             <Title mt="xl" fw={600} size="h5">
@@ -138,7 +139,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                 },
               })}
             >
-              {items.overview}
+              {mediaItem.overview}
             </Spoiler>
             <Divider my="xs" color="dark.5" />
             <Title fw={600} size="h5" pt="sm">
@@ -155,12 +156,12 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                 <Group spacing={4}>
                   <BsFillStarFill size={12} color="#ffd452" />
                   <Text c="dark.0" fz="sm">
-                    {items.vote_average?.toFixed(1)}
+                    {mediaItem.vote_average?.toFixed(1)}
                   </Text>
                 </Group>
               </Flex>
               <Flex gap={5}>
-                <Text fw={500}>MPAA Rating: </Text>
+                <Text fw={500}>Content Rating: </Text>
 
                 <Group>
                   <Text
@@ -172,26 +173,26 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                       borderColor: theme.colors.dark[0],
                     })}
                   >
-                    {items.certification}
+                    {mediaItem.certification}
                   </Text>
                 </Group>
               </Flex>
               <Flex gap={5}>
                 <Text fw={500}>Runtime:</Text>
-                <Text c="dark.0">{items.formattedRuntime}</Text>
+                <Text c="dark.0">{mediaItem.formattedRuntime}</Text>
               </Flex>
               {mediaType === "movie" ? (
                 <Flex gap={5}>
                   <Text fw={500}>Budget:</Text>
                   <Text c="dark.0" fw={300}>
-                    ${items.budget?.toLocaleString()}
+                    ${mediaItem.budget?.toLocaleString()}
                   </Text>
                 </Flex>
               ) : (
                 <Flex gap={5}>
                   <Text fw={500}>Seasons:</Text>
                   <Text c="dark.0" fw={300}>
-                    {items.number_of_seasons?.toLocaleString()}
+                    {mediaItem.number_of_seasons?.toLocaleString()}
                   </Text>
                 </Flex>
               )}
@@ -199,7 +200,7 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                 <Text fw={500}>Release Date:</Text>
                 <Text c="dark.0" fw={300}>
                   {formatReleaseDate(
-                    items.release_date || items.first_air_date
+                    mediaItem.release_date || mediaItem.first_air_date
                   )}
                 </Text>
               </Flex>
@@ -207,14 +208,14 @@ export function LetterBoxd({ items, mediaType }: LetterBoxdProp) {
                 <Flex gap={5}>
                   <Text fw={500}>Box Office:</Text>
                   <Text c="dark.0" fw={300}>
-                    ${items.revenue?.toLocaleString()}
+                    ${mediaItem.revenue?.toLocaleString()}
                   </Text>
                 </Flex>
               ) : (
                 <Flex gap={5}>
                   <Text fw={500}>Episodes:</Text>
                   <Text c="dark.0" fw={300}>
-                    {items.number_of_episodes?.toLocaleString()}
+                    {mediaItem.number_of_episodes?.toLocaleString()}
                   </Text>
                 </Flex>
               )}

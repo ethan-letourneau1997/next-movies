@@ -21,7 +21,7 @@ import { HiTrendingUp } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
 import { TbSearch } from "react-icons/tb";
-import { fetchTrending } from "@/pages/api/generalAPI";
+import { fetchTrending } from "@/pages/api/mediaItem";
 import { useDisclosure } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({

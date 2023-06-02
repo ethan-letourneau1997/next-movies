@@ -172,7 +172,7 @@ export default function DiscoverLayout({ type, title }: DiscoverLayoutProps) {
               loader={<h4>Loading...</h4>} // Replace with your loading indicator
               endMessage={<Text>No more results to display</Text>} // Replace with your end message
             >
-              <DiscoverGrid mediaType="tv" items={items} upcoming={false} />
+              <DiscoverGrid mediaType={type} items={items} upcoming={false} />
             </InfiniteScroll>
           )}
         </Container>

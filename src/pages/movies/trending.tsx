@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Container } from "@mantine/core";
 import MediaGrid from "@/components/mediaGrid";
 import { MediaItemType } from "../../../types";
-import { fetchTrending } from "../api/generalAPI";
+import { fetchTrending } from "../api/mediaItem";
 
 type Movie = {
   id: number;

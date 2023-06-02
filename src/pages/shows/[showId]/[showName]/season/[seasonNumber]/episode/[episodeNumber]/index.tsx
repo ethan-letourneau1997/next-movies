@@ -8,7 +8,7 @@ import { fetchEpisodeDetails, fetchSeasonDetails } from "@/pages/api/showAPI";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { fetchMediaDetails } from "@/pages/api/generalAPI";
+import { fetchMediaDetails } from "@/pages/api/mediaItem";
 import { useRouter } from "next/router";
 
 export default function Episode() {

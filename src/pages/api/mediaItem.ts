@@ -63,8 +63,6 @@ export async function fetchMediaDetails(
   }
   const data = await response.json();
 
-  console.log(data.images);
-
   const imageResponse = await fetch(
     `https://api.themoviedb.org/3/${mediaType}/${mediaId}/images?api_key=${TMDB_API_KEY}`
   );
@@ -76,7 +74,6 @@ export async function fetchMediaDetails(
 
   if (data) {
     data.images = imageData;
-    console.log(data.images);
   }
 
   // Find the US certification (MPAA rating) for the media
@@ -117,8 +114,6 @@ export async function fetchMediaDetails(
     formattedRuntime = `60m`;
     data.formattedRuntime = formattedRuntime; // Append formattedRuntime to data
   }
-
-  console.log(data);
 
   // Find director(s) of the media
   const directingCrew = data.credits.crew.filter(
